@@ -49,6 +49,7 @@ function ServiceSection() {
           title="생활기록부 진단 서비스"
           description={`컨설턴트 출신 SKY 멘토의 밀착 1:1 생활기록부 분석\n학종메이트의 생활기록부 진단 서비스`}
           iconSrc={blueIcon}
+          link="/service/analyze"
         />
 
         {/* 두 번째 (Best) 서비스 카드 */}
@@ -56,6 +57,7 @@ function ServiceSection() {
           title="학종 가이드북"
           description={`한 권에 학생부 종합전형의 본질을 전부 담았습니다.\n한 권으로 끝내는 학종 가이드북`}
           iconSrc={greenIcon}
+          link="/service/book"
           isBest
         />
 
@@ -64,6 +66,7 @@ function ServiceSection() {
           title="AI 주제 추천 서비스"
           description={`탐구 주제, 이제는 고민하지 마세요\n학종메이트 자체 개발 AI 생활기록부 주제 추천 서비스`}
           iconSrc={yellowIcon}
+          link="/service/ai"
         />
       </ServicesGrid>
     </SectionContainer>

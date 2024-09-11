@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const ServiceCardContainer = styled.div<{ isBest?: boolean }>`
   background-color: #fff;
@@ -72,6 +73,7 @@ interface ServiceCardProps {
   title: string;
   description: string;
   iconSrc: string;
+  link: string;
   isBest?: boolean;
 }
 
@@ -79,6 +81,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   title,
   description,
   iconSrc,
+  link,
   isBest,
 }) => {
   return (
@@ -87,7 +90,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
       <h3>{title}</h3>
       <ServiceIcon src={iconSrc} alt={title} />
       <p>{description}</p>
-      <a href="#">더 알아보기 &gt;</a>
+      <Link to={link}>더 알아보기 &gt;</Link>
     </ServiceCardContainer>
   );
 };
