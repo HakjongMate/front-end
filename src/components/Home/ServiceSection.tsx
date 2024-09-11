@@ -27,8 +27,19 @@ const SectionDescription = styled.p`
 const ServicesGrid = styled.div`
   display: flex;
   justify-content: center;
-  gap: 30px;
+  gap: 35px;
   flex-wrap: wrap;
+  position: relative;
+`;
+
+const BestText = styled.div`
+  position: absolute;
+  top: 0px;
+  transform: translateX(-50%);
+  font-size: 24px;
+  font-weight: 700;
+  color: #007BFF;
+  text-align: center;
 `;
 
 const ServiceCard = styled.div<{ isBest?: boolean }>`
@@ -36,10 +47,14 @@ const ServiceCard = styled.div<{ isBest?: boolean }>`
   border: ${({ isBest }) => (isBest ? "2px solid #007BFF" : "1px solid #ccc")};
   border-radius: 10px;
   padding: 40px 20px 0px;
-  width: 310px;
+  width: 300px;
   height: 440px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s;
+
+  &:nth-child(2) {
+    margin-top: 40px;
+  }
 
   &:hover {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
@@ -104,6 +119,9 @@ function ServiceSection() {
 
         {/* 두 번째 (Best) 서비스 카드 */}
         <ServiceCard isBest>
+        {/* Best 텍스트 */}
+        <BestText>Best</BestText>
+
           <h3>학종 가이드북</h3>
           <ServiceIcon src={greenIcon} alt="학종 가이드북" />
           <p>
