@@ -19,9 +19,9 @@ function App() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/intro" element={<IntroPage />} />
-      <Route path="/service-book" element={<ServiceBookPage />} />
-      <Route path="/service-analyze" element={<ServiceAnalyzePage />} />
-      <Route path="/service-ai" element={<ServiceAIPage />} />
+      <Route path="/service/book" element={<ServiceBookPage />} />
+      <Route path="/service/analyze" element={<ServiceAnalyzePage />} />
+      <Route path="/service/ai" element={<ServiceAIPage />} />
       <Route path="/review" element={<ReviewPage />} />
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/login" element={<LoginPage />} />
