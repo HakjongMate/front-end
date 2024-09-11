@@ -191,7 +191,7 @@ function Navbar() {
                   <a onClick={handleLoginLogout}>로그아웃</a>
                 </AuthLink>
                 <AuthLink>
-                  <Link to="/mypage">마이페이지</Link>
+                  <Link to="/my">마이페이지</Link>
                 </AuthLink>
               </>
             ) : (
