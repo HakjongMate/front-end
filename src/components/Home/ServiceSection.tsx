@@ -3,6 +3,7 @@ import styled from "styled-components";
 import blueIcon from "../../assets/icons/blue-icon.svg";
 import greenIcon from "../../assets/icons/green-icon.svg";
 import yellowIcon from "../../assets/icons/yellow-icon.svg";
+import ServiceCard from "./ServiceCard";
 
 const SectionContainer = styled.div`
   background-color: #f9f9f9;
@@ -32,69 +33,6 @@ const ServicesGrid = styled.div`
   position: relative;
 `;
 
-const BestText = styled.div`
-  position: absolute;
-  top: 0px;
-  transform: translateX(-50%);
-  font-size: 24px;
-  font-weight: 700;
-  color: #007BFF;
-  text-align: center;
-`;
-
-const ServiceCard = styled.div<{ isBest?: boolean }>`
-  background-color: #fff;
-  border: ${({ isBest }) => (isBest ? "2px solid #007BFF" : "1px solid #ccc")};
-  border-radius: 10px;
-  padding: 40px 20px 0px;
-  width: 300px;
-  height: 440px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s;
-
-  &:nth-child(2) {
-    margin-top: 40px;
-  }
-
-  &:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  }
-
-  h3 {
-    font-size: 22px;
-    font-weight: 700;
-    margin-bottom: 10px;
-  }
-
-  p {
-    font-size: 14px;
-    font-weight: 300;
-    margin-bottom: 40px;
-    line-height: 1.8;
-    color: #000000;
-  }
-
-  a {
-    font-size: 14px;
-    display: block;
-    text-align: right;
-    color: #000000;
-    text-decoration: none;
-    font-weight: 600;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-`;
-
-const ServiceIcon = styled.img`
-  width: 200px;
-  height: 150px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-`;
-
 function ServiceSection() {
   return (
     <SectionContainer id="service-section">
@@ -107,40 +45,26 @@ function ServiceSection() {
 
       <ServicesGrid>
         {/* 첫 번째 서비스 카드 */}
-        <ServiceCard>
-          <h3>생활기록부 진단 서비스</h3>
-          <ServiceIcon src={blueIcon} alt="생활기록부 진단 서비스" />
-          <p>
-            컨설턴트 출신 SKY 멘토의 밀착 1:1 생활기록부 분석 <br /> 
-            학종메이트의 생활기록부 진단 서비스
-          </p>
-          <a href="#">더 알아보기 &gt;</a>
-        </ServiceCard>
+        <ServiceCard
+          title="생활기록부 진단 서비스"
+          description={`컨설턴트 출신 SKY 멘토의 밀착 1:1 생활기록부 분석\n학종메이트의 생활기록부 진단 서비스`}
+          iconSrc={blueIcon}
+        />
 
         {/* 두 번째 (Best) 서비스 카드 */}
-        <ServiceCard isBest>
-        {/* Best 텍스트 */}
-        <BestText>Best</BestText>
-
-          <h3>학종 가이드북</h3>
-          <ServiceIcon src={greenIcon} alt="학종 가이드북" />
-          <p>
-            한 권에 학생부 종합전형의 본질을 전부 담았습니다. <br />
-            한 권으로 끝내는 학종 가이드북
-          </p>
-          <a href="#">더 알아보기 &gt;</a>
-        </ServiceCard>
+        <ServiceCard
+          title="학종 가이드북"
+          description={`한 권에 학생부 종합전형의 본질을 전부 담았습니다.\n한 권으로 끝내는 학종 가이드북`}
+          iconSrc={greenIcon}
+          isBest
+        />
 
         {/* 세 번째 서비스 카드 */}
-        <ServiceCard>
-          <h3>AI 주제 추천 서비스</h3>
-          <ServiceIcon src={yellowIcon} alt="AI 주제 추천 서비스" />
-          <p>
-            탐구 주제, 이제는 고민하지 마세요 <br /> 
-            학종메이트 자체 개발 AI 생활기록부 주제 추천 서비스
-          </p>
-          <a href="#">더 알아보기 &gt;</a>
-        </ServiceCard>
+        <ServiceCard
+          title="AI 주제 추천 서비스"
+          description={`탐구 주제, 이제는 고민하지 마세요\n학종메이트 자체 개발 AI 생활기록부 주제 추천 서비스`}
+          iconSrc={yellowIcon}
+        />
       </ServicesGrid>
     </SectionContainer>
   );
