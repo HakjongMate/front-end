@@ -34,7 +34,7 @@ const LogoImage = styled.img`
 
 const LogoText = styled(Link)`
   font-size: 18px;
-  font-weight: 400;
+  font-weight: 300;
   color: #202594;
   text-decoration: none;
 `;
@@ -134,7 +134,7 @@ const ServiceLinks = styled.ul`
   align-items: center;
   justify-content: center;
   border-top: 1px solid #e9eaff;
-  padding-top: 18px;
+  padding: 18px 0; 
 `;
 
 function Navbar() {
