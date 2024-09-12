@@ -101,7 +101,7 @@ function SemiFooter() {
       <FooterContent>
         <Title>생기부 컨설팅의 새로운 기준,</Title>
         <Title>학종 메이트와 함께 원하는 대학가기</Title>
-        <StyledButton to="/apply">수업 신청하기</StyledButton>
+        <StyledButton to="/service/book">서비스 바로가기</StyledButton>
       </FooterContent>
     </FooterContainer>
   );
