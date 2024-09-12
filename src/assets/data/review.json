@@ -2,6 +2,7 @@
   {
     "id": 1,
     "rating": 5,
+    "type": "analyze",
     "image": "src/assets/images/home/example.png",
     "author": "이*연",
     "date": "2023-12-25",
@@ -10,6 +11,7 @@
   {
     "id": 2,
     "rating": 5,
+    "type": "analyze",
     "image": "src/assets/images/home/example.png",
     "author": "최*아",
     "date": "2024-02-02",
@@ -18,14 +20,16 @@
   {
     "id": 3,
     "rating": 5,
+    "type": "book",
     "image": "src/assets/images/home/example.png",
     "author": "김*혁",
     "date": "2024-03-04",
-    "content": "상담 후 수업을 듣게 되었는데, 아이가 무척 만족하였습니다~! 아이의 생기부에서 발전시켜야 하는 부분이나 강조해야 하는 부분들을 짚어주시면서 설명해 주셔서 저도 이해하기 쉬웠습니다."
+    "content": "아이가 무척 만족하였습니다~! 아이의 생기부에서 발전시켜야 하는 부분이나 강조해야 하는 부분들을 짚어주시면서 설명해 주셔서 저도 이해하기 쉬웠습니다."
   },
   {
     "id": 4,
     "rating": 5,
+    "type": "ai",
     "image": "src/assets/images/home/example.png",
     "author": "김*현",
     "date": "2024-04-16",
@@ -34,6 +38,7 @@
   {
     "id": 5,
     "rating": 5,
+    "type": "book",
     "image": "src/assets/images/home/example.png",
     "author": "이*연",
     "date": "2024-05-01",
