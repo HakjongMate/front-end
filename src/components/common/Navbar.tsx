@@ -12,8 +12,7 @@ const NavbarContainer = styled.div`
   flex-direction: column;
   background-color: #ffffff;
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
+  margin: -10px auto 0;
 
   @media (max-width: 1024px) {
     max-width: 100%;
@@ -30,6 +29,17 @@ const MainNavbar = styled.div`
   @media (max-width: 768px) {
     height: 60px;
   }
+`;
+
+const ServiceLinks = styled.ul`
+  display: flex;
+  list-style: none;
+  gap: 40px;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px solid #e9eaff;
+  margin: 0;
+  padding: 20px 0; 
 `;
 
 const LogoContainer = styled(Link)`
@@ -63,6 +73,7 @@ const LogoText = styled.div`
 const NavLinksContainer = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: -10px;
 
   @media (max-width: 768px) {
     display: none;
@@ -218,7 +229,6 @@ const SideMenu = styled.div<SideMenuProps>`
   height: 100%;
   width: 250px;
   background-color: #ffffff;
-  padding: 60px 20px 20px;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease-in-out;
   transform: ${({ isOpen }) => (isOpen ? "translateX(0)" : "translateX(100%)")};
@@ -276,6 +286,7 @@ function Navbar() {
 
   const toggleService = () => {
     setShowServiceLinks(!showServiceLinks);
+    navigate("/service/book");
   };
 
   const handleLoginLogout = () => {
@@ -336,6 +347,20 @@ function Navbar() {
           </AuthLinks>
         </AuthContainer>
       </MainNavbar>
+
+      {showServiceLinks && (
+        <ServiceLinks>
+          <NavLink isActive={isActive("/service/book")}>
+            <Link to="/service/book">학종 가이드북</Link>
+          </NavLink>
+          <NavLink isActive={isActive("/service/analyze")}>
+            <Link to="/service/analyze">생기부 진단 서비스</Link>
+          </NavLink>
+          <NavLink isActive={isActive("/service/ai")}>
+            <Link to="/service/ai">AI 주제 추천 서비스</Link>
+          </NavLink>
+        </ServiceLinks>
+      )}
       
       <SideMenu isOpen={isMenuOpen}>
         <SideMenuLink isActive={isActive("/intro")}>

@@ -9,6 +9,7 @@ const FooterContainer = styled.div`
   display: flex;
   max-width: 1080px;
   margin: 0 auto;
+  padding: 40px 20px;
   flex-direction: column;
 `;
 
