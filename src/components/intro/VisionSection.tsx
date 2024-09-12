@@ -9,7 +9,7 @@ const FullWidthSection = styled.div`
 `;
 
 const Container = styled.div`
-  width: 1180px;
+  width: 1080px;
   margin: 0 auto;
   padding: 64px 32px;
   display: flex;
@@ -74,7 +74,7 @@ const CompanyName = styled.span`
   font-weight: bold;
 `;
 
-const Badge = styled.div`
+const Badge = styled.div<{ color: string }>`
   position: absolute;
   padding: 12px 30px;
   border-radius: 20px;
@@ -83,7 +83,7 @@ const Badge = styled.div`
   white-space: nowrap;
   min-width: 100px;
   text-align: center;
-  border: 1px solid #9C9C9C;
+  border: ${({ color }) => (color === '#fff' ? '1px solid #9C9C9C' : 'none')};
 `;
 
 const VisionSection = () => {
@@ -120,11 +120,12 @@ const VisionSection = () => {
           {badges.map((badge, index) => (
             <Badge
               key={index}
+              color={badge.color}
               style={{
                 background: badge.color,
                 color: badge.textColor,
-                top: `${200 - 200 * Math.cos(badge.angle * Math.PI / 180)}px`,
-                left: `${200 + 200 * Math.sin(badge.angle * Math.PI / 180)}px`,
+                top: `${200 - 210 * Math.cos(badge.angle * Math.PI / 180)}px`,
+                left: `${200 + 210 * Math.sin(badge.angle * Math.PI / 180)}px`,
                 transform: 'translate(-50%, -50%)'
               }}
             >
