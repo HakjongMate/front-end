@@ -12,8 +12,7 @@ const NavbarContainer = styled.div`
   flex-direction: column;
   background-color: #ffffff;
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
+  margin: -10px auto 0;
 
   @media (max-width: 1024px) {
     max-width: 100%;
@@ -39,7 +38,8 @@ const ServiceLinks = styled.ul`
   align-items: center;
   justify-content: center;
   border-top: 1px solid #e9eaff;
-  padding: 30px 0 10px; 
+  margin: 0;
+  padding: 20px 0; 
 `;
 
 const LogoContainer = styled(Link)`
@@ -229,7 +229,6 @@ const SideMenu = styled.div<SideMenuProps>`
   height: 100%;
   width: 250px;
   background-color: #ffffff;
-  padding: 60px 20px 20px;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease-in-out;
   transform: ${({ isOpen }) => (isOpen ? "translateX(0)" : "translateX(100%)")};
@@ -287,6 +286,7 @@ function Navbar() {
 
   const toggleService = () => {
     setShowServiceLinks(!showServiceLinks);
+    navigate("/service/book");
   };
 
   const handleLoginLogout = () => {
