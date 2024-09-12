@@ -11,7 +11,7 @@ const WhyCardContainer = styled.div`
   background-color: #fff;
   border-radius: 20px;
   padding: 30px 20px;
-  width: 340px;
+  width: 330px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
 
