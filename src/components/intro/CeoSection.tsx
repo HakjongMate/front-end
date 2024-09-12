@@ -4,7 +4,7 @@ import CeoImage from "../../assets/images/intro/first-image.jpg";
 
 const SectionContainer = styled.div`
   background-color: #fff;
-  padding: 60px 20px;
+  padding: 60px 20px 20px;
   display: flex;
   justify-content: center;
 `;
