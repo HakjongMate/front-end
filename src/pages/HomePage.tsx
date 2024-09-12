@@ -3,6 +3,7 @@ import HookingSection from '../components/Home/HookingSection'
 import ServiceSection from '../components/Home/ServiceSection'
 import WhySection from '../components/Home/WhySection'
 import ReviewSection from '../components/Home/ReviewSection'
+import SemiFooter from '../components/common/SemiFooter'
 
 function HomePage() {
   return (
@@ -11,6 +12,7 @@ function HomePage() {
       <ServiceSection />
       <WhySection />
       <ReviewSection />
+      <SemiFooter />
     </div>
   )
 }
