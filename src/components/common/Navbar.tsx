@@ -32,6 +32,16 @@ const MainNavbar = styled.div`
   }
 `;
 
+const ServiceLinks = styled.ul`
+  display: flex;
+  list-style: none;
+  gap: 40px;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px solid #e9eaff;
+  padding: 30px 0 10px; 
+`;
+
 const LogoContainer = styled(Link)`
   display: flex;
   align-items: center;
@@ -63,6 +73,7 @@ const LogoText = styled.div`
 const NavLinksContainer = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: -10px;
 
   @media (max-width: 768px) {
     display: none;
@@ -336,6 +347,20 @@ function Navbar() {
           </AuthLinks>
         </AuthContainer>
       </MainNavbar>
+
+      {showServiceLinks && (
+        <ServiceLinks>
+          <NavLink isActive={isActive("/service/book")}>
+            <Link to="/service/book">학종 가이드북</Link>
+          </NavLink>
+          <NavLink isActive={isActive("/service/analyze")}>
+            <Link to="/service/analyze">생기부 진단 서비스</Link>
+          </NavLink>
+          <NavLink isActive={isActive("/service/ai")}>
+            <Link to="/service/ai">AI 주제 추천 서비스</Link>
+          </NavLink>
+        </ServiceLinks>
+      )}
       
       <SideMenu isOpen={isMenuOpen}>
         <SideMenuLink isActive={isActive("/intro")}>
