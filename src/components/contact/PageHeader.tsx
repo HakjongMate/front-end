@@ -3,8 +3,9 @@ import styled from 'styled-components';
 
 const TitleWrapper = styled.div`
   font-weight: 700;
-  font-size: 24px;
-  margin-bottom: 10px;
+  font-size: 30px;
+  margin-top: 40px;
+  margin-bottom: 20px;
   border-bottom: 1px solid #333;
   padding: 5px;
 `;
@@ -12,7 +13,7 @@ const TitleWrapper = styled.div`
 const SubtitleWrapper = styled.div`
   font-weight: 400;
   font-size: 18px;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   text-align: center;
   line-height: 1.5;
 `;
