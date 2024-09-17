@@ -18,7 +18,7 @@ interface ReviewComponentProps {
 const ReviewContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  max-width: 800px;
+  max-width: 700px;
   background-color: #f6f7fc;
   padding: 30px;
   margin: 15px 100px;
@@ -29,14 +29,13 @@ const ReviewContainer = styled.div`
 const LeftContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-right: 5px;
 `;
 
 const RightContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  width: 230px;
+  width: 180px;
 `;
 
 const Author = styled.div`
@@ -52,7 +51,7 @@ const Date = styled.div`
 const Rating = styled.div`
   color: #202594;
   font-size: 18px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 `;
 
 const Content = styled.div`
@@ -66,7 +65,7 @@ const Type = styled.div`
   font-size: 18px;
   font-weight: 600;
   color: #202594;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 `;
 
 const ReviewComponent: React.FC<ReviewComponentProps> = ({ review }) => {
