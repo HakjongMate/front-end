@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const TitleWrapper = styled.div`
   font-weight: 700;
   font-size: 30px;
-  margin-top: 40px;
+  margin-top: 30px;
   margin-bottom: 20px;
   border-bottom: 1px solid #333;
   padding: 5px;

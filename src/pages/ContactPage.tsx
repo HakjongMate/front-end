@@ -9,8 +9,7 @@ const PageContainer = styled.div`
   align-items: center;
   padding: 30px 20px;
   background-color: #f6f7fc;
-  font-family: 'Pretendard';
-  min-height: calc(100vh - 140px);
+  min-height: calc(100vh - 240px);
   box-sizing: border-box;
   overflow-x: hidden; 
 `;
