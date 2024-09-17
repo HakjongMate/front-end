@@ -74,10 +74,10 @@ const ReviewComponent: React.FC<ReviewComponentProps> = ({ review }) => {
       <LeftContainer>
         <Type>
           {review.type === "analyze"
-            ? "생기부 컨설팅"
+            ? "생기부 진단 서비스"
             : review.type === "book"
-            ? "책 관련 분석"
-            : "AI 진단"}
+            ? "학종 가이드북"
+            : "AI 주제 추천 서비스"}
         </Type>
         <Rating>{"★ ".repeat(review.rating)}</Rating>
         <Content>{review.content}</Content>
