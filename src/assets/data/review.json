@@ -43,5 +43,50 @@
     "author": "이*연",
     "date": "2024-05-01",
     "content": "입시나 생활기록부 관리 같은 것을 잘 몰라 아이에게 도움이 못 되었었는데, 수업이 정말 큰 도움이 되었다고 합니다~ 섬세한 생활기록부란 무엇인지 알 수 있었습니다."
+  },
+  {
+    "id": 6,
+    "rating": 4,
+    "type": "analyze",
+    "image": "src/assets/images/home/example.png",
+    "author": "박*준",
+    "date": "2024-06-12",
+    "content": "생기부에 대한 자세한 분석을 받을 수 있었습니다. 어느 부분이 부족한지 명확히 알 수 있었고, 향후 계획을 세우는 데 도움이 많이 되었습니다."
+  },
+  {
+    "id": 7,
+    "rating": 4,
+    "type": "ai",
+    "image": "src/assets/images/home/example.png",
+    "author": "오*윤",
+    "date": "2024-07-15",
+    "content": "AI 진단 서비스는 새로운 경험이었습니다. 제 생기부에서 부족한 부분을 쉽게 파악할 수 있었고, 구체적인 수정 방안도 제시받았습니다."
+  },
+  {
+    "id": 8,
+    "rating": 5,
+    "type": "book",
+    "image": "src/assets/images/home/example.png",
+    "author": "이*희",
+    "date": "2024-08-05",
+    "content": "책과 관련된 분석도 꼼꼼히 해주셔서 좋은 방향으로 개선할 수 있었습니다. 여러 가지 세부 사항을 확인하는 데 많은 도움이 되었습니다."
+  },
+  {
+    "id": 9,
+    "rating": 5,
+    "type": "analyze",
+    "image": "src/assets/images/home/example.png",
+    "author": "정*서",
+    "date": "2024-09-02",
+    "content": "상세한 분석 덕분에 제 생기부를 다시 점검하게 되었습니다. 부족한 부분을 보완할 수 있었고, 목표 설정이 더 명확해졌습니다."
+  },
+  {
+    "id": 10,
+    "rating": 5,
+    "type": "ai",
+    "image": "src/assets/images/home/example.png",
+    "author": "이*훈",
+    "date": "2024-09-30",
+    "content": "AI를 통한 생기부 진단이 매우 흥미로웠습니다. 이전에는 몰랐던 여러 가지 부족한 부분을 깨달을 수 있었고, 이를 보완할 구체적인 방법도 제시되었습니다."
   }
 ]
