@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import ServiceIntroSection from "../components/services/ServiceIntroSection";
 import ServiceItemCard from "../components/services/ServiceItemCard";
+import BookImage from "../assets/images/book-main.webp";
 
 const PageWrapper = styled.div`
   background-color: #fff;
@@ -42,7 +43,7 @@ const CardsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  height: 50vh;
+  height: 90vh;
 `;
 
 function ServiceBookPage() {
@@ -54,7 +55,12 @@ function ServiceBookPage() {
         <SubTitle>한 권에 학생부 종합 전형의 본질을 전부 담았습니다.</SubTitle>
         <Underline />
         <CardsContainer>
-          <ServiceItemCard />
+          <ServiceItemCard
+            imageSrc={BookImage}
+            title="한 권으로 끝내는 학종 가이드북"
+            subtitle={"스스로 준비하고 만든 생활기록부로 \n 대학이 원하는 우수한 학생이 되도록 합니다."}
+            link="/service/book"
+          />
         </CardsContainer>
       </TitleContainer>
     </PageWrapper>
