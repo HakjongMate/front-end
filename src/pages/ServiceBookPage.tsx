@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import ServiceIntroSection from "../components/services/ServiceIntroSection";
-import ServiceCard from "../components/services/ServiceCard";
+import ServiceItemCard from "../components/services/ServiceItemCard";
 
 const PageWrapper = styled.div`
   background-color: #fff;
@@ -53,7 +53,7 @@ function ServiceBookPage() {
         <SubTitle>한 권에 학생부 종합 전형의 본질을 전부 담았습니다.</SubTitle>
         <Underline />
         <CardsContainer>
-          <ServiceCard />
+          <ServiceItemCard />
         </CardsContainer>
       </TitleContainer>
     </PageWrapper>
