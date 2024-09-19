@@ -46,14 +46,14 @@ function ServiceIntroSection() {
           />
           <ServiceIntroCard
             imageSrc={AnalyzeImage}
-            description={"컨설턴트 출신 SKY 멘토의\n밀착 1:1 생활기록부 분석"}
+            description={"컨설턴트 출신 SKY 멘토의\n밀착 1:1 생활기록부 분석합니다."}
             title="학종메이트 생활기록부 분석 서비스"
             link="/service/analyze"
           />
           <ServiceIntroCard
             imageSrc={AIImage}
-            description={"탐구주제, 이제는 고민하지 마세요.\nAI가 주제를 추천합니다."}
-            title="학종메이트 AI 생기부 주제 추천 서비스"
+            description={"탐구주제, 이제는 고민하지 마세요.\n 학종메이트 자체 개발 AI가 추천합니다."}
+            title="생기부 AI 주제 추천 서비스"
             link="/service/ai"
           />
         </CardsContainer>
