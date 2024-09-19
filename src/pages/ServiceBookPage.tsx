@@ -43,7 +43,7 @@ const CardsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  height: 90vh;
+  min-height: 70vh;
 `;
 
 function ServiceBookPage() {
@@ -59,7 +59,7 @@ function ServiceBookPage() {
             imageSrc={BookImage}
             title="한 권으로 끝내는 학종 가이드북"
             subtitle={"스스로 준비하고 만든 생활기록부로 \n 대학이 원하는 우수한 학생이 되도록 합니다."}
-            link="/service/book"
+            link="/service/book/detail"
           />
         </CardsContainer>
       </TitleContainer>
