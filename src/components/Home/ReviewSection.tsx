@@ -11,7 +11,7 @@ const SectionWrapper = styled.div`
 `;
 
 const SectionContainer = styled.div`
-  max-width: 1440px;
+  max-width: 1080px;
   width: 100%;
   padding: 0 20px;
   text-align: center;
