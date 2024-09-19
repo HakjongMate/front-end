@@ -3,45 +3,43 @@
     "id": 1,
     "title": "한 권으로 끝내는 학종 가이드북",
     "subtitle": "한 권에 학생부 종합전형의 본질을 모두 담았습니다.",
-    "image": "src/assets/images/book-main.webp",
+    "image": "/images/book-main.webp",
     "price": "80,000",
     "discout": 0.3,
     "rating": 5,
     "detailImage": [
-      "src/assets/images/service/book/detail01.webp",
-      "src/assets/images/service/book/detail02.webp",
-      "src/assets/images/service/book/detail03.webp",
-      "src/assets/images/service/book/detail04.webp",
-      "src/assets/images/service/book/detail05.webp",
-      "src/assets/images/service/book/detail06.webp",
-      "src/assets/images/service/book/detail07.webp"
+      "/images/book/detail01.webp",
+      "/images/book/detail02.webp",
+      "/images/book/detail03.webp",
+      "/images/book/detail04.webp",
+      "/images/book/detail05.webp",
+      "/images/book/detail06.webp"
     ]
   },
   {
     "id": 2,
     "title": "학종메이트 생활기록부 분석 서비스",
     "subtitle": "컨설턴트 출신 SKY 멘토의 밀착 1:1 생활기록부 분석",
-    "image": "src/assets/images/analyze-main.webp",
+    "image": "/images/analyze-main.webp",
     "price": "60,000",
     "discout": 0.2,
     "rating": 5,
     "detailImage": [
-      "src/assets/images/service/analyze/detail01.webp",
-      "src/assets/images/service/analyze/detail02.webp",
-      "src/assets/images/service/analyze/detail03.webp",
-      "src/assets/images/service/analyze/detail04.webp",
-      "src/assets/images/service/analyze/detail05.webp"
+      "/images/analyze/detail01.webp",
+      "/images/analyze/detail02.webp",
+      "/images/analyze/detail03.webp",
+      "/images/analyze/detail04.webp",
+      "/images/analyze/detail05.webp"
     ]
   },
   {
     "id": 3,
     "title": "생기부 AI 주제 추천 서비스",
     "subtitle": "학종메이트 자체 개발 AI 세특 주제 추천",
-    "image": "src/assets/images/ai-main.webp",
+    "image": "/images/ai-main.webp",
     "price": "80,000",
     "discout": 0.2,
     "rating": 5,
-    "detailImage": [
-    ]
+    "detailImage": []
   }
 ]
