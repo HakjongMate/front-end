@@ -26,21 +26,21 @@ const ItemImage = styled.img`
   width: 100%;
   height: auto;
   max-width: 300px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   border-radius: 10px;
 `;
 
 const ItemTitle = styled.h3`
   font-size: 18px;
   font-weight: 600;
-  margin-bottom: 10px;
+  margin-bottom: 0px;
   color: #000;
 `;
 
 const ItemSubtitle = styled.p`
   font-size: 16px;
   font-weight: 400;
-  line-height: 1.5;
+  line-height: 1.6;
   margin-bottom: 20px;
   color: #000;
   text-align: center;
