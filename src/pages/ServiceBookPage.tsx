@@ -14,7 +14,7 @@ const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%; 
-  max-width: 1200px;
+  max-width: 1080px;
   margin: 0 auto;
   padding: 0 20px;
 `;
@@ -42,6 +42,7 @@ const CardsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+  height: 50vh;
 `;
 
 function ServiceBookPage() {
