@@ -4,21 +4,25 @@ import ServiceIntroSection from "../components/services/ServiceIntroSection";
 import ServiceCard from "../components/services/ServiceCard";
 
 const PageWrapper = styled.div`
-  padding: 40px;
   background-color: #fff;
   display: flex;
+  flex-direction: column;
   justify-content: center;
 `;
 
 const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 1080px;
+  width: 100%; 
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 `;
 
 const Title = styled.h1`
   font-size: 26px;
   font-weight: 600;
+  margin-top: 40px;
   margin-bottom: 0px;
 `;
 
