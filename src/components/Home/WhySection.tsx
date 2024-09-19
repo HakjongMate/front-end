@@ -12,7 +12,7 @@ const SectionWrapper = styled.div`
 `;
 
 const SectionContainer = styled.div`
-  max-width: 1440px;
+  max-width: 1080px;
   width: 100%;
   padding: 0 20px;
   text-align: center;
@@ -80,7 +80,7 @@ function WhySection() {
     {
       Icon: EmojiEvents,
       title: "찍어내는 생활기록부는 잊으세요",
-      description: `학생마다 고유의 개성과 목표를 담은 \n 생활기록부를 만들 수 있도록 돕습니다. \n 당신만의 이야기를 담아내는 생활기록부를 만듭니다.`,
+      description: `학생마다 고유의 개성과 목표를 담은 \n 생활기록부를 만들 수 있도록 돕습니다. \n 당신만의 이야기를 담아내는\n 생활기록부를 만듭니다.`,
     },
   ];
 
