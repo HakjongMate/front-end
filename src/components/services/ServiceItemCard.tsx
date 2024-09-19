@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 
-const CardWrapper = styled(Link)`
+const CardWrapper = styled.div`
   width: 330px;
   height: 450px;
   padding: 20px;
@@ -15,6 +14,7 @@ const CardWrapper = styled(Link)`
   align-items: center;
   text-decoration: none;
   transition: transform 0.2s ease-in-out;
+  cursor: pointer;
 
   &:hover {
     transform: translateY(-5px);
@@ -51,7 +51,8 @@ interface ServiceItemCardProps {
   imageSrc: string;
   title: string;
   subtitle: string;
-  link: string;
+  link?: string;
+  showAlert?: boolean;
 }
 
 const ServiceItemCard: React.FC<ServiceItemCardProps> = ({
@@ -59,9 +60,18 @@ const ServiceItemCard: React.FC<ServiceItemCardProps> = ({
   title,
   subtitle,
   link,
+  showAlert = false,
 }) => {
+  const handleClick = () => {
+    if (showAlert) {
+      alert("해당 서비스는 아직 준비 중입니다.");
+    } else if (link) {
+      window.location.href = link;
+    }
+  };
+
   return (
-    <CardWrapper to={link}>
+    <CardWrapper onClick={handleClick}>
       <ItemImage src={imageSrc} alt={title} />
       <ItemTitle>{title}</ItemTitle>
       <ItemSubtitle>{subtitle}</ItemSubtitle>
