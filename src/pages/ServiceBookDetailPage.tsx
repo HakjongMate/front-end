@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ProductInfo from "../components/services/ProductInfo";
-import TabsComponent from "../components/services/Tabs";
+import TabsComponent from "../components/services/TabsComponent";
 import serviceData from "../assets/data/service.json";
 import styled from "styled-components";
 
@@ -29,7 +29,12 @@ const ServiceBookDetailPage: React.FC = () => {
   return (
     <PageWrapper>
       <ProductInfo product={productInfo} />
-      <TabsComponent activeTab={activeTab} setActiveTab={setActiveTab} product={product} />
+      <TabsComponent
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        product={product}
+        type="book"
+      />
     </PageWrapper>
   );
 };
