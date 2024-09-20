@@ -36,7 +36,7 @@ const ServiceLinks = styled.ul`
   list-style: none;
   gap: 40px;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   border-top: 1px solid #e9eaff;
   margin: 0;
   padding: 20px 0; 
