@@ -328,7 +328,7 @@ function Navbar() {
           </NavLinks>
         </NavLinksContainer>
 
-        <AuthContainer>
+        {/* <AuthContainer>
           <AuthLinks>
             {loggedIn ? (
               <>
@@ -345,7 +345,7 @@ function Navbar() {
               </AuthLink>
             )}
           </AuthLinks>
-        </AuthContainer>
+        </AuthContainer> */}
       </MainNavbar>
 
       {showServiceLinks && (
@@ -388,7 +388,7 @@ function Navbar() {
         <SideMenuLink isActive={isActive("/contact")}>
           <Link to="/contact" onClick={toggleMenu}>문의하기</Link>
         </SideMenuLink>
-        {loggedIn ? (
+        {/* {loggedIn ? (
           <>
             <SideMenuLink isActive={false}>
               <a onClick={() => { handleLoginLogout(); toggleMenu(); }}>로그아웃</a>
@@ -401,7 +401,7 @@ function Navbar() {
           <SideMenuLink isActive={false}>
             <a onClick={() => { handleLoginLogout(); toggleMenu(); }}>로그인</a>
           </SideMenuLink>
-        )}
+        )} */}
       </SideMenu>
     </NavbarContainer>
   );
