@@ -138,34 +138,44 @@ interface ProductInfoProps {
   };
 }
 
-const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => (
-  <ProductInfoWrapper>
-    <ProductImageWrapper>
-      <ProductImage src={product.image} alt={product.title} />
-    </ProductImageWrapper>
-    <ProductRight>
-      <ProductHeader>
-        <TitleWrapper>
-          <ProductTitle>{product.title}</ProductTitle>
-          <ProductSubtitle>{product.subtitle}</ProductSubtitle>
-        </TitleWrapper>
-        <ShareButton>
-          <Share />
-        </ShareButton>
-      </ProductHeader>
-      <Divider />
-      <PriceWrapper>
-        <ProductPrice>{product.discountedPrice}원</ProductPrice>
-        <OriginalPrice>{product.price}원</OriginalPrice>
-      </PriceWrapper>
-      <Rating>★★★★★ {product.rating}점</Rating>
-      <Divider />
-      <ButtonGroup>
-        <BuyButton>구매하기</BuyButton>
-        <CartButton>장바구니</CartButton>
-      </ButtonGroup>
-    </ProductRight>
-  </ProductInfoWrapper>
-);
+const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
+  const handleBuyClick = () => {
+    alert("010-0000-0000으로 연락 부탁드립니다.");
+  };
+
+  const handleCartClick = () => {
+    alert("서비스 준비중입니다.");
+  };
+
+  return (
+    <ProductInfoWrapper>
+      <ProductImageWrapper>
+        <ProductImage src={product.image} alt={product.title} />
+      </ProductImageWrapper>
+      <ProductRight>
+        <ProductHeader>
+          <TitleWrapper>
+            <ProductTitle>{product.title}</ProductTitle>
+            <ProductSubtitle>{product.subtitle}</ProductSubtitle>
+          </TitleWrapper>
+          <ShareButton>
+            <Share />
+          </ShareButton>
+        </ProductHeader>
+        <Divider />
+        <PriceWrapper>
+          <ProductPrice>{product.discountedPrice}원</ProductPrice>
+          <OriginalPrice>{product.price}원</OriginalPrice>
+        </PriceWrapper>
+        <Rating>★★★★★ {product.rating}점</Rating>
+        <Divider />
+        <ButtonGroup>
+          <BuyButton onClick={handleBuyClick}>구매하기</BuyButton>
+          <CartButton onClick={handleCartClick}>장바구니</CartButton>
+        </ButtonGroup>
+      </ProductRight>
+    </ProductInfoWrapper>
+  );
+};
 
 export default ProductInfo;
