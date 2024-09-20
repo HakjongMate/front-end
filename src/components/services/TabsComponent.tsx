@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import reviews from "../../assets/data/review.json";
 import SingleReview from "./SingleReview";
+import QnAComponent from "./QnAComponent";
 
 const TabsContainer = styled.div`
   width: 1000px;
@@ -52,14 +53,16 @@ interface TabsProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
   product: any;
-  type: string
+  type: string;
+  qnaData: { question: string; answer: string }[];
 }
 
 const TabsComponent: React.FC<TabsProps> = ({
   activeTab,
   setActiveTab,
   product,
-  type
+  type,
+  qnaData,
 }) => {
   const filteredReviews = reviews.filter((review) => review.type === type);
 
@@ -102,12 +105,14 @@ const TabsComponent: React.FC<TabsProps> = ({
           <ReviewList>
             {filteredReviews.length > 0 ? (
               filteredReviews.map((review) => (
-                <SingleReview key={review.id} review={review} />        
+                <SingleReview key={review.id} review={review} />
               ))
             ) : (
               <p>리뷰가 없습니다.</p>
             )}
           </ReviewList>
+        ) : activeTab === "qa" ? (
+          <QnAComponent qnaData={qnaData} />
         ) : (
           <p>Q&A가 없습니다.</p>
         )}

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ProductInfo from "../components/services/ProductInfo";
 import TabsComponent from "../components/services/TabsComponent";
 import serviceData from "../assets/data/service.json";
+import bookQnA from "../assets/data/bookqna.json";
 import styled from "styled-components";
 
 const PageWrapper = styled.div`
@@ -26,6 +27,9 @@ const ServiceBookDetailPage: React.FC = () => {
     discountedPrice: `${discountedPrice}`,
   };
 
+  // QnA 데이터를 TabsComponent에 전달
+  const qnaData = bookQnA;
+
   return (
     <PageWrapper>
       <ProductInfo product={productInfo} />
@@ -34,6 +38,7 @@ const ServiceBookDetailPage: React.FC = () => {
         setActiveTab={setActiveTab}
         product={product}
         type="book"
+        qnaData={qnaData}
       />
     </PageWrapper>
   );
