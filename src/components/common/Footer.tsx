@@ -5,6 +5,10 @@ import IconBlue from "../../assets/icons/HakjongMate_Blue.png";
 import Instagram from "../../assets/icons/instagram.webp";
 import NaverBlog from "../../assets/icons/naverblog.png";
 
+const BackgroundContainer = styled.div`
+  background-color: #f5f6fb;
+`;
+
 const FooterContainer = styled.div`
   display: flex;
   max-width: 1080px;
@@ -62,30 +66,41 @@ const StyledLink = styled.a`
 
 function Footer() {
   return (
-    <FooterContainer>
-      <IconContainer>
-        <IconImage src={IconBlue} alt="HakjongMate" />
-        <LogoName>HakjongMate</LogoName>
-      </IconContainer>
-      <InformationContainer>
-        <Information>
-          러닝메이트 | 대표: 이건우 | 사업등록자 번호: 817-45-01107
-        </Information>
-        <Information>hakjongmate@gmail.com | 번호: 010-2827-8618</Information>
-        <Information>
-          주소: 서울특별시 성북구 개운사길 75-6, 3층 306호(안암동5가, 백산빌딩)
-        </Information>
-      </InformationContainer>
+    <BackgroundContainer>
+      <FooterContainer>
+        <IconContainer>
+          <IconImage src={IconBlue} alt="HakjongMate" />
+          <LogoName>HakjongMate</LogoName>
+        </IconContainer>
+        <InformationContainer>
+          <Information>
+            러닝메이트 | 대표: 이건우 | 사업등록자 번호: 817-45-01107
+          </Information>
+          <Information>hakjongmate@gmail.com | 번호: 010-2827-8618</Information>
+          <Information>
+            주소: 서울특별시 성북구 개운사길 75-6, 3층 306호(안암동5가,
+            백산빌딩)
+          </Information>
+        </InformationContainer>
 
-      <LinkContainer>
-        <StyledLink href="https://blog.naver.com/hakjongmate" target="_blank" rel="noopener noreferrer">
-          <LinkImage src={NaverBlog} alt="NaverBlog" />
-        </StyledLink>
-        <StyledLink href="https://www.instagram.com/hakjongmate/" target="_blank" rel="noopener noreferrer">
-          <LinkImage src={Instagram} alt="Instagram" />
-        </StyledLink>
-      </LinkContainer>
-    </FooterContainer>
+        <LinkContainer>
+          <StyledLink
+            href="https://blog.naver.com/hakjongmate"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <LinkImage src={NaverBlog} alt="NaverBlog" />
+          </StyledLink>
+          <StyledLink
+            href="https://www.instagram.com/hakjongmate/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <LinkImage src={Instagram} alt="Instagram" />
+          </StyledLink>
+        </LinkContainer>
+      </FooterContainer>
+    </BackgroundContainer>
   );
 }
 

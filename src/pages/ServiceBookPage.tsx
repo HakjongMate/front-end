@@ -1,9 +1,80 @@
-import React from 'react'
+import React, { useRef, useEffect } from "react";
+import { useLocation } from 'react-router-dom';
+import styled from "styled-components";
+import ServiceIntroSection from "../components/services/ServiceIntroSection";
+import ServiceItemCard from "../components/services/ServiceItemCard";
+import BookImage from "../assets/images/book-main.webp";
+
+const PageWrapper = styled.div`
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 20px;
+`;
+
+const Title = styled.h1`
+  font-size: 26px;
+  font-weight: 600;
+  margin-top: 40px;
+  margin-bottom: 0px;
+`;
+
+const SubTitle = styled.h2`
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 15px;
+`;
+
+const Underline = styled.hr`
+  width: 350px;
+  border: 1px solid #000;
+  margin: 0 0 40px 0;
+`;
+
+const CardsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  min-height: 70vh;
+`;
 
 function ServiceBookPage() {
+  const location = useLocation();
+  const titleContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (location.hash === '#details' && titleContainerRef.current) {
+      titleContainerRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [location]);
+
   return (
-    <div>ServiceBookPage</div>
-  )
+    <PageWrapper>
+      <ServiceIntroSection />
+      <TitleContainer ref={titleContainerRef} id="details">
+        <Title>한 권으로 끝내는 학종 가이드북</Title>
+        <SubTitle>한 권에 학생부 종합 전형의 본질을 전부 담았습니다.</SubTitle>
+        <Underline />
+        <CardsContainer>
+          <ServiceItemCard
+            imageSrc={BookImage}
+            title="한 권으로 끝내는 학종 가이드북"
+            subtitle={"스스로 준비하고 만든 생활기록부로 \n 대학이 원하는 우수한 학생이 되도록 합니다."}
+            link="/service/book/detail"
+          />
+        </CardsContainer>
+      </TitleContainer>
+    </PageWrapper>
+  );
 }
 
-export default ServiceBookPage
+export default ServiceBookPage;

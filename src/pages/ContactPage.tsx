@@ -8,7 +8,7 @@ const PageContainer = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 30px 20px;
-  background-color: #f6f7fc;
+  background-color: #fff;
   min-height: calc(100vh - 240px);
   box-sizing: border-box;
   overflow-x: hidden; 
