@@ -16,7 +16,7 @@ const Label = styled.label`
 const Input = styled.input`
   width: 100%;
   padding: 10px 15px;
-  background-color: #f6f7fc;
+  background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 5px;
   font-weight: 300;
@@ -31,7 +31,7 @@ const TextArea = styled.textarea`
   width: 100%;
   padding: 10px 15px;
   border: 1px solid #ddd;
-  background-color: #f6f7fc;
+  background-color: #fff;
   border-radius: 5px;
   font-weight: 300;
   font-size: 14px;
