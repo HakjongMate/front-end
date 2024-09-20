@@ -78,7 +78,7 @@ const TabsComponent: React.FC<TabsProps> = ({
             key={index}
             src={image}
             alt={`Detail ${index}`}
-            style={{ width: "100%", marginBottom: "20px" }}
+            style={{ width: "75%", marginBottom: "10px" }}
           />
         ))
       ) : activeTab === "detail" ? (
