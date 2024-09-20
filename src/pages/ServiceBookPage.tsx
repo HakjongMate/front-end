@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
+import { useLocation } from 'react-router-dom';
 import styled from "styled-components";
 import ServiceIntroSection from "../components/services/ServiceIntroSection";
 import ServiceItemCard from "../components/services/ServiceItemCard";
@@ -14,7 +15,7 @@ const PageWrapper = styled.div`
 const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%; 
+  width: 100%;
   max-width: 1080px;
   margin: 0 auto;
   padding: 0 20px;
@@ -47,10 +48,19 @@ const CardsContainer = styled.div`
 `;
 
 function ServiceBookPage() {
+  const location = useLocation();
+  const titleContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (location.hash === '#details' && titleContainerRef.current) {
+      titleContainerRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [location]);
+
   return (
     <PageWrapper>
       <ServiceIntroSection />
-      <TitleContainer>
+      <TitleContainer ref={titleContainerRef} id="details">
         <Title>한 권으로 끝내는 학종 가이드북</Title>
         <SubTitle>한 권에 학생부 종합 전형의 본질을 전부 담았습니다.</SubTitle>
         <Underline />

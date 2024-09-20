@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const ServiceCard = styled.div`
   background-color: #fff;
@@ -14,7 +14,6 @@ const ServiceCard = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
   &:hover {
     transform: translateY(-5px);
   }
@@ -50,7 +49,6 @@ const MoreLink = styled(Link)`
   display: inline-block;
   margin-top: auto;
   align-self: flex-end;
-
   &:hover {
     color: #0d3a8f;
   }
@@ -69,12 +67,25 @@ const ServiceIntroCard: React.FC<ServiceIntroCardProps> = ({
   title,
   link,
 }) => {
+  const location = useLocation();
+  const isCurrentPage = location.pathname === link;
+
   return (
     <ServiceCard>
       <CardImage src={imageSrc} alt={title} />
       <CardDescription>{description}</CardDescription>
       <CardTitle>{title}</CardTitle>
-      <MoreLink to={link}>더 알아보기 &gt;</MoreLink>
+      <MoreLink
+        to={isCurrentPage ? `${link}#details` : link}
+        onClick={(e) => {
+          if (isCurrentPage) {
+            e.preventDefault();
+            document.querySelector('#details')?.scrollIntoView({ behavior: 'smooth' });
+          }
+        }}
+      >
+        더 알아보기 &gt;
+      </MoreLink>
     </ServiceCard>
   );
 };

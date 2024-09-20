@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
+import { useLocation } from 'react-router-dom';
 import styled from "styled-components";
 import ServiceIntroSection from "../components/services/ServiceIntroSection";
 import ServiceItemCard from "../components/services/ServiceItemCard";
@@ -47,10 +48,19 @@ const CardsContainer = styled.div`
 `;
 
 function ServiceAIPage() {
+  const location = useLocation();
+  const titleContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (location.hash === '#details' && titleContainerRef.current) {
+      titleContainerRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [location]);
+
   return (
     <PageWrapper>
       <ServiceIntroSection />
-      <TitleContainer>
+      <TitleContainer ref={titleContainerRef} id="details">
         <Title>AI 생기부 주제 추천 서비스</Title>
         <SubTitle>AI가 당신에게 딱 맞는 생기부 주제를 추천해 드립니다.</SubTitle>
         <Underline />

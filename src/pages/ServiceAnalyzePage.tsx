@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
+import { useLocation } from 'react-router-dom';
 import styled from "styled-components";
 import ServiceIntroSection from "../components/services/ServiceIntroSection";
 import ServiceItemCard from "../components/services/ServiceItemCard";
@@ -47,10 +48,19 @@ const CardsContainer = styled.div`
 `;
 
 function ServiceAnalyzePage() {
+  const location = useLocation();
+  const titleContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (location.hash === '#details' && titleContainerRef.current) {
+      titleContainerRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [location]);
+
   return (
     <PageWrapper>
       <ServiceIntroSection />
-      <TitleContainer>
+      <TitleContainer ref={titleContainerRef} id="details">
         <Title>학종메이트 생활기록부 분석 서비스</Title>
         <SubTitle>컨설턴트 출신 SKY 멘토의 밀착 1:1 생활기록부 분석을 제공합니다.</SubTitle>
         <Underline />
