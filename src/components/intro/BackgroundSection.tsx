@@ -101,7 +101,7 @@ function BackgroundSection() {
           </Description>
         </TextWrapper>
         <ImageWrapper>
-          <BackgroundPhoto src={BackgroundImage} alt="Notebook and glasses" />
+          <BackgroundPhoto src={BackgroundImage} alt="Notebook and glasses" loading="lazy" />
         </ImageWrapper>
       </ContentContainer>
     </SectionContainer>
