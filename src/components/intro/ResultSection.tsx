@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import backgroundImage from "../../assets/images/intro/result-bg.jpeg";
+import backgroundImage from "../../assets/images/intro/result-bg.webp";
 
 const ResultSectionContainer = styled.div`
   position: relative;

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import CeoImage from "../../assets/images/intro/first-image.jpg";
+import CeoImage from "../../assets/images/intro/first-image.webp";
 
 const SectionContainer = styled.div`
   background-color: #fff;
