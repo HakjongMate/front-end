@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import ServiceIntroCard from "./ServiceIntroCard";
-import BookImage from "../../assets/images/service/book.png";
-import AnalyzeImage from "../../assets/images/service/analyze.png";
-import AIImage from "../../assets/images/service/ai.png";
+import BookImage from "../../assets/images/service/book.webp";
+import AnalyzeImage from "../../assets/images/service/analyze.webp";
+import AIImage from "../../assets/images/service/ai.webp";
 
 const SectionWrapper = styled.div`
   background-color: #f5f6fb;
