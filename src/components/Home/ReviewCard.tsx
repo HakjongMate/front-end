@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import SampleImage from "../../assets/images/home/example.png";
 
 const ReviewCardContainer = styled.div`
   background-color: #fff;
@@ -52,6 +51,7 @@ const ReviewContent = styled.p`
 interface Review {
   id: number;
   type: string;
+  image: string;
   author: string;
   date: string;
   content: string;
@@ -65,7 +65,7 @@ interface ReviewCardProps {
 const ReviewCard: React.FC<ReviewCardProps> = ({ review, getTypeText }) => {
   return (
     <ReviewCardContainer>
-      <ReviewImage src={SampleImage} alt="review" />
+      <ReviewImage src={review.image} alt="review" />
       <ReviewType>{getTypeText(review.type)}</ReviewType>
       <ReviewMeta>
         <ReviewAuthor>{review.author}</ReviewAuthor>
