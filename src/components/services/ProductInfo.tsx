@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Share } from "@mui/icons-material";
+import toast, { Toaster } from 'react-hot-toast';
 
 const ProductInfoWrapper = styled.div`
   display: flex;
@@ -147,6 +148,17 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
     alert("서비스 준비중입니다.");
   };
 
+  const handleShareClick = () => {
+    navigator.clipboard.writeText(window.location.href);
+    toast.success("링크가 복사되었습니다!", {
+      style: {
+        maxWidth: "1000px",
+        width: "300px",
+        fontSize: "20px",
+      },
+    });
+  };
+
   return (
     <ProductInfoWrapper>
       <ProductImageWrapper>
@@ -158,7 +170,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
             <ProductTitle>{product.title}</ProductTitle>
             <ProductSubtitle>{product.subtitle}</ProductSubtitle>
           </TitleWrapper>
-          <ShareButton>
+          <ShareButton onClick={handleShareClick}>
             <Share />
           </ShareButton>
         </ProductHeader>
@@ -174,6 +186,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
           <CartButton onClick={handleCartClick}>장바구니</CartButton>
         </ButtonGroup>
       </ProductRight>
+      <Toaster />
     </ProductInfoWrapper>
   );
 };
