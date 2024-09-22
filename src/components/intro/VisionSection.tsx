@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import WhiteHakjongMate from '../../assets/icons/HakjongMate_White.png';
+import VisualContent from './VisualContent';
 
 const FullWidthSection = styled.div`
   background-color: #F5F6FB;
@@ -44,49 +44,7 @@ const Description = styled.p`
   line-height: 1.8;
 `;
 
-const VisualContent = styled.div`
-  position: relative;
-  width: 400px;
-  height: 400px;
-`;
-
-const Circle = styled.div`
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: linear-gradient(to top, #202594 0%, #7C7FC0 40%, #F5F6FB 100%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid black;
-`;
-
-const Logo = styled.img`
-  width: 80px;
-  height: 100px;
-  margin-bottom: 20px;
-`;
-
-const CompanyName = styled.span`
-  color: white;
-  font-size: 24px;
-  font-weight: bold;
-`;
-
-const Badge = styled.div<{ color: string }>`
-  position: absolute;
-  padding: 12px 30px;
-  border-radius: 20px;
-  font-size: 16px;
-  font-weight: 500;
-  white-space: nowrap;
-  min-width: 100px;
-  text-align: center;
-  border: ${({ color }) => (color === '#fff' ? '1px solid #9C9C9C' : 'none')};
-`;
-
-const VisionSection = () => {
+const VisionSection: React.FC = () => {
   const badges = [
     { text: '새로운 기준', color: '#fff', textColor: '#565656', angle: 30 },
     { text: '학생부 종합 전형', color: '#fff', textColor: '#565656', angle: 75.4 },
@@ -112,27 +70,7 @@ const VisionSection = () => {
             더 이상 학생부 종합 전형은 어렵지 않습니다.
           </Description>
         </TextContent>
-        <VisualContent>
-          <Circle>
-            <Logo src={WhiteHakjongMate} alt="HakjongMate Logo" />
-            <CompanyName>HakjongMate</CompanyName>
-          </Circle>
-          {badges.map((badge, index) => (
-            <Badge
-              key={index}
-              color={badge.color}
-              style={{
-                background: badge.color,
-                color: badge.textColor,
-                top: `${200 - 210 * Math.cos(badge.angle * Math.PI / 180)}px`,
-                left: `${200 + 210 * Math.sin(badge.angle * Math.PI / 180)}px`,
-                transform: 'translate(-50%, -50%)'
-              }}
-            >
-              {badge.text}
-            </Badge>
-          ))}
-        </VisualContent>
+        <VisualContent badges={badges} />
       </Container>
     </FullWidthSection>
   );
