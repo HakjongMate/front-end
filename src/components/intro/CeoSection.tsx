@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import CeoImage from "../../assets/images/intro/first-image.jpg";
+import CeoImage from "../../assets/images/intro/first-image.webp";
 
 const SectionContainer = styled.div`
   background-color: #fff;
@@ -54,7 +54,7 @@ function CeoSection() {
     <SectionContainer>
       <ContentContainer>
         <ImageWrapper>
-          <CeoPhoto src={CeoImage} alt="CEO" />
+          <CeoPhoto src={CeoImage} alt="CEO" loading="lazy" />
         </ImageWrapper>
         <TextWrapper>
           <SubTitle>안녕하세요.</SubTitle>

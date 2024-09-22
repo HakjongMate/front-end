@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import backgroundImage from "../../assets/images/home/hooking-bg.jpg";
+import backgroundImage from "../../assets/images/home/hooking-bg.webp";
 
 const HookingSectionContainer = styled.div`
   position: relative;

@@ -72,7 +72,7 @@ const ServiceIntroCard: React.FC<ServiceIntroCardProps> = ({
 
   return (
     <ServiceCard>
-      <CardImage src={imageSrc} alt={title} />
+      <CardImage src={imageSrc} alt={title} loading="lazy" />
       <CardDescription>{description}</CardDescription>
       <CardTitle>{title}</CardTitle>
       <MoreLink

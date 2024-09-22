@@ -3,8 +3,8 @@
     "id": 1,
     "rating": 5,
     "type": "analyze",
-    "image": "src/assets/images/home/example.png",
-    "author": "이*연",
+    "image": "/images/analyze-main.webp",
+    "author": "김*은",
     "date": "2023-12-25",
     "content": "첫 수업에서는 대학 입시 관련 용어나 입시에 대한 설명을 꼼꼼히 해주셨습니다. 객관적인 생기부 컨설팅을 처음 진행해 봤는데 생기부 진단과 학생의 전 교과 부분에 대해 부족한 부분과 방향성을 진단해 리포트로 분석해 주셔서 보기 너무 좋았습니다."
   },
@@ -12,8 +12,8 @@
     "id": 2,
     "rating": 5,
     "type": "analyze",
-    "image": "src/assets/images/home/example.png",
-    "author": "최*아",
+    "image": "/images/analyze-main.webp",
+    "author": "이*우",
     "date": "2024-02-02",
     "content": "학교생활 중 가장 중요한 시기에 정말 좋은 기회였습니다!! ㅎㅎ 일단 전체적으로 수업 진행이 깔끔합니다. 생기부 분석한 자료들을 보며 제 생기부를 같이 보니 어느 부분에서 부족한지, 어떤 걸 더 채워야 하는지 이해가 잘 되었습니다!!"
   },
@@ -21,8 +21,8 @@
     "id": 3,
     "rating": 5,
     "type": "book",
-    "image": "src/assets/images/home/example.png",
-    "author": "김*혁",
+    "image": "/images/book-main.webp",
+    "author": "김*현",
     "date": "2024-03-04",
     "content": "아이가 무척 만족하였습니다~! 아이의 생기부에서 발전시켜야 하는 부분이나 강조해야 하는 부분들을 짚어주시면서 설명해 주셔서 저도 이해하기 쉬웠습니다."
   },
@@ -30,8 +30,8 @@
     "id": 4,
     "rating": 5,
     "type": "ai",
-    "image": "src/assets/images/home/example.png",
-    "author": "김*현",
+    "image": "/images/ai-main.webp",
+    "author": "김*윤",
     "date": "2024-04-16",
     "content": "학생에게 필요한 정보와 공부 방법 및 멘탈 관리까지 성실하게 체크해 주셨고 학교, 학과 정보도 학생과 같이 알아봐 주셨습니다. 고3이라 심적으로 여러 가지 불안한 학생에게 많은 도움이 되고 있습니다."
   },
@@ -39,7 +39,7 @@
     "id": 5,
     "rating": 5,
     "type": "book",
-    "image": "src/assets/images/home/example.png",
+    "image": "/images/book-main.webp",
     "author": "이*연",
     "date": "2024-05-01",
     "content": "입시나 생활기록부 관리 같은 것을 잘 몰라 아이에게 도움이 못 되었었는데, 수업이 정말 큰 도움이 되었다고 합니다~ 섬세한 생활기록부란 무엇인지 알 수 있었습니다."
@@ -48,8 +48,8 @@
     "id": 6,
     "rating": 4,
     "type": "analyze",
-    "image": "src/assets/images/home/example.png",
-    "author": "박*준",
+    "image": "/images/analyze-main.webp",
+    "author": "정*혁",
     "date": "2024-06-12",
     "content": "생기부에 대한 자세한 분석을 받을 수 있었습니다. 어느 부분이 부족한지 명확히 알 수 있었고, 향후 계획을 세우는 데 도움이 많이 되었습니다."
   },
@@ -57,8 +57,8 @@
     "id": 7,
     "rating": 4,
     "type": "ai",
-    "image": "src/assets/images/home/example.png",
-    "author": "오*윤",
+    "image": "/images/ai-main.webp",
+    "author": "김*르",
     "date": "2024-07-15",
     "content": "AI 진단 서비스는 새로운 경험이었습니다. 제 생기부에서 부족한 부분을 쉽게 파악할 수 있었고, 구체적인 수정 방안도 제시받았습니다."
   },
@@ -66,8 +66,8 @@
     "id": 8,
     "rating": 5,
     "type": "book",
-    "image": "src/assets/images/home/example.png",
-    "author": "이*희",
+    "image": "/images/book-main.webp",
+    "author": "이*미",
     "date": "2024-08-05",
     "content": "책과 관련된 분석도 꼼꼼히 해주셔서 좋은 방향으로 개선할 수 있었습니다. 여러 가지 세부 사항을 확인하는 데 많은 도움이 되었습니다."
   },
@@ -75,8 +75,8 @@
     "id": 9,
     "rating": 5,
     "type": "analyze",
-    "image": "src/assets/images/home/example.png",
-    "author": "정*서",
+    "image": "/images/analyze-main.webp",
+    "author": "최*아",
     "date": "2024-09-02",
     "content": "상세한 분석 덕분에 제 생기부를 다시 점검하게 되었습니다. 부족한 부분을 보완할 수 있었고, 목표 설정이 더 명확해졌습니다."
   },
@@ -84,8 +84,8 @@
     "id": 10,
     "rating": 5,
     "type": "ai",
-    "image": "src/assets/images/home/example.png",
-    "author": "이*훈",
+    "image": "/images/ai-main.webp",
+    "author": "김*혁",
     "date": "2024-09-30",
     "content": "AI를 통한 생기부 진단이 매우 흥미로웠습니다. 이전에는 몰랐던 여러 가지 부족한 부분을 깨달을 수 있었고, 이를 보완할 구체적인 방법도 제시되었습니다."
   }

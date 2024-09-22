@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import BackgroundImage from "../../assets/images/intro/second-image.jpg";
+import BackgroundImage from "../../assets/images/intro/second-image.webp";
 
 const SectionContainer = styled.div`
   background-color: #fff;
@@ -101,7 +101,7 @@ function BackgroundSection() {
           </Description>
         </TextWrapper>
         <ImageWrapper>
-          <BackgroundPhoto src={BackgroundImage} alt="Notebook and glasses" />
+          <BackgroundPhoto src={BackgroundImage} alt="Notebook and glasses" loading="lazy" />
         </ImageWrapper>
       </ContentContainer>
     </SectionContainer>
