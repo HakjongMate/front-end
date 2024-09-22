@@ -6,6 +6,15 @@ const FullWidthSection = styled.div`
   background-color: #F5F6FB;
   display: flex;
   justify-content: center;
+  padding: 20px 0;
+
+  @media (max-width: 768px) {
+    padding: 15px 0;
+  }
+
+  @media (max-width: 480px) {
+    padding: 10px 0;
+  }
 `;
 
 const Container = styled.div`
@@ -15,11 +24,30 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: 1024px) {
+    width: 90%;
+    padding: 50px 20px;
+    flex-direction: column;
+  }
+
+  @media (max-width: 768px) {
+    padding: 40px 15px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 30px 10px;
+  }
 `;
 
 const TextContent = styled.div`
   margin-bottom: 32px;
   width: 650px;
+
+  @media (max-width: 1024px) {
+    width: 100%;
+    text-align: center;
+  }
 `;
 
 const Title = styled.h2`
@@ -28,6 +56,20 @@ const Title = styled.h2`
   font-weight: bold;
   margin-bottom: 16px;
   line-height: 1.8;
+
+  @media (max-width: 1024px) {
+    font-size: 28px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 24px;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 22px;
+    line-height: 1.4;
+  }
 `;
 
 const Subtitle = styled.h3`
@@ -35,6 +77,20 @@ const Subtitle = styled.h3`
   font-size: 24px;
   font-weight: 300;
   margin-bottom: 16px;
+
+  @media (max-width: 1024px) {
+    font-size: 22px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
 `;
 
 const Description = styled.p`
@@ -42,6 +98,20 @@ const Description = styled.p`
   font-size: 18px;
   font-weight: 500;
   line-height: 1.8;
+
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    line-height: 1.4;
+  }
 `;
 
 const VisionSection: React.FC = () => {
