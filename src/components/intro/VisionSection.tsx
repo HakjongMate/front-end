@@ -69,6 +69,7 @@ const Title = styled.h2`
   @media (max-width: 480px) {
     font-size: 22px;
     line-height: 1.4;
+    white-space: pre-line;
   }
 `;
 
@@ -133,7 +134,7 @@ const VisionSection: React.FC = () => {
           <Title>
             학종메이트는<br />
             세상에 단 하나뿐인<br />
-            차별화된 생활기록부를 위한 길잡이입니다.
+            차별화된 생활기록부를 위한 {"\n"} 길잡이입니다.
           </Title>
           <Description>
             학종메이트와 함께라면,<br />
