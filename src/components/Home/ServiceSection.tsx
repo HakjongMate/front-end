@@ -19,10 +19,17 @@ const SectionTitle = styled.h2`
   font-size: 28px;
   font-weight: 700;
   margin-bottom: 30px;
+  text-align: center; 
 
   @media (max-width: 768px) {
-    font-size: 24px;
+    font-size: 22px;  
     margin-bottom: 20px;
+    white-space: pre-wrap;  
+  }
+
+  @media (max-width: 480px) {
+    font-size: 20px; 
+    margin-bottom: 15px;
   }
 `;
 
@@ -32,10 +39,18 @@ const SectionDescription = styled.p`
   line-height: 1.7;
   color: #000;
   margin-bottom: 60px;
+  text-align: center;
 
   @media (max-width: 768px) {
     font-size: 16px;
     margin-bottom: 40px;
+    line-height: 1.6; 
+    white-space: pre-wrap;  
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;  
+    margin-bottom: 30px;
   }
 `;
 
@@ -204,10 +219,10 @@ function ServiceSection() {
 
   return (
     <SectionContainer id="service-section">
-      <SectionTitle>스스로 준비하는 생활기록부의 시작, 학종메이트</SectionTitle>
+      <SectionTitle>스스로 준비하는 생활기록부의 시작, {"\n"}학종메이트</SectionTitle>
       <SectionDescription>
         전국 대학에 가려면 "우수한 학생"이 되어야 합니다. <br />
-        학종메이트는 우수한 학생이 되기 위한 올바른 방향을 제시합니다.
+        학종메이트는 우수한 학생이 되기 위한 {"\n"} 올바른 방향을 제시합니다.
       </SectionDescription>
 
       {/* 데스크탑 및 태블릿용 그리드 */}
