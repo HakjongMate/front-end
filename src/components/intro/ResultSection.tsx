@@ -12,10 +12,20 @@ const ResultSectionContainer = styled.div`
   background-repeat: no-repeat;
   background-position: center;
   width: 100%;
-  height: 750px;
+  min-height: 500px;
   overflow: hidden;
   text-align: center;
-  padding: 20px;
+  padding: 60px 20px;
+
+  @media (max-width: 768px) {
+    min-height: 600px;
+    padding: 40px 10px;
+  }
+
+  @media (max-width: 480px) {
+    min-height: 700px;
+    padding: 30px 5px;
+  }
 
   &::before {
     content: "";
@@ -30,6 +40,10 @@ const ResultSectionContainer = styled.div`
       rgba(0, 0, 0, 0.8) 100%
     );
     z-index: 1;
+
+    @media (max-width: 768px) {
+      background: rgba(0, 0, 0, 0.6);
+    }
   }
 `;
 
@@ -47,8 +61,17 @@ const ResultTextContainer = styled.div`
   position: relative;
   z-index: 3;
   max-width: 1080px;
+  width: 100%;
   margin: 0 auto;
   color: white;
+
+  @media (max-width: 768px) {
+    padding: 0 20px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0 10px;
+  }
 `;
 
 const ResultText = styled.h1`
@@ -56,6 +79,16 @@ const ResultText = styled.h1`
   font-weight: 300;
   line-height: 1.8;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
 `;
 
 const ListText = styled.p`
@@ -63,6 +96,16 @@ const ListText = styled.p`
   font-weight: 600;
   line-height: 1.8;
   margin: 25px 0;
+
+  @media (max-width: 768px) {
+    font-size: 22px;
+    margin: 20px 0;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 18px;
+    margin: 15px 0;
+  }
 `;
 
 function ResultSection() {

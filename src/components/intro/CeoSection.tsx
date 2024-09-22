@@ -7,6 +7,10 @@ const SectionContainer = styled.div`
   padding: 60px 20px 20px;
   display: flex;
   justify-content: center;
+
+  @media (max-width: 768px) {
+    padding: 40px 10px 10px;
+  }
 `;
 
 const ContentContainer = styled.div`
@@ -15,6 +19,11 @@ const ContentContainer = styled.div`
   display: flex;
   gap: 40px;
   align-items: flex-start;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 20px;
+  }
 `;
 
 const ImageWrapper = styled.div`
@@ -22,6 +31,13 @@ const ImageWrapper = styled.div`
   height: auto;
   flex-shrink: 0;
   margin-right: 5px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    max-width: 250px;
+    margin-right: 0;
+    margin: 0 auto;
+  }
 `;
 
 const CeoPhoto = styled.img`
@@ -39,6 +55,16 @@ const SubTitle = styled.h3`
   font-weight: 600;
   margin-bottom: 20px;
   line-height: 1.8;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
 `;
 
 const Description = styled.p`
@@ -47,6 +73,16 @@ const Description = styled.p`
   line-height: 1.8;
   margin-bottom: 16px;
   color: #000;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
 `;
 
 function CeoSection() {

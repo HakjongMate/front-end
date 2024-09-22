@@ -7,6 +7,14 @@ const SectionContainer = styled.div`
   padding: 30px 20px;
   display: flex;
   justify-content: center;
+
+  @media (max-width: 768px) {
+    padding: 20px 10px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 15px 5px;
+  }
 `;
 
 const ContentContainer = styled.div`
@@ -14,8 +22,12 @@ const ContentContainer = styled.div`
   width: 100%;
   display: flex;
   gap: 40px;
-  align-items: flex-start;
   align-items: center;
+
+  @media (max-width: 768px) {
+    flex-direction: column-reverse;
+    gap: 20px;
+  }
 `;
 
 const TextWrapper = styled.div`
@@ -29,6 +41,16 @@ const Description = styled.p`
   line-height: 1.8;
   margin-bottom: 16px;
   color: #000;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
 `;
 
 const HighlightedText = styled.span`
@@ -36,17 +58,41 @@ const HighlightedText = styled.span`
   font-size: 18px;
   color: #000;
   line-height: 1.8;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+  }
 `;
 
 const ImageWrapper = styled.div`
   width: 340px;
   height: 550px;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+  }
+
+  @media (max-width: 480px) {
+    max-width: 250px;
+  }
 `;
 
 const BackgroundPhoto = styled.img`
+  width: 100%;
   height: 100%;
+  object-fit: cover;
   border-radius: 8px;
+
+  @media (max-width: 768px) {
+    height: auto;
+  }
 `;
 
 function BackgroundSection() {
