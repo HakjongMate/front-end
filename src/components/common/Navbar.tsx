@@ -13,10 +13,10 @@ const NavbarContainer = styled.div`
   background-color: #ffffff;
   max-width: 1200px;
   margin: -10px auto 0;
+  padding: 0 15px;
 
   @media (max-width: 1024px) {
     max-width: 100%;
-    padding: 0 15px;
   }
 `;
 
@@ -39,7 +39,15 @@ const ServiceLinks = styled.ul`
   justify-content: flex-end;
   border-top: 1px solid #e9eaff;
   margin: 0;
-  padding: 20px 0; 
+  padding: 20px 0;
+  overflow-x: auto;
+  white-space: nowrap;
+
+  @media (max-width: 768px) {
+    gap: 20px;
+    padding: 15px 0;
+    justify-content: center;
+  }
 `;
 
 const LogoContainer = styled(Link)`
@@ -73,7 +81,6 @@ const LogoText = styled.div`
 const NavLinksContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: -10px;
 
   @media (max-width: 768px) {
     display: none;
@@ -233,6 +240,8 @@ const SideMenu = styled.div<SideMenuProps>`
   transition: transform 0.3s ease-in-out;
   transform: ${({ isOpen }) => (isOpen ? "translateX(0)" : "translateX(100%)")};
   z-index: 999;
+  padding: 60px 20px 20px;
+  overflow-y: auto;
 
   @media (max-width: 768px) {
     display: flex;
