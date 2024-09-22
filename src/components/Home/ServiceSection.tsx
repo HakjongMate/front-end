@@ -57,7 +57,7 @@ const ServicesGrid = styled.div`
   }
 `;
 
-// 모바일 슬라이더 컨테이너는 그대로 유지
+// 모바일 슬라이더 컨테이너
 const MobileServicesSlider = styled.div`
   position: relative;
   width: 100%;
@@ -120,9 +120,9 @@ const SliderDots = styled.div`
 `;
 
 const Dot = styled.div<{ active: boolean }>`
-  width: 10px;
+  width: ${({ active }) => (active ? '30px' : '10px')};
   height: 10px;
-  border-radius: 50%;
+  border-radius: ${({ active }) => (active ? '5px' : '50%')};
   background-color: ${({ active }) => (active ? '#007BFF' : '#ccc')};
   margin: 0 5px;
   cursor: pointer;
