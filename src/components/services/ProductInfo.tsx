@@ -141,7 +141,7 @@ interface ProductInfoProps {
 
 const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const handleBuyClick = () => {
-    alert("010-0000-0000으로 연락 부탁드립니다.");
+    alert("구매 및 기타 문의는 010-0000-0000으로 연락 부탁드립니다.");
   };
 
   const handleCartClick = () => {
