@@ -40,6 +40,11 @@ const ServiceCardContainer = styled.div<{ isBest?: boolean }>`
     height: auto;
     margin-top: 0 !important;
   }
+
+  @media (max-width: 480px) {
+    margin: 0 20px;
+    padding: 30px 10px 10px;
+  }
 `;
 
 const ServiceTitle = styled.h3`
