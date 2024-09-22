@@ -31,6 +31,15 @@ const HookingSectionContainer = styled.div`
     );
     z-index: 1;
   }
+
+  @media (max-width: 768px) {
+    height: 380px;
+    padding: 5px;
+  }
+
+  @media (max-width: 425px) {
+    height: 300px;
+  }
 `;
 
 const Overlay = styled.div`
@@ -49,6 +58,15 @@ const HookingTextContainer = styled.div`
   max-width: 1440px;
   margin: 0 auto;
   color: white;
+  padding: 0 15px;
+
+  @media (max-width: 768px) {
+    padding: 0 10px;
+  }
+
+  @media (max-width: 425px) {
+    padding: 0 5px;
+  }
 `;
 
 const HookingText = styled.h1`
@@ -56,6 +74,16 @@ const HookingText = styled.h1`
   font-weight: 500;
   line-height: 1.8;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 425px) {
+    font-size: 16px;
+    line-height: 1.4;
+  }
 `;
 
 const EmphasizedText = styled.span`
@@ -67,6 +95,16 @@ const EmphasizedText = styled.span`
 
   & u {
     text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 22px;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 425px) {
+    font-size: 18px;
+    line-height: 1.4;
   }
 `;
 
@@ -86,11 +124,19 @@ const CTAButton = styled.a`
   &:hover {
     background-color: #6c9dff;
   }
+
+  @media (max-width: 768px) {
+    padding: 12px 30px;
+    font-size: 18px;
+  }
+
+  @media (max-width: 425px) {
+    padding: 10px 20px;
+    font-size: 16px;
+  }
 `;
 
 function HookingSection() {
-  // 서비스 섹션이 있는 곳으로 스크롤 이동
-  // 추후 수정 필요
   const scrollToServiceSection = () => {
     document
       .getElementById("service-section")
