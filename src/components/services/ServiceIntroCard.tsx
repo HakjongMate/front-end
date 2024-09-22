@@ -70,7 +70,7 @@ const CardTitle = styled.h3`
   }
 
   @media (max-width: 768px) {
-    font-size: 16px;
+    font-size: 18px;
     margin-bottom: 16px;
   }
 
@@ -94,13 +94,11 @@ const CardDescription = styled.p`
   }
 
   @media (max-width: 768px) {
-    font-size: 14px;
-    margin-bottom: 16px;
+    margin-bottom: 0px;
   }
 
   @media (max-width: 480px) {
     font-size: 13px;
-    margin-bottom: 0px;
   }
 `;
 
