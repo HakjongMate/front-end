@@ -11,15 +11,15 @@ const WhyCardContainer = styled.div`
   background-color: #fff;
   border-radius: 20px;
   padding: 30px 20px;
-  width: 300px;
+  width: 260px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
 
   h3 {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
     color: #0f4abe;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
   }
 
   p {
