@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
-import ServiceCard from "./ServiceCard"; // 분리된 ServiceCard 컴포넌트 임포트
+import ServiceCard from "./ServiceCard";
 import blueIcon from "../../assets/icons/blue-icon.svg";
 import greenIcon from "../../assets/icons/green-icon.svg";
 import yellowIcon from "../../assets/icons/yellow-icon.svg";
@@ -39,6 +39,7 @@ const SectionDescription = styled.p`
   }
 `;
 
+// 데스크탑용 그리드 스타일 (태블릿에서는 가운데 정렬)
 const ServicesGrid = styled.div`
   display: flex;
   justify-content: center;
@@ -47,17 +48,87 @@ const ServicesGrid = styled.div`
   position: relative;
 
   @media (max-width: 1024px) {
+    justify-content: center;
     gap: 20px;
   }
 
   @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
+    display: none;
   }
 `;
 
-// 카드 데이터 배열
+// 모바일 슬라이더 컨테이너는 그대로 유지
+const MobileServicesSlider = styled.div`
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 0;
+  box-sizing: border-box;
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+`;
+
+// 슬라이더 내부 카드 컨테이너
+const MobileServicesContainer = styled.div<{ currentIndex: number }>`
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(${({ currentIndex }) => currentIndex * -100}%);
+  width: 100%;
+`;
+
+// 모바일 카드 스타일
+const MobileServiceCardWrapper = styled.div`
+  flex: 0 0 100%;
+  width: 100%;
+  padding: 10px 0;
+  box-sizing: border-box;
+  display: flex; 
+  justify-content: center;
+`;
+
+const SliderButton = styled.button`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.7);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+`;
+
+const PrevButton = styled(SliderButton)`
+  left: 10px;
+`;
+
+const NextButton = styled(SliderButton)`
+  right: 10px;
+`;
+
+const SliderDots = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+`;
+
+const Dot = styled.div<{ active: boolean }>`
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: ${({ active }) => (active ? '#007BFF' : '#ccc')};
+  margin: 0 5px;
+  cursor: pointer;
+`;
+
+// 서비스 카드 배열
 const services = [
   {
     title: "생활기록부 진단 서비스",
@@ -81,6 +152,56 @@ const services = [
 ];
 
 function ServiceSection() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAutoSliding, setIsAutoSliding] = useState(true);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+
+  const nextSlide = useCallback(() => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % services.length);
+  }, [services.length]);
+
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + services.length) % services.length);
+  };
+
+  const handleDotClick = (index: number) => {
+    setCurrentIndex(index);
+    setIsAutoSliding(false);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStart - touchEnd > 75) {
+      nextSlide();
+    }
+
+    if (touchStart - touchEnd < -75) {
+      prevSlide();
+    }
+  };
+
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout;
+
+    if (isAutoSliding) {
+      intervalId = setInterval(() => {
+        nextSlide();
+      }, 4000);
+    }
+
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [isAutoSliding, nextSlide]);
+
   return (
     <SectionContainer id="service-section">
       <SectionTitle>스스로 준비하는 생활기록부의 시작, 학종메이트</SectionTitle>
@@ -88,11 +209,42 @@ function ServiceSection() {
         전국 대학에 가려면 "우수한 학생"이 되어야 합니다. <br />
         학종메이트는 우수한 학생이 되기 위한 올바른 방향을 제시합니다.
       </SectionDescription>
+
+      {/* 데스크탑 및 태블릿용 그리드 */}
       <ServicesGrid>
         {services.map((service, index) => (
           <ServiceCard key={index} {...service} />
         ))}
       </ServicesGrid>
+
+      {/* 모바일용 슬라이더 */}
+      <MobileServicesSlider>
+        <MobileServicesContainer
+          currentIndex={currentIndex}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          {services.map((service, index) => (
+            <MobileServiceCardWrapper key={index}>
+              <ServiceCard {...service} />
+            </MobileServiceCardWrapper>
+          ))}
+        </MobileServicesContainer>
+        <PrevButton onClick={prevSlide}>&lt;</PrevButton>
+        <NextButton onClick={nextSlide}>&gt;</NextButton>
+      </MobileServicesSlider>
+
+      {/* 슬라이더 하단의 점 네비게이션 */}
+      <SliderDots>
+        {services.map((_, index) => (
+          <Dot
+            key={index}
+            active={currentIndex === index}
+            onClick={() => handleDotClick(index)}
+          />
+        ))}
+      </SliderDots>
     </SectionContainer>
   );
 }
