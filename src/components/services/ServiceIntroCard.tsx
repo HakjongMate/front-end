@@ -154,7 +154,7 @@ const ServiceIntroCard: React.FC<ServiceIntroCardProps> = ({
       <CardDescription>{description}</CardDescription>
       <CardTitle>{title}</CardTitle>
       <MoreLink
-        to={isCurrentPage ? `${link}#details` : link}
+        to={`${link}#details`}
         onClick={(e) => {
           if (isCurrentPage) {
             e.preventDefault();
