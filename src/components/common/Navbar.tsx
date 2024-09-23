@@ -401,7 +401,7 @@ function Navbar() {
             학종메이트 소개
           </Link>
         </SideMenuLink>
-        <SideMenuLink isActive={isActive("/service")}>
+        <SideMenuLink isActive={isActive("/service")} onClick={toggleMenu}>
           <a onClick={toggleService}>서비스</a>
         </SideMenuLink>
 
