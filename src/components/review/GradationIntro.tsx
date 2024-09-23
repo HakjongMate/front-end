@@ -7,6 +7,14 @@ const GradientContainer = styled.div`
   background: linear-gradient(to bottom, #0f4abe, #002368);
   padding: 50px 0;
   text-align: center;
+
+  @media (max-width: 768px) {
+    padding: 40px 0;
+  }
+
+  @media (max-width: 480px) {
+    padding: 30px 0;
+  }
 `;
 
 const GradientText = styled.div`
@@ -16,6 +24,14 @@ const GradientText = styled.div`
   color: white;
   margin-bottom: 20px;
   line-height: 1.5;
+
+  @media (max-width: 768px) {
+    font-size: 26px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 22px;
+  }
 `;
 
 const Subtitle = styled.div`
@@ -24,16 +40,23 @@ const Subtitle = styled.div`
   font-size: 20px;
   color: white;
   line-height: 1.5;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+    white-space: pre-wrap;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+  }
 `;
 
 const GradationIntro = () => {
   return (
     <GradientContainer>
-      <GradientText>
-        학종메이트 서비스 후기
-      </GradientText>
+      <GradientText>학종메이트 서비스 후기</GradientText>
       <Subtitle>
-        실제 서비스를 사용하신 후 작성해주신 소중한 후기들입니다.
+        실제 서비스를 사용하신 후 {"\n"} 작성해주신 소중한 후기들입니다.
       </Subtitle>
     </GradientContainer>
   );
