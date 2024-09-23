@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import styled from "styled-components";
 import ReviewData from "../../assets/data/review.json";
 import ReviewCard from "./ReviewCard";
@@ -58,7 +58,6 @@ const SectionDescription = styled.p`
   }
 `;
 
-// 데스크탑과 태블릿에서는 그리드로 카드 배치
 const ReviewGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -66,11 +65,10 @@ const ReviewGrid = styled.div`
   margin-bottom: 40px;
 
   @media (max-width: 768px) {
-    display: none; /* 모바일일 때는 슬라이더로 처리 */
+    display: none;
   }
 `;
 
-// 모바일 슬라이더 컨테이너
 const MobileReviewSlider = styled.div`
   position: relative;
   width: 100%;
@@ -78,22 +76,21 @@ const MobileReviewSlider = styled.div`
   padding: 0;
   box-sizing: border-box;
   display: none;
+  touch-action: pan-y;
 
   @media (max-width: 768px) {
     display: block;
   }
 `;
 
-// 슬라이더 내부 카드 컨테이너
-const MobileReviewContainer = styled.div<{ currentIndex: number }>`
+const MobileReviewContainer = styled.div<{ transform: string }>`
   display: flex;
-  transition: transform 0.3s ease-in-out;
-  transform: translateX(${({ currentIndex }) => currentIndex * -100}%);
+  transform: ${({ transform }) => transform};
   width: 100%;
   padding: 0 0 30px;
+  transition: transform 0.3s ease-in-out;
 `;
 
-// 모바일 카드 스타일
 const MobileReviewCardWrapper = styled.div`
   flex: 0 0 100%;
   width: 100%;
@@ -154,7 +151,11 @@ interface Review {
 
 function ReviewSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [transform, setTransform] = useState(`translateX(0%)`);
   const reviews: Review[] = ReviewData.slice(0, 4);
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const getTypeText = (type: string) => {
     switch (type) {
@@ -169,19 +170,65 @@ function ReviewSection() {
     }
   };
 
-  const nextSlide = useCallback(() => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % reviews.length);
-  }, [reviews.length]);
+  const updateTransform = useCallback((index: number) => {
+    setTransform(`translateX(-${index * 100}%)`);
+  }, []);
 
-  const prevSlide = () => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + reviews.length) % reviews.length
-    );
-  };
+  const nextSlide = useCallback(() => {
+    const nextIndex = (currentIndex + 1) % reviews.length;
+    setCurrentIndex(nextIndex);
+    updateTransform(nextIndex);
+  }, [currentIndex, reviews.length, updateTransform]);
+
+  const prevSlide = useCallback(() => {
+    const prevIndex = (currentIndex - 1 + reviews.length) % reviews.length;
+    setCurrentIndex(prevIndex);
+    updateTransform(prevIndex);
+  }, [currentIndex, reviews.length, updateTransform]);
 
   const handleDotClick = (index: number) => {
     setCurrentIndex(index);
+    updateTransform(index);
   };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!containerRef.current) return;
+    
+    const touch = e.touches[0];
+    const diff = touchStartX.current - touch.clientX;
+    const movement = (diff / window.innerWidth) * 100;
+    
+    setTransform(`translateX(${-currentIndex * 100 - movement}%)`);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    touchEndX.current = e.changedTouches[0].clientX;
+    const diff = touchStartX.current - touchEndX.current;
+    
+    if (diff > 50 && currentIndex < reviews.length - 1) {
+      nextSlide();
+    } else if (diff < -50 && currentIndex > 0) {
+      prevSlide();
+    } else {
+      updateTransform(currentIndex);
+    }
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setCurrentIndex(0);
+        updateTransform(0);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [updateTransform]);
 
   return (
     <SectionWrapper>
@@ -195,7 +242,6 @@ function ReviewSection() {
           학종의 본질을 파악하고 개인에 맞는 솔루션을 제공합니다.
         </SectionDescription>
 
-        {/* 데스크탑 및 태블릿용 그리드 */}
         <ReviewGrid>
           {reviews.map((review) => (
             <ReviewCard
@@ -206,9 +252,15 @@ function ReviewSection() {
           ))}
         </ReviewGrid>
 
-        {/* 모바일용 슬라이더 */}
-        <MobileReviewSlider>
-          <MobileReviewContainer currentIndex={currentIndex}>
+        <MobileReviewSlider
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          <MobileReviewContainer
+            ref={containerRef}
+            transform={transform}
+          >
             {reviews.map((review) => (
               <MobileReviewCardWrapper key={review.id}>
                 <ReviewCard review={review} getTypeText={getTypeText} />
@@ -218,7 +270,6 @@ function ReviewSection() {
           <PrevButton onClick={prevSlide}>&lt;</PrevButton>
           <NextButton onClick={nextSlide}>&gt;</NextButton>
           
-          {/* 슬라이더 하단의 점 네비게이션 */}
           <SliderDots>
             {reviews.map((_, index) => (
               <Dot
