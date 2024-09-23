@@ -20,6 +20,10 @@ const CardWrapper = styled.div`
     transform: translateY(-5px);
     box-shadow: 0px 6px 14px rgba(0, 0, 0, 0.15);
   }
+
+  @media (max-width: 425px) {
+    width: 80%;
+  }
 `;
 
 const ItemImage = styled.img`
