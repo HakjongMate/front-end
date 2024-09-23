@@ -65,10 +65,6 @@ const ReviewGrid = styled.div`
   gap: 20px;
   margin-bottom: 40px;
 
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr); /* 태블릿일 때 2*2 배치 */
-  }
-
   @media (max-width: 768px) {
     display: none; /* 모바일일 때는 슬라이더로 처리 */
   }
@@ -138,10 +134,10 @@ const SliderDots = styled.div`
 `;
 
 const Dot = styled.div<{ active: boolean }>`
-  width: ${({ active }) => (active ? '30px' : '10px')};
+  width: ${({ active }) => (active ? "30px" : "10px")};
   height: 10px;
-  border-radius: ${({ active }) => (active ? '5px' : '50%')};
-  background-color: ${({ active }) => (active ? '#007BFF' : '#ccc')};
+  border-radius: ${({ active }) => (active ? "5px" : "50%")};
+  background-color: ${({ active }) => (active ? "#007BFF" : "#ccc")};
   margin: 0 5px;
   cursor: pointer;
 `;
@@ -178,7 +174,9 @@ function ReviewSection() {
   }, [reviews.length]);
 
   const prevSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + reviews.length) % reviews.length);
+    setCurrentIndex(
+      (prevIndex) => (prevIndex - 1 + reviews.length) % reviews.length
+    );
   };
 
   const handleDotClick = (index: number) => {
@@ -200,7 +198,11 @@ function ReviewSection() {
         {/* 데스크탑 및 태블릿용 그리드 */}
         <ReviewGrid>
           {reviews.map((review) => (
-            <ReviewCard key={review.id} review={review} getTypeText={getTypeText} />
+            <ReviewCard
+              key={review.id}
+              review={review}
+              getTypeText={getTypeText}
+            />
           ))}
         </ReviewGrid>
 
@@ -215,18 +217,18 @@ function ReviewSection() {
           </MobileReviewContainer>
           <PrevButton onClick={prevSlide}>&lt;</PrevButton>
           <NextButton onClick={nextSlide}>&gt;</NextButton>
+          
+          {/* 슬라이더 하단의 점 네비게이션 */}
+          <SliderDots>
+            {reviews.map((_, index) => (
+              <Dot
+                key={index}
+                active={currentIndex === index}
+                onClick={() => handleDotClick(index)}
+              />
+            ))}
+          </SliderDots>
         </MobileReviewSlider>
-
-        {/* 슬라이더 하단의 점 네비게이션 */}
-        <SliderDots>
-          {reviews.map((_, index) => (
-            <Dot
-              key={index}
-              active={currentIndex === index}
-              onClick={() => handleDotClick(index)}
-            />
-          ))}
-        </SliderDots>
       </SectionContainer>
     </SectionWrapper>
   );

@@ -19,16 +19,16 @@ const SectionTitle = styled.h2`
   font-size: 28px;
   font-weight: 700;
   margin-bottom: 30px;
-  text-align: center; 
+  text-align: center;
 
   @media (max-width: 768px) {
-    font-size: 22px;  
+    font-size: 22px;
     margin-bottom: 20px;
-    white-space: pre-wrap;  
+    white-space: pre-wrap;
   }
 
   @media (max-width: 480px) {
-    font-size: 20px; 
+    font-size: 20px;
     margin-bottom: 15px;
   }
 `;
@@ -44,12 +44,12 @@ const SectionDescription = styled.p`
   @media (max-width: 768px) {
     font-size: 16px;
     margin-bottom: 40px;
-    line-height: 1.6; 
-    white-space: pre-wrap;  
+    line-height: 1.6;
+    white-space: pre-wrap;
   }
 
   @media (max-width: 480px) {
-    font-size: 14px;  
+    font-size: 14px;
     margin-bottom: 30px;
   }
 `;
@@ -100,7 +100,7 @@ const MobileServiceCardWrapper = styled.div`
   width: 100%;
   padding: 10px 0;
   box-sizing: border-box;
-  display: flex; 
+  display: flex;
   justify-content: center;
 `;
 
@@ -135,10 +135,10 @@ const SliderDots = styled.div`
 `;
 
 const Dot = styled.div<{ active: boolean }>`
-  width: ${({ active }) => (active ? '30px' : '10px')};
+  width: ${({ active }) => (active ? "30px" : "10px")};
   height: 10px;
-  border-radius: ${({ active }) => (active ? '5px' : '50%')};
-  background-color: ${({ active }) => (active ? '#007BFF' : '#ccc')};
+  border-radius: ${({ active }) => (active ? "5px" : "50%")};
+  background-color: ${({ active }) => (active ? "#007BFF" : "#ccc")};
   margin: 0 5px;
   cursor: pointer;
 `;
@@ -147,23 +147,26 @@ const Dot = styled.div<{ active: boolean }>`
 const services = [
   {
     title: "생활기록부 진단 서비스",
-    description: "컨설턴트 출신 SKY 멘토의 밀착 1:1 생활기록부 분석\n학종메이트의 생활기록부 진단 서비스",
+    description:
+      "컨설턴트 출신 SKY 멘토의 밀착 1:1 생활기록부 분석\n학종메이트의 생활기록부 진단 서비스",
     iconSrc: blueIcon,
-    link: "/service/analyze"
+    link: "/service/analyze",
   },
   {
     title: "학종 가이드북",
-    description: "한 권에 학생부 종합전형의 본질을 전부 담았습니다.\n한 권으로 끝내는 학종 가이드북",
+    description:
+      "한 권에 학생부 종합전형의 본질을 전부 담았습니다.\n한 권으로 끝내는 학종 가이드북",
     iconSrc: greenIcon,
     link: "/service/book",
-    isBest: true
+    isBest: true,
   },
   {
     title: "AI 주제 추천 서비스",
-    description: "탐구 주제, 이제는 고민하지 마세요\n학종메이트 자체 개발 AI 생활기록부 주제 추천 서비스",
+    description:
+      "탐구 주제, 이제는 고민하지 마세요\n학종메이트 자체 개발 AI 생활기록부 주제 추천 서비스",
     iconSrc: yellowIcon,
-    link: "/service/ai"
-  }
+    link: "/service/ai",
+  },
 ];
 
 function ServiceSection() {
@@ -177,7 +180,9 @@ function ServiceSection() {
   }, [services.length]);
 
   const prevSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + services.length) % services.length);
+    setCurrentIndex(
+      (prevIndex) => (prevIndex - 1 + services.length) % services.length
+    );
   };
 
   const handleDotClick = (index: number) => {
@@ -219,7 +224,9 @@ function ServiceSection() {
 
   return (
     <SectionContainer id="service-section">
-      <SectionTitle>스스로 준비하는 생활기록부의 시작, {"\n"}학종메이트</SectionTitle>
+      <SectionTitle>
+        스스로 준비하는 생활기록부의 시작, {"\n"}학종메이트
+      </SectionTitle>
       <SectionDescription>
         전국 대학에 가려면 "우수한 학생"이 되어야 합니다. <br />
         학종메이트는 우수한 학생이 되기 위한 {"\n"} 올바른 방향을 제시합니다.
@@ -248,18 +255,18 @@ function ServiceSection() {
         </MobileServicesContainer>
         <PrevButton onClick={prevSlide}>&lt;</PrevButton>
         <NextButton onClick={nextSlide}>&gt;</NextButton>
+        
+        {/* 슬라이더 하단의 점 네비게이션 */}
+        <SliderDots>
+          {services.map((_, index) => (
+            <Dot
+              key={index}
+              active={currentIndex === index}
+              onClick={() => handleDotClick(index)}
+            />
+          ))}
+        </SliderDots>
       </MobileServicesSlider>
-
-      {/* 슬라이더 하단의 점 네비게이션 */}
-      <SliderDots>
-        {services.map((_, index) => (
-          <Dot
-            key={index}
-            active={currentIndex === index}
-            onClick={() => handleDotClick(index)}
-          />
-        ))}
-      </SliderDots>
     </SectionContainer>
   );
 }
