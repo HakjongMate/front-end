@@ -12,10 +12,21 @@ const ResultSectionContainer = styled.div`
   background-repeat: no-repeat;
   background-position: center;
   width: 100%;
-  height: 750px;
+  min-height: 500px;
   overflow: hidden;
   text-align: center;
-  padding: 20px;
+  padding: 60px 20px;
+
+  @media (max-width: 768px) {
+    min-height: 600px;
+    padding: 40px 10px;
+  }
+
+  @media (max-width: 480px) {
+    min-height: 700px;
+    padding: 30px 5px;
+    min-height: 500px;
+  }
 
   &::before {
     content: "";
@@ -30,6 +41,10 @@ const ResultSectionContainer = styled.div`
       rgba(0, 0, 0, 0.8) 100%
     );
     z-index: 1;
+
+    @media (max-width: 768px) {
+      background: rgba(0, 0, 0, 0.6);
+    }
   }
 `;
 
@@ -47,8 +62,17 @@ const ResultTextContainer = styled.div`
   position: relative;
   z-index: 3;
   max-width: 1080px;
+  width: 100%;
   margin: 0 auto;
   color: white;
+
+  @media (max-width: 768px) {
+    padding: 0 20px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0 10px;
+  }
 `;
 
 const ResultText = styled.h1`
@@ -56,6 +80,17 @@ const ResultText = styled.h1`
   font-weight: 300;
   line-height: 1.8;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+    margin-bottom: 12px;
+    white-space: pre-line;
+  }
 `;
 
 const ListText = styled.p`
@@ -63,6 +98,17 @@ const ListText = styled.p`
   font-weight: 600;
   line-height: 1.8;
   margin: 25px 0;
+
+  @media (max-width: 768px) {
+    font-size: 22px;
+    margin: 20px 0;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+    margin: 15px 0;
+    white-space: pre-line;
+  }
 `;
 
 function ResultSection() {
@@ -72,8 +118,8 @@ function ResultSection() {
       <ResultTextContainer>
         <ResultText>
           수많은 입시 관련 자료를 공부하고, 컨설팅 수업을 하고, <br />
-          업계 종사자, 고등 교사 등에게 자문을 구하며 내린 결론은 아래와
-          같습니다.
+          업계 종사자, 고등 교사 등에게 자문을 구하며 {"\n"} 
+          내린 결론은 아래와 같습니다.
         </ResultText>
         <ListText>
           1. 학생부 종합 전형은 누구나 스스로 준비할 수 있다.
@@ -86,11 +132,12 @@ function ResultSection() {
         <ResultText>
           학종메이트는 여러분들이 가장 어려워하는
           <br />
-          '학생부 종합 전형을 어떻게 준비해야 하는지'에 대한 명확한 공식을
-          전달합니다.
+          '학생부 종합 전형을 어떻게 준비해야 하는지'에 대한 {"\n"} 
+          명확한 공식을 전달합니다.
           <br />
           <br />
-          여러분의 성공적인 입시, 더 나아가 진정으로 '우수한 학생'이 되는 여정을
+          여러분의 성공적인 입시,  {"\n"} 
+          더 나아가 진정으로 '우수한 학생'이 되는 여정을 {"\n"} 
           학종메이트가 돕겠습니다.
           <br />
           여러분의 '성공'을 진심으로 응원합니다. 감사합니다.

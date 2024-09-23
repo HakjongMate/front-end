@@ -8,6 +8,15 @@ const ReviewCardContainer = styled.div`
   width: 200px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   text-align: left;
+
+  @media (max-width: 768px) {
+    height: 100%;
+    padding: 15px 20px;
+  }
+
+  @media (max-width: 480px) {
+    width: 60%;
+  }
 `;
 
 const ReviewImage = styled.img`
@@ -16,6 +25,10 @@ const ReviewImage = styled.img`
   object-fit: cover;
   border-radius: 8px;
   padding: 10px 0 15px;
+
+  @media (max-width: 768px) {
+    height: 160px;
+  }
 `;
 
 const ReviewType = styled.h3`
@@ -23,6 +36,10 @@ const ReviewType = styled.h3`
   font-weight: 700;
   margin-bottom: 5px;
   color: #000;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
 `;
 
 const ReviewMeta = styled.div`
@@ -35,17 +52,30 @@ const ReviewAuthor = styled.p`
   font-size: 16px;
   font-weight: 600;
   margin-right: 10px;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
 `;
 
 const ReviewDate = styled.p`
   font-size: 14px;
   color: #666;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 
 const ReviewContent = styled.p`
   font-size: 16px;
   font-weight: 300;
   line-height: 1.5;
+  margin-top: 10px;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
 `;
 
 interface Review {

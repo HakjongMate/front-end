@@ -1,11 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
-import WhiteHakjongMate from '../../assets/icons/HakjongMate_White.png';
+import VisualContent from './VisualContent';
 
 const FullWidthSection = styled.div`
   background-color: #F5F6FB;
   display: flex;
   justify-content: center;
+  padding: 20px 0;
+
+  @media (max-width: 768px) {
+    padding: 15px 0;
+  }
+
+  @media (max-width: 480px) {
+    padding: 10px 0;
+  }
 `;
 
 const Container = styled.div`
@@ -15,11 +24,30 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: 1024px) {
+    width: 90%;
+    padding: 50px 20px;
+    flex-direction: column;
+  }
+
+  @media (max-width: 768px) {
+    padding: 40px 15px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 30px 10px;
+  }
 `;
 
 const TextContent = styled.div`
   margin-bottom: 32px;
   width: 650px;
+
+  @media (max-width: 1024px) {
+    width: 100%;
+    text-align: center;
+  }
 `;
 
 const Title = styled.h2`
@@ -28,6 +56,21 @@ const Title = styled.h2`
   font-weight: bold;
   margin-bottom: 16px;
   line-height: 1.8;
+
+  @media (max-width: 1024px) {
+    font-size: 28px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 24px;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 22px;
+    line-height: 1.4;
+    white-space: pre-line;
+  }
 `;
 
 const Subtitle = styled.h3`
@@ -35,6 +78,20 @@ const Subtitle = styled.h3`
   font-size: 24px;
   font-weight: 300;
   margin-bottom: 16px;
+
+  @media (max-width: 1024px) {
+    font-size: 22px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
 `;
 
 const Description = styled.p`
@@ -42,51 +99,23 @@ const Description = styled.p`
   font-size: 18px;
   font-weight: 500;
   line-height: 1.8;
+
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    line-height: 1.4;
+  }
 `;
 
-const VisualContent = styled.div`
-  position: relative;
-  width: 400px;
-  height: 400px;
-`;
-
-const Circle = styled.div`
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: linear-gradient(to top, #202594 0%, #7C7FC0 40%, #F5F6FB 100%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid black;
-`;
-
-const Logo = styled.img`
-  width: 80px;
-  height: 100px;
-  margin-bottom: 20px;
-`;
-
-const CompanyName = styled.span`
-  color: white;
-  font-size: 24px;
-  font-weight: bold;
-`;
-
-const Badge = styled.div<{ color: string }>`
-  position: absolute;
-  padding: 12px 30px;
-  border-radius: 20px;
-  font-size: 16px;
-  font-weight: 500;
-  white-space: nowrap;
-  min-width: 100px;
-  text-align: center;
-  border: ${({ color }) => (color === '#fff' ? '1px solid #9C9C9C' : 'none')};
-`;
-
-const VisionSection = () => {
+const VisionSection: React.FC = () => {
   const badges = [
     { text: '새로운 기준', color: '#fff', textColor: '#565656', angle: 30 },
     { text: '학생부 종합 전형', color: '#fff', textColor: '#565656', angle: 75.4 },
@@ -105,34 +134,14 @@ const VisionSection = () => {
           <Title>
             학종메이트는<br />
             세상에 단 하나뿐인<br />
-            차별화된 생활기록부를 위한 길잡이입니다.
+            차별화된 생활기록부를 위한 {"\n"} 길잡이입니다.
           </Title>
           <Description>
             학종메이트와 함께라면,<br />
             더 이상 학생부 종합 전형은 어렵지 않습니다.
           </Description>
         </TextContent>
-        <VisualContent>
-          <Circle>
-            <Logo src={WhiteHakjongMate} alt="HakjongMate Logo" />
-            <CompanyName>HakjongMate</CompanyName>
-          </Circle>
-          {badges.map((badge, index) => (
-            <Badge
-              key={index}
-              color={badge.color}
-              style={{
-                background: badge.color,
-                color: badge.textColor,
-                top: `${200 - 210 * Math.cos(badge.angle * Math.PI / 180)}px`,
-                left: `${200 + 210 * Math.sin(badge.angle * Math.PI / 180)}px`,
-                transform: 'translate(-50%, -50%)'
-              }}
-            >
-              {badge.text}
-            </Badge>
-          ))}
-        </VisualContent>
+        <VisualContent badges={badges} />
       </Container>
     </FullWidthSection>
   );

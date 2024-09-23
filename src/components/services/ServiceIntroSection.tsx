@@ -9,25 +9,61 @@ const SectionWrapper = styled.div`
   background-color: #f5f6fb;
   display: flex;
   justify-content: center;
-  padding: 20px 0 50px;
+  padding: 40px 20px 60px;
+
+  @media (max-width: 768px) {
+    padding: 30px 15px 50px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 20px 10px 40px;
+  }
 `;
 
 const SectionContainer = styled.div`
   max-width: 1080px;
   width: 100%;
   text-align: center;
+  padding: 0 20px;
+
+  @media (max-width: 768px) {
+    padding: 0 15px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0 10px;
+  }
 `;
 
 const SectionTitle = styled.h2`
   font-size: 28px;
   font-weight: 700;
   margin-bottom: 40px;
+
+  @media (max-width: 768px) {
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 20px;
+    margin-bottom: 20px;
+    white-space: pre-line;
+    line-height: 1.5;
+    margin-top: 0px;
+  }
 `;
 
 const CardsContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   flex-wrap: wrap;
+  gap: 20px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 function ServiceIntroSection() {
@@ -35,7 +71,7 @@ function ServiceIntroSection() {
     <SectionWrapper>
       <SectionContainer>
         <SectionTitle>
-          스스로 준비하는 생활기록부의 시작, 학종메이트
+          스스로 준비하는 생활기록부의 시작, {"\n"} 학종메이트
         </SectionTitle>
         <CardsContainer>
           <ServiceIntroCard

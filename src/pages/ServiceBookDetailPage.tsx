@@ -11,6 +11,11 @@ const PageWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 20px;
+
+  /* 반응형 추가 */
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
 `;
 
 const ServiceBookDetailPage: React.FC = () => {

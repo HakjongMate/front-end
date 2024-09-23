@@ -5,16 +5,35 @@ import toast, { Toaster } from 'react-hot-toast';
 
 const ProductInfoWrapper = styled.div`
   display: flex;
-  width: 950px;
+  width: 920px;
+  max-width: 100%;
   background-color: #fff;
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    padding: 20px;
+    align-items: center;
+  }
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+  }
 `;
 
 const ProductImageWrapper = styled.div`
   width: 350px;
   padding-right: 50px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    padding-right: 0;
+  }
 `;
 
 const ProductImage = styled.img`
@@ -22,6 +41,9 @@ const ProductImage = styled.img`
   height: auto;
   object-fit: cover;
   border-radius: 8px;
+
+  @media (max-width: 768px) {
+  }
 `;
 
 const ProductRight = styled.div`
@@ -29,6 +51,10 @@ const ProductRight = styled.div`
   flex-direction: column;
   justify-content: space-between;
   width: 500px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const ProductHeader = styled.div`
@@ -39,18 +65,31 @@ const ProductHeader = styled.div`
 
 const TitleWrapper = styled.div`
   flex: 1;
+
+  @media (max-width: 768px) {
+    margin-bottom: 10px;
+  }
 `;
 
 const ProductTitle = styled.h1`
   font-size: 24px;
   font-weight: 600;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
 `;
 
 const ProductSubtitle = styled.p`
   font-size: 14px;
   color: #202594;
   margin: 0;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 
 const ShareButton = styled.button`
@@ -65,18 +104,31 @@ const Divider = styled.hr`
   border: none;
   border-top: 1px solid #e0e0e0;
   margin: 20px 0;
+
+  @media (max-width: 768px) {
+    margin: 15px 0;
+  }
 `;
 
 const PriceWrapper = styled.div`
   display: flex;
   align-items: baseline;
   margin-bottom: 10px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 const ProductPrice = styled.div`
   font-size: 28px;
   font-weight: 700;
   color: #000;
+
+  @media (max-width: 768px) {
+    font-size: 24px;
+  }
 `;
 
 const OriginalPrice = styled.span`
@@ -85,18 +137,33 @@ const OriginalPrice = styled.span`
   color: #aaa;
   text-decoration: line-through;
   margin-left: 10px;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+    margin-left: 0;
+    margin-top: 5px;
+  }
 `;
 
 const Rating = styled.div`
   font-size: 16px;
   font-weight: 400;
   color: #202594;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
 `;
 
 const ButtonGroup = styled.div`
   display: flex;
   gap: 20px;
   margin-top: 20px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 10px;
+  }
 `;
 
 const Button = styled.button`
@@ -107,6 +174,11 @@ const Button = styled.button`
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   flex: 1;
+
+  @media (max-width: 768px) {
+    padding: 12px 20px;
+    font-size: 16px;
+  }
 `;
 
 const BuyButton = styled(Button)`
@@ -141,7 +213,7 @@ interface ProductInfoProps {
 
 const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const handleBuyClick = () => {
-    alert("010-0000-0000으로 연락 부탁드립니다.");
+    alert("구매 및 기타 문의는 010-0000-0000으로 연락 부탁드립니다.");
   };
 
   const handleCartClick = () => {
@@ -174,6 +246,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
             <Share />
           </ShareButton>
         </ProductHeader>
+        
         <Divider />
         <PriceWrapper>
           <ProductPrice>{product.discountedPrice}원</ProductPrice>

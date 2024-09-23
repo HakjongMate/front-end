@@ -5,6 +5,10 @@ const QnAWrapper = styled.div`
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
+
+  @media (max-width: 768px) {
+    width: 90%;
+  }
 `;
 
 const QnACard = styled.div`
@@ -13,17 +17,35 @@ const QnACard = styled.div`
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px 30px;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    padding: 15px 20px;
+    margin-bottom: 15px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 10px 15px;
+    margin-bottom: 10px;
+  }
 `;
 
 const QuestionHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: 480px) {
+    align-items: flex-start;
+  }
 `;
 
 const QuestionInfo = styled.div`
   display: flex;
   align-items: center;
+
+  @media (max-width: 480px) {
+    margin-bottom: 8px;
+  }
 `;
 
 const QuestionIcon = styled.div`
@@ -38,6 +60,13 @@ const QuestionIcon = styled.div`
   font-weight: bold;
   color: #333;
   font-size: 20px;
+
+  @media (max-width: 480px) {
+    width: 30px;
+    height: 30px;
+    margin-right: 8px;
+    font-size: 18px;
+  }
 `;
 
 const QuestionText = styled.h4`
@@ -45,6 +74,10 @@ const QuestionText = styled.h4`
   font-weight: 600;
   margin: 0;
   color: #333;
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+  }
 `;
 
 const ToggleIcon = styled.span`
@@ -52,6 +85,12 @@ const ToggleIcon = styled.span`
   color: #666;
   cursor: pointer;
   transition: transform 0.3s ease;
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    margin-left: 5px;
+    margin-top: 5px;
+  }
 `;
 
 const Answer = styled.div<{ isOpen: boolean }>`
@@ -65,6 +104,10 @@ const Answer = styled.div<{ isOpen: boolean }>`
   margin-top: ${({ isOpen }) => (isOpen ? "16px" : "0")};
   padding-top: ${({ isOpen }) => (isOpen ? "16px" : "0")};
   border-top: ${({ isOpen }) => (isOpen ? "1px solid #eee" : "none")};
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+  }
 `;
 
 interface QnAItemProps {
@@ -82,7 +125,7 @@ const QnAItemComponent: React.FC<QnAItemProps> = ({ question, answer }) => {
           <QuestionIcon>Q</QuestionIcon>
           <QuestionText>{question}</QuestionText>
         </QuestionInfo>
-        <ToggleIcon 
+        <ToggleIcon
           onClick={() => setIsOpen(!isOpen)}
           style={{ transform: isOpen ? "rotate(180deg)" : "none" }}
         >
@@ -95,7 +138,7 @@ const QnAItemComponent: React.FC<QnAItemProps> = ({ question, answer }) => {
 };
 
 interface QnAComponentProps {
-  qnaData: { id?: number; question: string; answer: string; }[];
+  qnaData: { id?: number; question: string; answer: string }[];
 }
 
 const QnAComponent: React.FC<QnAComponentProps> = ({ qnaData }) => {

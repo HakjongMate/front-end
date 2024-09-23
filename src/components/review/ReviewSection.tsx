@@ -28,6 +28,14 @@ const ReviewList = styled.div`
   align-items: center;
   width: 80%;
   max-width: 1200px;
+
+  @media (max-width: 768px) {
+    width: 90%;
+  }
+
+  @media (max-width: 480px) {
+    width: 95%;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -36,26 +44,69 @@ const SectionTitle = styled.h2`
   color: #000;
   margin-bottom: 30px;
   text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 28px;
+    margin-bottom: 25px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
 `;
 
 const FilterContainer = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: column; 
+  align-items: center;
   margin-bottom: 50px;
+
+  @media (min-width: 481px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 768px) {
+    margin-bottom: 40px;
+  }
+
+  @media (max-width: 480px) {
+    margin-bottom: 30px;
+  }
+`;
+
+const FilterButtonRow = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+
+  @media (min-width: 481px) {
+    margin-bottom: 0;
+  }
 `;
 
 const FilterButton = styled.button<{ active: boolean }>`
   padding: 10px 20px;
-  margin: 0 10px;
+  margin: 5px 10px;
   border: none;
   background-color: ${({ active }) => (active ? "#202594" : "#f6f7fc")};
   color: ${({ active }) => (active ? "#fff" : "#000")};
   font-size: 16px;
   cursor: pointer;
   border-radius: 20px;
+  white-space: nowrap;
+
   &:hover {
     background-color: #202594;
     color: #fff;
+  }
+
+  @media (max-width: 480px) {
+    padding: 8px 15px;
+    font-size: 12px;
+    margin: 5px 5px;
   }
 `;
 
@@ -64,11 +115,17 @@ const Pagination = styled.div`
   justify-content: center;
   margin-top: 20px;
   margin-bottom: 30px;
+  flex-wrap: wrap;
+
+  @media (max-width: 480px) {
+    margin-top: 15px;
+    margin-bottom: 25px;
+  }
 `;
 
 const PageButton = styled.button<{ active: boolean }>`
   padding: 10px 15px;
-  margin: 0 5px;
+  margin: 5px 5px;
   border: none;
   background-color: ${({ active }) => (active ? "#202594" : "#f6f7fc")};
   color: ${({ active }) => (active ? "#fff" : "#000")};
@@ -79,11 +136,16 @@ const PageButton = styled.button<{ active: boolean }>`
     background-color: #202594;
     color: #fff;
   }
+
+  @media (max-width: 480px) {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
 `;
 
 const ArrowButton = styled.button`
   padding: 10px 15px;
-  margin: 0 5px;
+  margin: 5px 5px;
   border: none;
   background-color: #f6f7fc;
   color: #000;
@@ -93,6 +155,11 @@ const ArrowButton = styled.button`
   &:hover {
     background-color: #202594;
     color: #fff;
+  }
+
+  @media (max-width: 480px) {
+    padding: 8px 12px;
+    font-size: 14px;
   }
 `;
 
@@ -117,7 +184,10 @@ const ReviewSection: React.FC = () => {
   // 현재 페이지에 해당하는 리뷰만 가져오기
   const indexOfLastReview = currentPage * reviewsPerPage;
   const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
-  const currentReviews = filteredReviews.slice(indexOfFirstReview, indexOfLastReview);
+  const currentReviews = filteredReviews.slice(
+    indexOfFirstReview,
+    indexOfLastReview
+  );
 
   // 페이지 변경 함수
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
@@ -162,30 +232,34 @@ const ReviewSection: React.FC = () => {
 
       {/* 필터 버튼 */}
       <FilterContainer>
-        <FilterButton
-          active={filterType === null}
-          onClick={() => handleFilter(null)}
-        >
-          전체 보기
-        </FilterButton>
-        <FilterButton
-          active={filterType === "book"}
-          onClick={() => handleFilter("book")}
-        >
-          학종 가이드북
-        </FilterButton>
-        <FilterButton
-          active={filterType === "analyze"}
-          onClick={() => handleFilter("analyze")}
-        >
-          생기부 진단 서비스
-        </FilterButton>
-        <FilterButton
-          active={filterType === "ai"}
-          onClick={() => handleFilter("ai")}
-        >
-          AI 주제 추천 서비스
-        </FilterButton>
+        <FilterButtonRow>
+          <FilterButton
+            active={filterType === null}
+            onClick={() => handleFilter(null)}
+          >
+            전체 보기
+          </FilterButton>
+        </FilterButtonRow>
+        <FilterButtonRow>
+          <FilterButton
+            active={filterType === "book"}
+            onClick={() => handleFilter("book")}
+          >
+            학종 가이드북
+          </FilterButton>
+          <FilterButton
+            active={filterType === "analyze"}
+            onClick={() => handleFilter("analyze")}
+          >
+            생기부 진단 서비스
+          </FilterButton>
+          <FilterButton
+            active={filterType === "ai"}
+            onClick={() => handleFilter("ai")}
+          >
+            AI 주제 추천 서비스
+          </FilterButton>
+        </FilterButtonRow>
       </FilterContainer>
 
       {/* 필터링된 리뷰 목록 */}

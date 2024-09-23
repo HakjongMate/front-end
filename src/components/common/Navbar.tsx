@@ -13,10 +13,10 @@ const NavbarContainer = styled.div`
   background-color: #ffffff;
   max-width: 1200px;
   margin: -10px auto 0;
+  padding: 0 15px;
 
   @media (max-width: 1024px) {
     max-width: 100%;
-    padding: 0 15px;
   }
 `;
 
@@ -33,13 +33,20 @@ const MainNavbar = styled.div`
 
 const ServiceLinks = styled.ul`
   display: flex;
+  flex-direction: column;
   list-style: none;
-  gap: 40px;
-  align-items: center;
-  justify-content: flex-end;
-  border-top: 1px solid #e9eaff;
   margin: 0;
-  padding: 20px 0; 
+  padding: 10px 0;
+  border-top: 1px solid #e9eaff;
+  width: 100%;
+
+  @media (min-width: 769px) {
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 40px;
+    padding: 20px 0;
+  }
 `;
 
 const LogoContainer = styled(Link)`
@@ -73,7 +80,6 @@ const LogoText = styled.div`
 const NavLinksContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: -10px;
 
   @media (max-width: 768px) {
     display: none;
@@ -125,6 +131,27 @@ const NavLink = styled.li<{ isActive: boolean }>`
     a {
       font-size: 16px;
     }
+  }
+`;
+
+const ServiceLink = styled(NavLink)`
+  margin: 10px 0;
+  text-align: center;
+
+  a {
+    text-decoration: none;
+    color: ${({ isActive }) => (isActive ? "#202594" : "#333")};
+    font-size: 16px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: #202594;
+    }
+  }
+
+  @media (min-width: 769px) {
+    margin: 0;
   }
 `;
 
@@ -233,6 +260,8 @@ const SideMenu = styled.div<SideMenuProps>`
   transition: transform 0.3s ease-in-out;
   transform: ${({ isOpen }) => (isOpen ? "translateX(0)" : "translateX(100%)")};
   z-index: 999;
+  padding: 60px 20px 20px;
+  overflow-y: auto;
 
   @media (max-width: 768px) {
     display: flex;
@@ -259,12 +288,12 @@ const ServiceSubLinks = styled.ul`
 
 const ServiceSubLink = styled.li`
   margin-bottom: 10px;
-  
+
   a {
     color: #333;
     text-decoration: none;
     font-size: 16px;
-    
+
     &:hover {
       color: #202594;
     }
@@ -311,6 +340,7 @@ function Navbar() {
           <Bar isOpen={isMenuOpen} />
         </MenuButton>
 
+        {/* 메인 나브바 */}
         <NavLinksContainer>
           <NavLinks>
             <NavLink isActive={isActive("/intro")}>
@@ -328,6 +358,7 @@ function Navbar() {
           </NavLinks>
         </NavLinksContainer>
 
+        {/* 서비스 인가 관련 탭 */}
         {/* <AuthContainer>
           <AuthLinks>
             {loggedIn ? (
@@ -348,45 +379,62 @@ function Navbar() {
         </AuthContainer> */}
       </MainNavbar>
 
+      {/* 서비스 탭 */}
       {showServiceLinks && (
         <ServiceLinks>
-          <NavLink isActive={isActive("/service/book")}>
+          <ServiceLink isActive={isActive("/service/book")}>
             <Link to="/service/book">학종 가이드북</Link>
-          </NavLink>
-          <NavLink isActive={isActive("/service/analyze")}>
+          </ServiceLink>
+          <ServiceLink isActive={isActive("/service/analyze")}>
             <Link to="/service/analyze">생기부 진단 서비스</Link>
-          </NavLink>
-          <NavLink isActive={isActive("/service/ai")}>
+          </ServiceLink>
+          <ServiceLink isActive={isActive("/service/ai")}>
             <Link to="/service/ai">AI 주제 추천 서비스</Link>
-          </NavLink>
+          </ServiceLink>
         </ServiceLinks>
       )}
-      
+
+      {/* 사이드 메뉴 */}
       <SideMenu isOpen={isMenuOpen}>
         <SideMenuLink isActive={isActive("/intro")}>
-          <Link to="/intro" onClick={toggleMenu}>학종메이트 소개</Link>
+          <Link to="/intro" onClick={toggleMenu}>
+            학종메이트 소개
+          </Link>
         </SideMenuLink>
-        <SideMenuLink isActive={isActive("/service")}>
+        <SideMenuLink isActive={isActive("/service")} onClick={toggleMenu}>
           <a onClick={toggleService}>서비스</a>
         </SideMenuLink>
+
+        {/* 사이드 메뉴 용 서비스 탭 */}
         {showServiceLinks && (
           <ServiceSubLinks>
             <ServiceSubLink>
-              <Link to="/service/book" onClick={toggleMenu}>학종 가이드북</Link>
+              <Link to="/service/book" onClick={toggleMenu}>
+                학종 가이드북
+              </Link>
             </ServiceSubLink>
             <ServiceSubLink>
-              <Link to="/service/analyze" onClick={toggleMenu}>생기부 진단 서비스</Link>
+              <Link to="/service/analyze" onClick={toggleMenu}>
+                생기부 진단 서비스
+              </Link>
             </ServiceSubLink>
             <ServiceSubLink>
-              <Link to="/service/ai" onClick={toggleMenu}>AI 주제 추천 서비스</Link>
+              <Link to="/service/ai" onClick={toggleMenu}>
+                AI 주제 추천 서비스
+              </Link>
             </ServiceSubLink>
           </ServiceSubLinks>
         )}
+
         <SideMenuLink isActive={isActive("/review")}>
-          <Link to="/review" onClick={toggleMenu}>사용 후기</Link>
+          <Link to="/review" onClick={toggleMenu}>
+            사용 후기
+          </Link>
         </SideMenuLink>
         <SideMenuLink isActive={isActive("/contact")}>
-          <Link to="/contact" onClick={toggleMenu}>문의하기</Link>
+          <Link to="/contact" onClick={toggleMenu}>
+            문의하기
+          </Link>
         </SideMenuLink>
         {/* {loggedIn ? (
           <>

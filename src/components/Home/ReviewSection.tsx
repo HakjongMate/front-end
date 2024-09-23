@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import styled from "styled-components";
 import ReviewData from "../../assets/data/review.json";
 import ReviewCard from "./ReviewCard";
@@ -8,6 +8,14 @@ const SectionWrapper = styled.div`
   padding: 30px 0 90px;
   display: flex;
   justify-content: center;
+
+  @media (max-width: 768px) {
+    padding: 20px 0 60px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 15px 0 50px;
+  }
 `;
 
 const SectionContainer = styled.div`
@@ -24,6 +32,14 @@ const SectionTitle = styled.h2`
   margin-bottom: 20px;
   white-space: pre-line;
   line-height: 1.5;
+
+  @media (max-width: 768px) {
+    font-size: 28px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 24px;
+  }
 `;
 
 const SectionDescription = styled.p`
@@ -31,32 +47,96 @@ const SectionDescription = styled.p`
   font-weight: 400;
   color: #333;
   margin-bottom: 50px;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+    margin-bottom: 30px;
+  }
 `;
 
 const ReviewGrid = styled.div`
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  flex-wrap: wrap;
   margin-bottom: 40px;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
-const CTAButton = styled.a`
-  position: absolute;
-  right: 0px;
-  background-color: #0f4abe;
-  color: #fff;
-  padding: 15px 40px;
-  font-size: 18px;
-  font-weight: 600;
-  text-decoration: none;
-  border-radius: 5px;
-  transition: background-color 0.3s;
-  cursor: pointer;
+const MobileReviewSlider = styled.div`
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 0;
+  box-sizing: border-box;
+  display: none;
+  touch-action: pan-y;
 
-  &:hover {
-    background-color: #0d3a8f;
+  @media (max-width: 768px) {
+    display: block;
   }
+`;
+
+const MobileReviewContainer = styled.div<{ transform: string }>`
+  display: flex;
+  transform: ${({ transform }) => transform};
+  width: 100%;
+  padding: 0 0 30px;
+  transition: transform 0.3s ease-in-out;
+`;
+
+const MobileReviewCardWrapper = styled.div`
+  flex: 0 0 100%;
+  width: 100%;
+  padding: 10px 0;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+`;
+
+const SliderButton = styled.button`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.7);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+`;
+
+const PrevButton = styled(SliderButton)`
+  left: 10px;
+`;
+
+const NextButton = styled(SliderButton)`
+  right: 10px;
+`;
+
+const SliderDots = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+`;
+
+const Dot = styled.div<{ active: boolean }>`
+  width: ${({ active }) => (active ? "30px" : "10px")};
+  height: 10px;
+  border-radius: ${({ active }) => (active ? "5px" : "50%")};
+  background-color: ${({ active }) => (active ? "#007BFF" : "#ccc")};
+  margin: 0 5px;
+  cursor: pointer;
 `;
 
 interface Review {
@@ -70,7 +150,12 @@ interface Review {
 }
 
 function ReviewSection() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [transform, setTransform] = useState(`translateX(0%)`);
   const reviews: Review[] = ReviewData.slice(0, 4);
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const getTypeText = (type: string) => {
     switch (type) {
@@ -85,6 +170,66 @@ function ReviewSection() {
     }
   };
 
+  const updateTransform = useCallback((index: number) => {
+    setTransform(`translateX(-${index * 100}%)`);
+  }, []);
+
+  const nextSlide = useCallback(() => {
+    const nextIndex = (currentIndex + 1) % reviews.length;
+    setCurrentIndex(nextIndex);
+    updateTransform(nextIndex);
+  }, [currentIndex, reviews.length, updateTransform]);
+
+  const prevSlide = useCallback(() => {
+    const prevIndex = (currentIndex - 1 + reviews.length) % reviews.length;
+    setCurrentIndex(prevIndex);
+    updateTransform(prevIndex);
+  }, [currentIndex, reviews.length, updateTransform]);
+
+  const handleDotClick = (index: number) => {
+    setCurrentIndex(index);
+    updateTransform(index);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!containerRef.current) return;
+    
+    const touch = e.touches[0];
+    const diff = touchStartX.current - touch.clientX;
+    const movement = (diff / window.innerWidth) * 100;
+    
+    setTransform(`translateX(${-currentIndex * 100 - movement}%)`);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    touchEndX.current = e.changedTouches[0].clientX;
+    const diff = touchStartX.current - touchEndX.current;
+    
+    if (diff > 50 && currentIndex < reviews.length - 1) {
+      nextSlide();
+    } else if (diff < -50 && currentIndex > 0) {
+      prevSlide();
+    } else {
+      updateTransform(currentIndex);
+    }
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setCurrentIndex(0);
+        updateTransform(0);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [updateTransform]);
+
   return (
     <SectionWrapper>
       <SectionContainer>
@@ -96,12 +241,45 @@ function ReviewSection() {
         <SectionDescription>
           학종의 본질을 파악하고 개인에 맞는 솔루션을 제공합니다.
         </SectionDescription>
+
         <ReviewGrid>
           {reviews.map((review) => (
-            <ReviewCard key={review.id} review={review} getTypeText={getTypeText} />
+            <ReviewCard
+              key={review.id}
+              review={review}
+              getTypeText={getTypeText}
+            />
           ))}
         </ReviewGrid>
-        <CTAButton href="/review">더 많은 후기 보기 &gt;</CTAButton>
+
+        <MobileReviewSlider
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          <MobileReviewContainer
+            ref={containerRef}
+            transform={transform}
+          >
+            {reviews.map((review) => (
+              <MobileReviewCardWrapper key={review.id}>
+                <ReviewCard review={review} getTypeText={getTypeText} />
+              </MobileReviewCardWrapper>
+            ))}
+          </MobileReviewContainer>
+          <PrevButton onClick={prevSlide}>&lt;</PrevButton>
+          <NextButton onClick={nextSlide}>&gt;</NextButton>
+          
+          <SliderDots>
+            {reviews.map((_, index) => (
+              <Dot
+                key={index}
+                active={currentIndex === index}
+                onClick={() => handleDotClick(index)}
+              />
+            ))}
+          </SliderDots>
+        </MobileReviewSlider>
       </SectionContainer>
     </SectionWrapper>
   );

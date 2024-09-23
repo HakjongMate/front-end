@@ -6,6 +6,7 @@ import QnAComponent from "./QnAComponent";
 
 const TabsContainer = styled.div`
   width: 1000px;
+  max-width: 100%;
   margin-top: 40px;
 `;
 
@@ -31,6 +32,11 @@ const TabButton = styled.button<{ active: boolean }>`
   &:hover {
     color: #2b44ff;
   }
+
+  @media (max-width: 768px) {
+    padding: 10px;
+    font-size: 14px;
+  }
 `;
 
 const TabContent = styled.div`
@@ -42,11 +48,24 @@ const TabContent = styled.div`
   min-height: 300px;
   border-radius: 0 0 10px 10px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    padding: 30px 0px;
+  }
 `;
 
 const ReviewList = styled.div`
   width: 100%;
   max-width: 800px;
+`;
+
+const DetailImage = styled.img`
+  width: 75%;
+  margin-bottom: 10px;
+
+  @media (max-width: 1024px) {
+    width: 90%;
+  }
 `;
 
 interface TabsProps {
@@ -92,11 +111,10 @@ const TabsComponent: React.FC<TabsProps> = ({
       <TabContent>
         {activeTab === "detail" && product.detailImage.length > 0 ? (
           product.detailImage.map((image: string, index: number) => (
-            <img
+            <DetailImage
               key={index}
               src={image}
               alt={`Detail ${index}`}
-              style={{ width: "75%", marginBottom: "10px" }}
             />
           ))
         ) : activeTab === "detail" ? (
