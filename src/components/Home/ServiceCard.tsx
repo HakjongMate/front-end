@@ -42,6 +42,7 @@ const ServiceCardContainer = styled.div<{ isBest?: boolean }>`
   }
 
   @media (max-width: 480px) {
+    width: 80%;
     margin: 0 20px;
     padding: 30px 10px 10px;
   }

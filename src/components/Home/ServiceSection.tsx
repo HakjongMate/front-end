@@ -104,30 +104,6 @@ const MobileServiceCardWrapper = styled.div`
   justify-content: center;
 `;
 
-const SliderButton = styled.button`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.7);
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 10;
-`;
-
-const PrevButton = styled(SliderButton)`
-  left: 10px;
-`;
-
-const NextButton = styled(SliderButton)`
-  right: 10px;
-`;
-
 const SliderDots = styled.div`
   display: flex;
   justify-content: center;
@@ -253,9 +229,7 @@ function ServiceSection() {
             </MobileServiceCardWrapper>
           ))}
         </MobileServicesContainer>
-        <PrevButton onClick={prevSlide}>&lt;</PrevButton>
-        <NextButton onClick={nextSlide}>&gt;</NextButton>
-        
+
         {/* 슬라이더 하단의 점 네비게이션 */}
         <SliderDots>
           {services.map((_, index) => (
