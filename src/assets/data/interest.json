@@ -1,0 +1,18 @@
+[
+  {
+    "id": "1",
+    "user_id": "1",
+    "subject_id": "1",
+    "title": "인공지능",
+    "contents": "인공지능의 원리와 활용 방안에 대한 관심",
+    "create_date": "2024-01-01"
+  },
+  {
+    "id": "2",
+    "user_id": "1",
+    "subject_id": "2",
+    "title": "데이터베이스",
+    "contents": "데이터베이스 설계 및 관리에 대한 깊은 관심",
+    "create_date": "2024-01-02"
+  }
+]
