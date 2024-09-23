@@ -6,7 +6,7 @@ import QnAComponent from "./QnAComponent";
 
 const TabsContainer = styled.div`
   width: 1000px;
-  max-width: 100%; /* 반응형 추가 */
+  max-width: 100%;
   margin-top: 40px;
 `;
 
@@ -33,7 +33,6 @@ const TabButton = styled.button<{ active: boolean }>`
     color: #2b44ff;
   }
 
-  /* 반응형 추가 */
   @media (max-width: 768px) {
     padding: 10px;
     font-size: 14px;
@@ -50,7 +49,6 @@ const TabContent = styled.div`
   border-radius: 0 0 10px 10px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 
-  /* 반응형 추가 */
   @media (max-width: 768px) {
     padding: 30px 0px;
   }
@@ -59,11 +57,6 @@ const TabContent = styled.div`
 const ReviewList = styled.div`
   width: 100%;
   max-width: 800px;
-
-  /* 반응형 추가 */
-  @media (max-width: 768px) {
-    padding: 0 20px;
-  }
 `;
 
 interface TabsProps {
