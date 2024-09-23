@@ -99,12 +99,12 @@ const EmphasizedText = styled.span`
 
   @media (max-width: 768px) {
     font-size: 22px;
-    line-height: 1.6;
+    line-height: 1.8;
   }
 
   @media (max-width: 425px) {
     font-size: 18px;
-    line-height: 1.4;
+    line-height: 1.6;
   }
 `;
 
