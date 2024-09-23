@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { useLocation } from 'react-router-dom';
 import styled from "styled-components";
+import useIsMobile from "../hooks/useIsMobile";
 import ServiceIntroSection from "../components/services/ServiceIntroSection";
 import ServiceItemCard from "../components/services/ServiceItemCard";
 import BookImage from "../assets/images/book-main.webp";
@@ -42,6 +43,12 @@ const SubTitle = styled.h2`
   @media (max-width: 768px) {
     font-size: 16px;
   }
+
+  @media (max-width: 425px) {
+    white-space: pre-wrap;
+    line-height: 1.6;
+    margin-bottom: 5px;
+  }
 `;
 
 const Underline = styled.hr`
@@ -50,7 +57,7 @@ const Underline = styled.hr`
   margin: 10px 0 40px 20px;
 
   @media (max-width: 768px) {
-    width: 80%
+    width: 80%;
   }
 `;
 
@@ -70,6 +77,7 @@ const CardsContainer = styled.div`
 function ServiceBookPage() {
   const location = useLocation();
   const titleContainerRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (location.hash === '#details' && titleContainerRef.current) {
@@ -77,18 +85,23 @@ function ServiceBookPage() {
     }
   }, [location]);
 
+  // 모바일 여부에 따라 subtitle 변경
+  const subtitle = isMobile
+    ? "스스로 준비하고 만든 생활기록부로 \n 대학이 원하는 \n 우수한 학생이 되도록 합니다"
+    : "스스로 준비하고 만든 생활기록부로 \n 대학이 원하는 우수한 학생이 되도록 합니다";
+
   return (
     <PageWrapper>
       <ServiceIntroSection />
       <TitleContainer ref={titleContainerRef} id="details">
         <Title>한 권으로 끝내는 학종 가이드북</Title>
-        <SubTitle>한 권에 학생부 종합 전형의 본질을 전부 담았습니다.</SubTitle>
+        <SubTitle>한 권에 학생부 종합 전형의{"\n"}본질을 전부 담았습니다.</SubTitle>
         <Underline />
         <CardsContainer>
           <ServiceItemCard
             imageSrc={BookImage}
             title="한 권으로 끝내는 학종 가이드북"
-            subtitle={"스스로 준비하고 만든 생활기록부로 \n 대학이 원하는 우수한 학생이 되도록 합니다."}
+            subtitle={subtitle}
             link="/service/book/detail"
           />
         </CardsContainer>

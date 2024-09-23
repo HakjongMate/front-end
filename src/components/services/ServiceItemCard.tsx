@@ -23,6 +23,7 @@ const CardWrapper = styled.div`
 
   @media (max-width: 425px) {
     width: 80%;
+    height: 100%;
   }
 `;
 
