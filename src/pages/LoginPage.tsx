@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/icons/HakjongMate_Blue.png';
-import users from '../assets/data/users.json'; // users.json 파일을 임포트합니다.
+import users from '../assets/data/users.json';
 
 const LoginContainer = styled.div`
   max-width: 500px;

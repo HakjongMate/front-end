@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom'; // 추가된 부분
+import { useNavigate } from 'react-router-dom'; 
 
 const RegisterContainer = styled.div`
   max-width: 700px;
@@ -139,7 +139,7 @@ const Select = styled.select`
 `;
 
 const RegisterPage: React.FC = () => {
-  const navigate = useNavigate(); // 추가된 부분
+  const navigate = useNavigate(); 
   const [formData, setFormData] = useState({
     name: '',
     username: '',
@@ -168,29 +168,16 @@ const RegisterPage: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // 여기서 실제 회원가입 로직을 구현하세요 (예: API 호출)
-    // 성공적으로 회원가입이 완료되면 로그인 페이지로 이동
-    navigate('/login'); // 추가된 부분
+    navigate('/login');
   };
 
-  const checkDuplicate = async () => { // 중복확인 버튼 기능 추가
+  const checkDuplicate = async () => {
     if (!formData.username) {
       alert('아이디를 입력해주세요.');
       return;
     }
 
     try {
-      // 여기에 실제 중복 확인 API 호출 로직을 추가하세요
-      // 예시:
-      // const response = await fetch(`/api/check-username?username=${formData.username}`);
-      // const data = await response.json();
-      // if (data.exists) {
-      //   alert('이미 사용 중인 아이디입니다.');
-      // } else {
-      //   alert('사용 가능한 아이디입니다.');
-      // }
-
-      // 임시로 중복되지 않는 것으로 가정
       alert('사용 가능한 아이디입니다.');
     } catch (error) {
       console.error('중복확인 중 오류 발생:', error);
