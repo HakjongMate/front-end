@@ -126,6 +126,7 @@ const LoginPage: React.FC = () => {
       localStorage.setItem('user', JSON.stringify(userData));
       // 홈 페이지로 이동
       navigate('/');
+      window.location.reload();
     } else {
       setError('유저 정보를 찾을 수 없습니다.');
     }

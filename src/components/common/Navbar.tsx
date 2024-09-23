@@ -301,13 +301,19 @@ const ServiceSubLink = styled.li`
 `;
 
 function Navbar() {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [showServiceLinks, setShowServiceLinks] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  const [showServiceLinks, setShowServiceLinks] = useState<boolean>(false);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname.startsWith(path);
+
+  useEffect(() => {
+    // 로그인 상태를 로컬 스토리지에서 확인
+    const userData = localStorage.getItem('user');
+    setLoggedIn(!!userData);
+  }, []);
 
   useEffect(() => {
     setShowServiceLinks(location.pathname.startsWith("/service"));
@@ -318,8 +324,11 @@ function Navbar() {
     navigate("/service/book");
   };
 
-  const handleLoginLogout = () => {
-    setLoggedIn(!loggedIn);
+  const handleLogout = () => {
+    // 저장된 데이터 삭제
+    localStorage.removeItem('user');
+    setLoggedIn(false);
+    navigate('/');
   };
 
   const toggleMenu = () => {
@@ -358,13 +367,13 @@ function Navbar() {
           </NavLinks>
         </NavLinksContainer>
 
-        {/* 서비스 인가 관련 탭 */}
+        {/* 인증 관련 탭 */}
         <AuthContainer>
           <AuthLinks>
             {loggedIn ? (
               <>
                 <AuthLink>
-                  <a onClick={handleLoginLogout}>로그아웃</a>
+                  <a onClick={handleLogout}>로그아웃</a>
                 </AuthLink>
                 <AuthLink>
                   <Link to="/my">마이페이지</Link>
@@ -372,7 +381,7 @@ function Navbar() {
               </>
             ) : (
               <AuthLink>
-                <a onClick={handleLoginLogout}>로그인</a>
+                <Link to="/login">로그인</Link>
               </AuthLink>
             )}
           </AuthLinks>
@@ -401,8 +410,15 @@ function Navbar() {
             학종메이트 소개
           </Link>
         </SideMenuLink>
-        <SideMenuLink isActive={isActive("/service")} onClick={toggleMenu}>
-          <a onClick={toggleService}>서비스</a>
+        <SideMenuLink isActive={isActive("/service")}>
+          <a
+            onClick={() => {
+              toggleService();
+              toggleMenu();
+            }}
+          >
+            서비스
+          </a>
         </SideMenuLink>
 
         {/* 사이드 메뉴 용 서비스 탭 */}
@@ -439,15 +455,31 @@ function Navbar() {
         {loggedIn ? (
           <>
             <SideMenuLink isActive={false}>
-              <a onClick={() => { handleLoginLogout(); toggleMenu(); }}>로그아웃</a>
+              <a
+                onClick={() => {
+                  handleLogout();
+                  toggleMenu();
+                }}
+              >
+                로그아웃
+              </a>
             </SideMenuLink>
             <SideMenuLink isActive={isActive("/my")}>
-              <Link to="/my" onClick={toggleMenu}>마이페이지</Link>
+              <Link to="/my" onClick={toggleMenu}>
+                마이페이지
+              </Link>
             </SideMenuLink>
           </>
         ) : (
           <SideMenuLink isActive={false}>
-            <a onClick={() => { handleLoginLogout(); toggleMenu(); }}>로그인</a>
+            <Link
+              to="/login"
+              onClick={() => {
+                toggleMenu();
+              }}
+            >
+              로그인
+            </Link>
           </SideMenuLink>
         )}
       </SideMenu>
