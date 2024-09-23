@@ -42,7 +42,7 @@ const ServiceLinks = styled.ul`
 
   @media (min-width: 769px) {
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     gap: 40px;
     padding: 20px 0;
@@ -359,7 +359,7 @@ function Navbar() {
         </NavLinksContainer>
 
         {/* 서비스 인가 관련 탭 */}
-        {/* <AuthContainer>
+        <AuthContainer>
           <AuthLinks>
             {loggedIn ? (
               <>
@@ -376,7 +376,7 @@ function Navbar() {
               </AuthLink>
             )}
           </AuthLinks>
-        </AuthContainer> */}
+        </AuthContainer>
       </MainNavbar>
 
       {/* 서비스 탭 */}
@@ -436,7 +436,7 @@ function Navbar() {
             문의하기
           </Link>
         </SideMenuLink>
-        {/* {loggedIn ? (
+        {loggedIn ? (
           <>
             <SideMenuLink isActive={false}>
               <a onClick={() => { handleLoginLogout(); toggleMenu(); }}>로그아웃</a>
@@ -449,7 +449,7 @@ function Navbar() {
           <SideMenuLink isActive={false}>
             <a onClick={() => { handleLoginLogout(); toggleMenu(); }}>로그인</a>
           </SideMenuLink>
-        )} */}
+        )}
       </SideMenu>
     </NavbarContainer>
   );
