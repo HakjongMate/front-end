@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/icons/HakjongMate_Blue.png';
+import users from '../assets/data/users.json'; // users.json 파일을 임포트합니다.
 
 const LoginContainer = styled.div`
   max-width: 500px;
@@ -117,11 +118,16 @@ const LoginPage: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // 실제 로그인 로직을 구현하세요 (예: API 호출)
-    if (formData.username === 'test' && formData.password === '1234') {
-      navigate('/home');
+    // users.json의 id가 '1'인 유저의 데이터를 저장
+    const userData = users.find((user) => user.id === '1');
+
+    if (userData) {
+      // 유저 데이터를 로컬 스토리지에 저장 임시용
+      localStorage.setItem('user', JSON.stringify(userData));
+      // 홈 페이지로 이동
+      navigate('/');
     } else {
-      setError('아이디 또는 비밀번호가 잘못되었습니다.');
+      setError('유저 정보를 찾을 수 없습니다.');
     }
   };
 
