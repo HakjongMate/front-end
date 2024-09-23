@@ -1,0 +1,36 @@
+[
+  {
+    "id": "1",
+    "username": "김도현",
+    "password": "password1",
+    "high_school": "00고등학교",
+    "grade": 1,
+    "score": 1.5,
+    "dream": "개발자",
+    "profile_color": "#ffc107",
+    "profile_name": "도현",
+    "firstChoice": "서울대학교",
+    "firstMajor": "컴퓨터공학과",
+    "secondChoice": "연세대학교",
+    "secondMajor": "컴퓨터공학과",
+    "thirdChoice": null,
+    "thirdMajor": null
+  },
+  {
+    "id": "2",
+    "username": "student2",
+    "password": "password2",
+    "high_school": "**고등학교",
+    "grade": 2,
+    "score": 2,
+    "dream": "사업가",
+    "profile_color": "#f44336",
+    "profile_name": "다라",
+    "firstChoice": "서울대학교",
+    "firstMajor": "컴퓨터공학과",
+    "secondChoice": "고려대학교",
+    "secondMajor": "컴퓨터공학과",
+    "thirdChoice": "한양대학교",
+    "thirdMajor": "컴퓨터공학과"
+  }
+]
