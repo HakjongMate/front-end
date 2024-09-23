@@ -21,10 +21,18 @@ const Input = styled.input`
   border-radius: 5px;
   font-weight: 300;
   font-size: 14px;
+
+  @media (max-width: 480px) {
+    width: 90%;
+  }
 `;
 
 const TextAreaWrapper = styled.div`
   margin-bottom: 20px;
+
+  @media (max-width: 480px) {
+    width: 90%;
+  }
 `;
 
 const TextArea = styled.textarea`
@@ -55,6 +63,11 @@ const CheckboxLabel = styled.label`
   color: #202594;
   cursor: pointer;
   text-align: justify;
+  
+  @media (max-width: 480px) {
+    width: 80%;
+    margin-right: 10px;
+  }
 `;
 
 const ButtonWrapper = styled.div`
@@ -63,6 +76,11 @@ const ButtonWrapper = styled.div`
   width: 100%;
   margin-left: 15px;
   margin-bottom: 40px;
+
+  @media (max-width: 480px) {
+    width: 90%;
+    margin-right: 10px;
+  }
 `;
 
 const Button = styled.button`
