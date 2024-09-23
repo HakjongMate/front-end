@@ -59,6 +59,15 @@ const ReviewList = styled.div`
   max-width: 800px;
 `;
 
+const DetailImage = styled.img`
+  width: 75%;
+  margin-bottom: 10px;
+
+  @media (max-width: 1024px) {
+    width: 90%;
+  }
+`;
+
 interface TabsProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
@@ -102,11 +111,10 @@ const TabsComponent: React.FC<TabsProps> = ({
       <TabContent>
         {activeTab === "detail" && product.detailImage.length > 0 ? (
           product.detailImage.map((image: string, index: number) => (
-            <img
+            <DetailImage
               key={index}
               src={image}
               alt={`Detail ${index}`}
-              style={{ width: "75%", marginBottom: "10px" }}
             />
           ))
         ) : activeTab === "detail" ? (
