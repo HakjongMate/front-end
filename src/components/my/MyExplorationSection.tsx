@@ -5,20 +5,7 @@ import ExplorationCard from './ExplorationCard';
 import InterestCard from './InterestCard'; 
 import exploresData from '../../assets/data/explores.json';
 import interestsData from '../../assets/data/interest.json';
-
-// state 변환 함수
-const mapStateToEnum = (state: string): 'IN_PROGRESS' | 'NOT_STARTED' | 'COMPLETED' => {
-  switch (state) {
-    case 'IN_PROGRESS':
-      return 'IN_PROGRESS';
-    case 'COMPLETED':
-      return 'COMPLETED';
-    case 'NOT_STARTED':
-      return 'NOT_STARTED';
-    default:
-      throw new Error(`Unknown state: ${state}`);
-  }
-};
+import { Link } from 'react-router-dom';
 
 const SectionWrapper = styled.div`
   padding: 40px 20px;
@@ -34,83 +21,125 @@ const Title = styled.h2`
 
 const CardsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 `;
 
 const TabContainer = styled.div`
   display: flex;
   margin-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0;
 `;
 
 const TabButton = styled.button<{ active: boolean }>`
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
-  background-color: ${({ active }) => (active ? '#202594' : '#f0f0f0')};
-  color: ${({ active }) => (active ? '#fff' : '#000')};
+  background-color: transparent;
+  color: ${({ active }) => (active ? '#3F5BF6' : '#333')};
   border: none;
-  border-radius: 8px;
-  margin-right: 10px;
+  border-bottom: ${({ active }) => (active ? '2px solid #3F5BF6' : 'none')};
   cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:not(:last-child) {
+    margin-right: 8px;
+  }
+
+  &:hover {
+    color: #3F5BF6;
+  }
+`;
+
+const ViewMoreButton = styled(Link)`
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 20px;
+  text-align: right;
+  color: #3F5BF6;
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
 const MyExplorationSection: React.FC = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [activeTab, setActiveTab] = useState<'탐구' | '관심사'>('탐구');
+  const [activeTab, setActiveTab] = useState<'전체' | '관심사' | 'AI 탐구 결과' | '탐구 결과'>('전체');
   const [explorations, setExplorations] = useState<Exploration[]>([]);
   const [interests, setInterests] = useState<Interest[]>([]);
 
   useEffect(() => {
-    // LocalStorage에서 사용자 정보 가져오기
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
       setUserProfile(parsedUser);
     }
     const userId = userProfile?.id;
-    console.log(userId);
-    console.log(exploresData);
-    console.log(interestsData);
 
     if (userId) {
-      // 탐구 데이터를 사용자 ID에 따라 필터링하고, state를 제한된 값으로 변환
       const filteredExplorations = exploresData
         .filter((explore) => explore.userId === userId)
         .map((explore) => ({
           ...explore,
-          state: mapStateToEnum(explore.state),  // state 값을 제한된 타입으로 변환
+          state: explore.state as 'IN_PROGRESS' | 'NOT_STARTED' | 'COMPLETED',
         }));
       setExplorations(filteredExplorations);
 
-      // 관심사 데이터를 사용자 ID에 따라 필터링
       const filteredInterests = interestsData.filter((interest) => interest.userId === userId);
       setInterests(filteredInterests);
     }
-  }, []);
+  }, [userProfile]);
+
+  const filteredItems = () => {
+    let items: (Exploration | Interest)[] = [];
+    switch (activeTab) {
+      case '관심사':
+        items = interests;
+        break;
+      case 'AI 탐구 결과':
+        items = explorations.filter((explore) => explore.ai);
+        break;
+      case '탐구 결과':
+        items = explorations.filter((explore) => explore);
+        break;
+      default:
+        items = [...interests, ...explorations];
+    }
+    return items.slice(0, 6).map((item) => 
+      'state' in item ? (
+        <ExplorationCard key={item.id} {...item} />
+      ) : (
+        <InterestCard key={item.id} {...item} />
+      )
+    );
+  };
 
   return (
     <SectionWrapper>
       <Title>My 탐구 & 관심사</Title>
 
       <TabContainer>
-        <TabButton active={activeTab === '탐구'} onClick={() => setActiveTab('탐구')}>
-          탐구
-        </TabButton>
-        <TabButton active={activeTab === '관심사'} onClick={() => setActiveTab('관심사')}>
-          관심사
-        </TabButton>
+        {['전체', '관심사', 'AI 탐구 결과', '탐구 결과'].map((tab) => (
+          <TabButton
+            key={tab}
+            active={activeTab === tab}
+            onClick={() => setActiveTab(tab as typeof activeTab)}
+          >
+            {tab}
+          </TabButton>
+        ))}
       </TabContainer>
 
       <CardsGrid>
-        {activeTab === '탐구'
-          ? explorations.map((explore) => (
-              <ExplorationCard key={explore.id} {...explore} />
-            ))
-          : interests.map((interest) => (
-              <InterestCard key={interest.id} {...interest} />
-            ))}
+        {filteredItems()}
       </CardsGrid>
+
+      <ViewMoreButton to="/my/exploration">더보기 &gt;</ViewMoreButton>
     </SectionWrapper>
   );
 };
