@@ -14,7 +14,8 @@
       "/images/book/detail04.webp",
       "/images/book/detail05.webp",
       "/images/book/detail06.webp"
-    ]
+    ],
+    "deliveryInfo": "익일 10:00 AM 입금 확인 후 일괄 이메일 전송"
   },
   {
     "id": 2,
@@ -30,7 +31,8 @@
       "/images/analyze/detail03.webp",
       "/images/analyze/detail04.webp",
       "/images/analyze/detail05.webp"
-    ]
+    ],
+    "deliveryInfo": "3일 내 10:00 AM 입금 확인 후 일괄 이메일 전송"
   },
   {
     "id": 3,
@@ -40,6 +42,7 @@
     "price": "80,000",
     "discout": 0.2,
     "rating": 5,
-    "detailImage": []
+    "detailImage": [],
+    "deliveryInfo": "결제 후 즉시 확인"
   }
 ]

@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "serviceId": 3,
+    "quantity": 1,
+    "price": 89000,
+    "discountPrice": 49000,
+    "deliveryInfo": "10:00 AM 이메일 전송"
+  },
+  {
+    "id": 2,
+    "serviceId": 1,
+    "quantity": 1,
+    "price": 80000,
+    "discountPrice": 56000,
+    "deliveryInfo": "구매 후 즉시 이메일 전송"
+  }
+]

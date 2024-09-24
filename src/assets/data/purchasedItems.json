@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "serviceId": 3,
+    "status": "PURCHASED",
+    "amount": 1,
+    "totalPrice": 89000,
+    "discountRate": 0.2,
+    "purchasedDate": "2021-08-01T00:00:00.00"
+  },
+  {
+    "id": 2,
+    "serviceId": 1,
+    "status": "REFUNDED",
+    "amount": 1,
+    "totalPrice": 56000,
+    "discountRate": 0.3,
+    "purchasedDate": "2021-08-02T00:00:00.00"
+  },
+  {
+    "id": 3,
+    "serviceId": 2,
+    "status": "CANCELED",
+    "amount": 1,
+    "totalPrice": 60000,
+    "discountRate": 0.2,
+    "purchasedDate": "2021-08-03T00:00:00.00"
+  },
+  {
+    "id": 4,
+    "serviceId": 2,
+    "status": "WAITING",
+    "amount": 1,
+    "totalPrice": 60000,
+    "discountRate": 0.2,
+    "purchasedDate": "2021-08-03T00:00:00.00"
+  }
+]
