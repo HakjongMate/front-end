@@ -1,22 +1,27 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const ItemWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 20px 0;
+const ItemWrapper = styled.tr`
   border-bottom: 1px solid #e0e0e0;
 `;
 
-const CheckBox = styled.input`
-  margin-right: 20px;
+const CheckboxCell = styled.td`
+  text-align: center;
+  vertical-align: middle;
+  width: 50px;
+`;
+
+const ProductCell = styled.td`
+  display: flex;
+  align-items: center;
+  padding: 20px 10px;
 `;
 
 const ItemImage = styled.img`
-  width: 100px;
-  height: 100px;
-  margin-right: 20px;
+  width: 120px;
+  height: 120px;
   object-fit: cover;
+  margin-right: 3%;
 `;
 
 const ItemDetails = styled.div`
@@ -24,67 +29,102 @@ const ItemDetails = styled.div`
 `;
 
 const ItemTitle = styled.h3`
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
+  color: #000;
   margin-bottom: 5px;
 `;
 
 const ItemSubtitle = styled.p`
-  font-size: 14px;
-  color: #888;
-  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: 400;
+  color: #000;
 `;
 
-const PriceContainer = styled.div`
-  display: flex;
-  align-items: center;
+const PriceCell = styled.td`
+  text-align: center;
+  vertical-align: middle;
+  padding: 0px 10px 20px;
+  border-left: 1px solid #e0e0e0;
+  width: 150px;
 `;
 
 const OriginalPrice = styled.p`
-  font-size: 14px;
+  font-size: 18px;
   color: #888;
   text-decoration: line-through;
-  margin-right: 10px;
+  margin-bottom: 5px;
 `;
 
 const DiscountPrice = styled.p`
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
-  color: #202594;
+  color: #007BFF;
+  margin-bottom: 10px;
 `;
 
-const EditButton = styled.button`
-  background: none;
+const BuyButton = styled.button`
+  background-color: #007BFF;
+  font-size: 16px;
+  font-weight: 400;
+  color: #fff;
+  padding: 10px 15px;
   border: none;
+  border-radius: 20px;
   cursor: pointer;
-  color: #888;
-  margin-left: 10px;
 `;
 
-const DeliveryInfo = styled.p`
-  font-size: 14px;
-  color: #888;
-  margin-left: auto;
+const DeliveryCell = styled.td`
+  font-size: 15px; 
+  font-weight: 400;
+  color: #000;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  text-align: center;
+  vertical-align: middle;
+  padding: 20px 10px;
+  border-left: 1px solid #e0e0e0;
+  width: 120px;
 `;
 
-const CartItem: React.FC<{ item: any }> = ({ item }) => {
-  const originalPrice = parseInt(item.price.replace(',', ''));
-  const discountPrice = originalPrice * (1 - item.discout);
+interface CartItemProps {
+  item: {
+    id: number;
+    service: {
+      title: string;
+      subtitle: string;
+      image: string;
+      price: string;
+      discout: number;
+      deliveryInfo: string;
+    };
+  };
+  isSelected: boolean;
+  onSelect: () => void;
+}
+
+const CartItem: React.FC<CartItemProps> = ({ item, isSelected, onSelect }) => {
+  const originalPrice = parseInt(item.service.price.replace(',', ''));
+  const discountPrice = Math.round(originalPrice * (1 - item.service.discout));
 
   return (
     <ItemWrapper>
-      <CheckBox type="checkbox" checked readOnly />
-      <ItemImage src={item.image} alt={item.title} />
-      <ItemDetails>
-        <ItemTitle>{item.title}</ItemTitle>
-        <ItemSubtitle>{item.subtitle}</ItemSubtitle>
-        <PriceContainer>
-          <OriginalPrice>{originalPrice.toLocaleString()}원</OriginalPrice>
-          <DiscountPrice>{discountPrice.toLocaleString()}원</DiscountPrice>
-          <EditButton>✏️</EditButton>
-        </PriceContainer>
-      </ItemDetails>
-      <DeliveryInfo>10:00 AM<br />이메일 전송</DeliveryInfo>
+      <CheckboxCell>
+        <input type="checkbox" checked={isSelected} onChange={onSelect} />
+      </CheckboxCell>
+      <ProductCell>
+        <ItemImage src={item.service.image} alt={item.service.title} />
+        <ItemDetails>
+          <ItemTitle>{item.service.title}</ItemTitle>
+          <ItemSubtitle>{item.service.subtitle}</ItemSubtitle>
+        </ItemDetails>
+      </ProductCell>
+      <PriceCell>
+        <OriginalPrice>{originalPrice.toLocaleString()}원</OriginalPrice>
+        <DiscountPrice>{discountPrice.toLocaleString()}원</DiscountPrice>
+        <BuyButton>개별구매</BuyButton>
+      </PriceCell>
+      <DeliveryCell>{item.service.deliveryInfo}</DeliveryCell>
     </ItemWrapper>
   );
 };
