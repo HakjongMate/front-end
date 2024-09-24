@@ -4,17 +4,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import CopyrightIcon from '@mui/icons-material/Copyright';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-
-interface UserProfile {
-  id: string;
-  username: string;
-  high_school: string;
-  grade: number;
-  score: number;
-  dream: string;
-  profile_color: string;
-  profile_name: string;
-}
+import { UserProfile } from '../../types';
 
 const SectionContainer = styled.div`
   max-width: 1080px;
