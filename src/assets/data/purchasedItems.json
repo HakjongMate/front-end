@@ -6,7 +6,8 @@
     "amount": 1,
     "totalPrice": 89000,
     "discountRate": 0.2,
-    "purchasedDate": "2021-08-01T00:00:00.00"
+    "purchasedDate": "2021-08-01T00:00:00.00",
+    "description": ""
   },
   {
     "id": 2,
@@ -15,7 +16,12 @@
     "amount": 1,
     "totalPrice": 56000,
     "discountRate": 0.3,
-    "purchasedDate": "2021-08-02T00:00:00.00"
+    "purchasedDate": "2021-08-02T00:00:00.00",
+    "description": [
+      "수학과 - 미적분",
+      "개발자",
+      "서울대학교 컴퓨터공학과, 연세대학교 컴퓨터공학과"
+    ]
   },
   {
     "id": 3,
@@ -24,7 +30,8 @@
     "amount": 1,
     "totalPrice": 60000,
     "discountRate": 0.2,
-    "purchasedDate": "2021-08-03T00:00:00.00"
+    "purchasedDate": "2021-08-03T00:00:00.00",
+    "description": ""
   },
   {
     "id": 4,
@@ -33,6 +40,7 @@
     "amount": 1,
     "totalPrice": 60000,
     "discountRate": 0.2,
-    "purchasedDate": "2021-08-03T00:00:00.00"
+    "purchasedDate": "2021-08-03T00:00:00.00",
+    "description": ""
   }
 ]
