@@ -41,6 +41,13 @@ const ItemSubtitle = styled.p`
   color: #000;
 `;
 
+const Description = styled.p`
+  font-size: 14px;
+  font-weight: 400;
+  color: #555;
+  margin-top: 5px;
+`;
+
 const PriceCell = styled.td`
   text-align: center;
   vertical-align: middle;
@@ -75,7 +82,7 @@ const BuyButton = styled.button`
 `;
 
 const DeliveryCell = styled.td`
-  font-size: 15px; 
+  font-size: 15px;
   font-weight: 400;
   color: #000;
   line-height: 1.5;
@@ -98,6 +105,7 @@ interface CartItemProps {
       discout: number;
       deliveryInfo: string;
     };
+    description?: string[];
   };
   isSelected: boolean;
   onSelect: () => void;
@@ -106,6 +114,7 @@ interface CartItemProps {
 const CartItem: React.FC<CartItemProps> = ({ item, isSelected, onSelect }) => {
   const originalPrice = parseInt(item.service.price.replace(',', ''));
   const discountPrice = Math.round(originalPrice * (1 - item.service.discout));
+  const description = item.description ? item.description.join(' | ') : '';
 
   return (
     <ItemWrapper>
@@ -117,6 +126,7 @@ const CartItem: React.FC<CartItemProps> = ({ item, isSelected, onSelect }) => {
         <ItemDetails>
           <ItemTitle>{item.service.title}</ItemTitle>
           <ItemSubtitle>{item.service.subtitle}</ItemSubtitle>
+          {description && <Description>{description}</Description>}
         </ItemDetails>
       </ProductCell>
       <PriceCell>

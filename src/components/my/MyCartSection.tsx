@@ -35,9 +35,15 @@ const CartSummary = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
-  padding: 20px 0;
+  padding: 20px 0 0;
   border-top: 1px solid #e0e0e0;
   font-size: 16px;
+`;
+
+const Divider = styled.hr`
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin-bottom: 20px;
 `;
 
 const TotalItems = styled.p`
@@ -170,6 +176,8 @@ const MyCartSection: React.FC = () => {
           </FinalPrice>
         </TotalPrice>
       </CartSummary>
+
+      <Divider />
 
       <ButtonContainer>
         <CancelButton>선택 결제하기</CancelButton>
