@@ -24,7 +24,7 @@ import MyPurchasePage from './pages/MyPages/MyPurchasePage';
 
 import AISubjectPage from './pages/ai/AISubjectPage';
 import AIUniversityPage from './pages/ai/AIUniversityPage';
-import AIInterestPage from './pages/ai/AIInterestPage';
+import AIExplorationPage from './pages/ai/AIExplorationPage';
 import AIPassPage from './pages/ai/AIPassPage';
 import AIWaitingPage from './pages/ai/AIWaitingPage';
 
@@ -55,7 +55,7 @@ function App() {
 
         <Route path="/ai/subject" element={<AISubjectPage />} />
         <Route path="/ai/university" element={<AIUniversityPage />} />
-        <Route path="/ai/interest" element={<AIInterestPage />} />
+        <Route path="/ai/exploration" element={<AIExplorationPage />} />
         <Route path="/ai/pass" element={<AIPassPage />} />
         <Route path="/ai/waiting" element={<AIWaitingPage />} />
       </Routes>

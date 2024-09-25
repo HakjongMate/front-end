@@ -55,12 +55,10 @@ const AIUniversityPage: React.FC = () => {
     setModalVisible(true);
   };
 
-  // "다음" 버튼 클릭 시 "/ai/interest"로 이동
   const handleNext = () => {
-    navigate('/ai/interest');
+    navigate('/ai/exploration');
   };
 
-  // "이전" 버튼 클릭 시 "/ai/university"로 이동
   const handleBack = () => {
     navigate('/ai/subject');
   };
