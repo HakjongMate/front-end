@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ProductInfo from "../components/services/ProductInfo";
 import TabsComponent from "../components/services/TabsComponent";
 import serviceData from "../assets/data/service.json";
-import analyzeQnA from "../assets/data/analyzeqna.json"; // 분석 서비스 Q&A 데이터 가져오기
+import analyzeQnA from "../assets/data/analyzeqna.json";
 import styled from "styled-components";
 
 const PageWrapper = styled.div`
@@ -27,7 +27,6 @@ const ServiceAnalyzeDetailPage: React.FC = () => {
     discountedPrice: `${discountedPrice}`,
   };
 
-  // QnA 데이터를 TabsComponent에 전달
   const qnaData = analyzeQnA;
 
   return (
