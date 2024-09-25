@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import StepIndicator from "../../components/ai/StepIndicator";
 import subjectData from "../../assets/data/subject.json";
+import ButtonContainer from "../../components/ai/ButtonContainer";
 
 const PageWrapper = styled.div`
   max-width: 1200px;
@@ -67,33 +68,11 @@ const SubjectButton = styled.button<{ isSelected: boolean }>`
   }
 `;
 
-const NextButtonContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
-`;
-
-const NextButton = styled.button`
-  background-color: #1a237e;
-  color: white;
-  border: none;
-  padding: 10px 40px;
-  border-radius: 20px;
-  font-size: 18px;
-  font-weight: 400;
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: #0d47a1;
-  }
-`;
-
 const AISubjectPage: React.FC = () => {
   const [selectedSubject, setSelectedSubject] = useState<string>("");
 
   const handleSubjectClick = (subject: string) => {
-    setSelectedSubject(subject); // 단 하나의 과목만 선택되도록 설정
+    setSelectedSubject(subject);
   };
 
   const handleNextClick = () => {
@@ -136,9 +115,11 @@ const AISubjectPage: React.FC = () => {
           ))}
         </tbody>
       </SubjectsTable>
-      <NextButtonContainer>
-        <NextButton onClick={handleNextClick}>다음</NextButton>
-      </NextButtonContainer>
+
+      <ButtonContainer
+        onNextClick={handleNextClick}
+        isNextDisabled={!selectedSubject}
+      />
     </PageWrapper>
   );
 };
