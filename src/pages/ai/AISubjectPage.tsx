@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import StepIndicator from "../../components/ai/StepIndicator";
 import subjectData from "../../assets/data/subject.json";
 import ButtonContainer from "../../components/ai/ButtonContainer";
@@ -71,15 +72,17 @@ const SubjectButton = styled.button<{ isSelected: boolean }>`
 const AISubjectPage: React.FC = () => {
   const [selectedSubject, setSelectedSubject] = useState<string>("");
 
+  const navigate = useNavigate();
+
   const handleSubjectClick = (subject: string) => {
     setSelectedSubject(subject);
   };
 
   const handleNextClick = () => {
     if (selectedSubject) {
-      console.log("Selected subject:", selectedSubject);
+      navigate("/ai/university");
     } else {
-      alert("Please select at least one subject.");
+      alert("과목을 선택해주세요.");
     }
   };
 
