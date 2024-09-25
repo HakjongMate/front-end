@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import { Exploration } from '../../types';
 
 const CardWrapper = styled.div`
@@ -43,8 +44,8 @@ const TagContainer = styled.div`
 `;
 
 const Tag = styled.span<{ backgroundColor: string; color: string }>`
-  background-color: ${props => props.backgroundColor};
-  color: ${props => props.color};
+  background-color: ${(props) => props.backgroundColor};
+  color: ${(props) => props.color};
   font-size: 14px;
   font-weight: 400;
   padding: 8px 15px;
@@ -73,11 +74,9 @@ const ExplorationCard: React.FC<Exploration> = ({
   state,
   createDate,
   ai,
-  motive,
-  result,
-  actions,
-  subjectId,
 }) => {
+  const navigate = useNavigate(); // useNavigate hook으로 페이지 이동 구현
+
   const getStateText = (state: string) => {
     switch (state) {
       case 'NOT_STARTED':
@@ -92,7 +91,7 @@ const ExplorationCard: React.FC<Exploration> = ({
   };
 
   const handleClick = () => {
-    console.log(`Navigating to ExplorationDetail with id: ${id}`);
+    navigate(`/my/exploration/detail/${id}`); // 탐구 상세 페이지로 이동
   };
 
   return (
