@@ -22,6 +22,12 @@ import MyExplorationDetailPage from './pages/MyPages/MyExplorationDetailPage';
 import MyInterestDetailPage from './pages/MyPages/MyInterestDetailPage';
 import MyPurchasePage from './pages/MyPages/MyPurchasePage';
 
+import AISubjectPage from './pages/ai/AISubjectPage';
+import AIUniversityPage from './pages/ai/AIUniversityPage';
+import AIInterestPage from './pages/ai/AIInterestPage';
+import AIPassPage from './pages/ai/AIPassPage';
+import AIWaitingPage from './pages/ai/AIWaitingPage';
+
 function App() {
   return (
     <>
@@ -39,12 +45,19 @@ function App() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+
         <Route path="/my" element={<MyPage />} />
         <Route path="/my/cart" element={<MyCartPage />} />
         <Route path="/my/exploration" element={<MyExplorationPage />} />
         <Route path="/my/exploration/detail/:id" element={<MyExplorationDetailPage />} />
         <Route path="/my/interest/detail/:id" element={<MyInterestDetailPage />} />
         <Route path="/my/purchase" element={<MyPurchasePage />} />
+
+        <Route path="/ai/subject" element={<AISubjectPage />} />
+        <Route path="/ai/university" element={<AIUniversityPage />} />
+        <Route path="/ai/interest" element={<AIInterestPage />} />
+        <Route path="/ai/pass" element={<AIPassPage />} />
+        <Route path="/ai/waiting" element={<AIWaitingPage />} />
       </Routes>
     </>
   );
