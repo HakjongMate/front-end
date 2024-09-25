@@ -20,7 +20,7 @@ const Container = styled.div`
 const PreviewButton = styled.button<{ disabled: boolean }>`
   background-color: ${(props) => (props.disabled ? "#e0e0e0" : "#ffffff")};
   color: ${(props) => (props.disabled ? "#aaa" : "#000")};
-  border: 1px solid ${(props) => (props.disabled ? "#aaa" : "#000")};
+  border: 1px solid ${(props) => (props.disabled ? "#aaa" : "#666")};
   padding: 10px 40px;
   border-radius: 20px;
   font-size: 18px;
