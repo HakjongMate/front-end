@@ -27,6 +27,7 @@ import AIUniversityPage from './pages/ai/AIUniversityPage';
 import AIExplorationPage from './pages/ai/AIExplorationPage';
 import AIPassPage from './pages/ai/AIPassPage';
 import AIWaitingPage from './pages/ai/AIWaitingPage';
+import ExplorationAddPage from './pages/ai/ExplorationAddPage';
 
 function App() {
   return (
@@ -58,6 +59,7 @@ function App() {
         <Route path="/ai/exploration" element={<AIExplorationPage />} />
         <Route path="/ai/pass" element={<AIPassPage />} />
         <Route path="/ai/waiting" element={<AIWaitingPage />} />
+        <Route path="/ai/exploration/add" element={<ExplorationAddPage />} />
       </Routes>
     </>
   );
