@@ -58,7 +58,7 @@ const SubjectButton = styled.button<{ isSelected: boolean }>`
   color: ${(props) => (props.isSelected ? "white" : "#333")};
   border: none;
   padding: 6px 10px;
-  border-radius: 4px;
+  border-radius: 10px;
   font-size: 14px;
   cursor: pointer;
   transition: all 0.2s ease;
