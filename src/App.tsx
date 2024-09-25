@@ -41,7 +41,7 @@ function App() {
         <Route path="/my" element={<MyPage />} />
         <Route path="/my/cart" element={<MyCartPage />} />
         <Route path="/my/exploration" element={<MyExplorationPage />} />
-        <Route path="/my/exploration/detail:id" element={<MyExplorationDetailPage />} />
+        <Route path="/my/exploration/detail/:id" element={<MyExplorationDetailPage />} />
         <Route path="/my/purchase" element={<MyPurchasePage />} />
       </Routes>
     </>
