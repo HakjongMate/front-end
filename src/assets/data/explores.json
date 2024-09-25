@@ -1,28 +1,28 @@
 [
   {
     "id": "1",
-    "user_id": "1",
-    "subject_id": "1",
+    "userId": "1",
+    "subjectId": "1",
     "title": "AI 기반 학습 시스템 탐구",
-    "state": "탐구 진행 중",
+    "state": "IN_PROGRESS",
     "motive": "AI 기술에 대한 관심",
     "contents": "AI를 활용한 학습 시스템의 가능성과 적용 사례를 탐구합니다.",
     "result": "초기 설계 완료",
     "actions": "자료 조사 및 인터뷰",
     "ai": true,
-    "create_date": "2024-01-01"
+    "createDate": "2024-01-01"
   },
   {
     "id": "2",
-    "user_id": "1",
-    "subject_id": "2",
+    "userId": "1",
+    "subjectId": "2",
     "title": "데이터베이스 최적화 탐구",
-    "state": "탐구 완료",
+    "state": "COMPLETED",
     "motive": "효율적인 데이터 관리를 위해",
     "contents": "데이터베이스 성능을 최적화하는 방법을 연구하고 실험합니다.",
     "result": "성능 향상 확인",
     "actions": "실험 및 결과 분석",
     "ai": false,
-    "create_date": "2024-01-02"
+    "createDate": "2024-01-02"
   }
 ]
