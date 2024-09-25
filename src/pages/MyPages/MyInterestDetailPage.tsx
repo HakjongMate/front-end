@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { useParams } from "react-router-dom";
-import ExplorationsData from "../../assets/data/explores.json";
-import { Exploration } from "../../types";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
+import InterestsData from '../../assets/data/interest.json';
+import { Interest } from '../../types';
 
 const PageWrapper = styled.div`
   max-width: 1080px;
@@ -101,73 +101,41 @@ const SaveButton = styled.button`
   }
 `;
 
-const MyExplorationDetailPage: React.FC = () => {
+const MyInterestDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [exploration, setExploration] = useState<Exploration | null>(null);
-  const [insight, setInsight] = useState("");
+  const [interest, setInterest] = useState<Interest | null>(null);
+  const [insight, setInsight] = useState('');
 
   useEffect(() => {
-    const foundExploration = ExplorationsData.find((exp) => exp.id === id);
-    if (foundExploration) {
-      setExploration(foundExploration as Exploration);
+    const foundInterest = InterestsData.find((int) => int.id === id);
+    if (foundInterest) {
+      setInterest(foundInterest as Interest);
     }
   }, [id]);
 
-  if (!exploration) {
+  if (!interest) {
     return <div>Loading...</div>;
   }
 
-  const getStateText = (state: string) => {
-    switch (state) {
-      case "NOT_STARTED":
-        return "탐구 진행 전";
-      case "IN_PROGRESS":
-        return "탐구 진행 중";
-      case "COMPLETED":
-        return "탐구 완료";
-      default:
-        return "알 수 없음";
-    }
-  };
-
   const handleSave = () => {
-    console.log("Saving insight:", insight);
+    console.log('Saving insight:', insight);
+    // 실제로 백엔드에 데이터를 보내는 로직 추가 가능
   };
 
   return (
     <PageWrapper>
-      <PageType>{exploration.ai ? "AI 주제 추천" : "탐구"}</PageType>
+      <PageType>관심사</PageType>
       <Divider />
-      <Title>{exploration.title}</Title>
+      <Title>{interest.title}</Title>
       <TagContainer>
-        <Tag backgroundColor="#28A745" color="#FFF">
-          {getStateText(exploration.state)}
+        <Tag backgroundColor="#0F4ABE" color="#FFF">
+          최근 관심사
         </Tag>
-        {exploration.ai && (
-          <Tag backgroundColor="#FFC107" color="#000">
-            AI 추천
-          </Tag>
-        )}
       </TagContainer>
 
       <ContentSection>
-        <SectionTitle>탐구 동기</SectionTitle>
-        <Content>{exploration.motive}</Content>
-      </ContentSection>
-
-      <ContentSection>
-        <SectionTitle>탐구 내용</SectionTitle>
-        <Content>{exploration.contents}</Content>
-      </ContentSection>
-
-      <ContentSection>
-        <SectionTitle>탐구 결과</SectionTitle>
-        <Content>{exploration.result}</Content>
-      </ContentSection>
-
-      <ContentSection>
-        <SectionTitle>향후 행동</SectionTitle>
-        <Content>{exploration.actions}</Content>
+        <SectionTitle>관심사 설명</SectionTitle>
+        <Content>{interest.contents}</Content>
       </ContentSection>
 
       <Divider />
@@ -187,4 +155,4 @@ const MyExplorationDetailPage: React.FC = () => {
   );
 };
 
-export default MyExplorationDetailPage;
+export default MyInterestDetailPage;

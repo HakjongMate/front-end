@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import { Interest } from '../../types';
 
 const CardWrapper = styled.div`
@@ -15,6 +16,7 @@ const CardWrapper = styled.div`
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
   }
 `;
 
@@ -65,9 +67,10 @@ const Description = styled.p`
 `;
 
 const InterestCard: React.FC<Interest> = ({ id, title, contents, createDate, subjectId }) => {
+  const navigate = useNavigate();
+
   const handleClick = () => {
-    // Navigate to detail page (implement based on your routing setup)
-    console.log(`Navigating to InterestDetail with id: ${id}`);
+    navigate(`/my/interest/detail/${id}`);
   };
 
   return (

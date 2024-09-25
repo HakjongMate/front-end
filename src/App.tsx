@@ -19,6 +19,7 @@ import MyPage from './pages/MyPages/MyPage';
 import MyCartPage from './pages/MyPages/MyCartPage';
 import MyExplorationPage from './pages/MyPages/MyExplorationPage';
 import MyExplorationDetailPage from './pages/MyPages/MyExplorationDetailPage';
+import MyInterestDetailPage from './pages/MyPages/MyInterestDetailPage';
 import MyPurchasePage from './pages/MyPages/MyPurchasePage';
 
 function App() {
@@ -41,7 +42,8 @@ function App() {
         <Route path="/my" element={<MyPage />} />
         <Route path="/my/cart" element={<MyCartPage />} />
         <Route path="/my/exploration" element={<MyExplorationPage />} />
-        <Route path="/my/exploration/detail:id" element={<MyExplorationDetailPage />} />
+        <Route path="/my/exploration/detail/:id" element={<MyExplorationDetailPage />} />
+        <Route path="/my/interest/detail/:id" element={<MyInterestDetailPage />} />
         <Route path="/my/purchase" element={<MyPurchasePage />} />
       </Routes>
     </>
