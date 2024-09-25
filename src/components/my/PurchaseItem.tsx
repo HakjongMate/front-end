@@ -93,7 +93,7 @@ const PurchaseItem: React.FC<PurchaseItemProps> = ({ item }) => {
     PURCHASED: "구매 완료",
     REFUNDED: "환불 완료",
     CANCELED: "취소 완료",
-    WAITING: "구매 대기 중"
+    WAITING: "전송 대기 중"
   };
 
   // 서비스에 따라 버튼을 다르게 렌더링
