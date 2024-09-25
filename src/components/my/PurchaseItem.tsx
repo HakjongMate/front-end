@@ -54,7 +54,7 @@ const ActionButton = styled.button`
   padding: 8px 16px;
   border: 1px solid #ccc;
   border-radius: 20px;
-  background-color: #fff;
+  background-color: #fff; 
   cursor: pointer;
 `;
 
