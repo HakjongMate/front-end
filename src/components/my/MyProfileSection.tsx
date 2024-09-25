@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import EditIcon from '@mui/icons-material/Edit';
-import CopyrightIcon from '@mui/icons-material/Copyright';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import MyProfileEditModal from './MyProfileEditModal';
 import { UserProfile } from '../../types';
 
 const SectionContainer = styled.div`
@@ -29,7 +27,6 @@ const ProfileInfo = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  padding: 10px;
 `;
 
 const UserDetails = styled.div`
@@ -41,7 +38,7 @@ const ProfileCircle = styled.div<{ color: string }>`
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background-color: ${props => props.color};
+  background-color: ${(props) => props.color};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -106,6 +103,7 @@ const MyProfileSection: React.FC = () => {
   const [coin, setCoin] = useState<number>(0);
   const [explorationCount, setExplorationCount] = useState<number>(0);
   const [daysTogether, setDaysTogether] = useState<number>(0);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     // LocalStorage에서 사용자 정보 가져오기
@@ -115,11 +113,16 @@ const MyProfileSection: React.FC = () => {
       setUserProfile(parsedUser);
     }
 
-    // 탐구력 코인 및 기타 정보 설정 (임의 데이터로 설정된 부분)
+    // 탐구력 코인 및 기타 정보 설정
     setCoin(1000);
     setExplorationCount(5);
     setDaysTogether(324);
   }, []);
+
+  const handleSave = (updatedProfile: UserProfile) => {
+    setUserProfile(updatedProfile);
+    localStorage.setItem('user', JSON.stringify(updatedProfile));
+  };
 
   if (!userProfile) {
     return null;
@@ -140,7 +143,7 @@ const MyProfileSection: React.FC = () => {
                 <UserInfo>{userProfile.dream}</UserInfo>
               </TextInfo>
             </UserDetails>
-            <EditButton>
+            <EditButton onClick={() => setIsModalOpen(true)}>
               <EditIcon />
             </EditButton>
           </ProfileInfo>
@@ -148,19 +151,27 @@ const MyProfileSection: React.FC = () => {
         
         <Card>
           <StatItem>
-            <CopyrightIcon />
-            탐구력 코인<StatValue>{coin} C</StatValue>
+            <span>탐구력 코인</span>
+            <StatValue>{coin} C</StatValue>
           </StatItem>
           <StatItem>
-            <CheckCircleOutlineIcon />
-            학종메이트와 함께 진행한 탐구수<StatValue>{explorationCount}개</StatValue>
+            <span>학종메이트와 함께 진행한 탐구수</span>
+            <StatValue>{explorationCount}개</StatValue>
           </StatItem>
           <StatItem>
-            <CalendarTodayIcon />
-            학종메이트와 함께 한 날<StatValue>{daysTogether}일</StatValue>
+            <span>학종메이트와 함께 한 날</span>
+            <StatValue>{daysTogether}일</StatValue>
           </StatItem>
         </Card>
       </ProfileContainer>
+
+      {isModalOpen && (
+        <MyProfileEditModal
+          userProfile={userProfile}
+          onClose={() => setIsModalOpen(false)}
+          onSave={handleSave}
+        />
+      )}
     </SectionContainer>
   );
 };
