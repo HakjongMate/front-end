@@ -176,7 +176,7 @@ const MyExplorationDetailPage: React.FC = () => {
         <InsightInput
           value={insight}
           onChange={(e) => setInsight(e.target.value)}
-          placeholder="추가 인사이트를 입력하세요..."
+          placeholder="추가적인 인사이트들을 정리해서 기록하세요."
         />
         <ButtonContainer>
           <SaveButton onClick={handleSave}>저장하기</SaveButton>
