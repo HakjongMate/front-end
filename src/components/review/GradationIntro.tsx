@@ -4,7 +4,7 @@ import styled from "styled-components";
 const GradientContainer = styled.div`
   flex: 1;
   width: 100%;
-  background: linear-gradient(to bottom, #0f4abe, #002368);
+  background: linear-gradient(135deg, #0f4abe 0%, #002368 100%);
   padding: 50px 0;
   text-align: center;
 
