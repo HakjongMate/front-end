@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import UniversityEditCard from '../../components/ai/UniversityEditCard';
 import UniversityEditModal from '../../components/ai/UniversityEditModal';
 import StepIndicator from '../../components/ai/StepIndicator';
@@ -45,18 +46,23 @@ const AIUniversityPage: React.FC = () => {
     { name: '', major: '' },
   ]);
   
+  // useNavigate 훅을 사용하여 경로 이동 함수 생성
+  const navigate = useNavigate();
+  
   // 대학교 정보를 수정을 위한 모달
   const openModal = (index: number) => {
     setSelectedIndex(index);
     setModalVisible(true);
   };
 
+  // "다음" 버튼 클릭 시 "/ai/interest"로 이동
   const handleNext = () => {
-    console.log('Next Step Clicked');
+    navigate('/ai/interest');
   };
 
+  // "이전" 버튼 클릭 시 "/ai/university"로 이동
   const handleBack = () => {
-    console.log('Back Step Clicked');
+    navigate('/ai/subject');
   };
 
   // 대학교 정보 저장 후 모달 닫기
@@ -90,8 +96,8 @@ const AIUniversityPage: React.FC = () => {
       </CardContainer>
 
       <ButtonContainer
-        onPreviousClick={handleNext}
-        onNextClick={handleBack}
+        onPreviousClick={handleBack}
+        onNextClick={handleNext}
       />
 
       {selectedIndex !== null && (
