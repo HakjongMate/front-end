@@ -22,12 +22,11 @@ const Title = styled.h2`
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 20px;
 `;
 
 const TableHeader = styled.th`
   border-bottom: 2px solid #e0e0e0;
-  padding: 10px;
+  padding: 0 10px 20px 10px;
   text-align: center;
 `;
 
@@ -137,10 +136,6 @@ const MyCartSection: React.FC = () => {
         const discountPrice = Math.round(price * (1 - item.service.discout));
         return total + discountPrice;
       }, 0);
-  };
-
-  const calculateDiscountAmount = () => {
-    return calculateTotal() - calculateDiscountTotal();
   };
 
   return (
