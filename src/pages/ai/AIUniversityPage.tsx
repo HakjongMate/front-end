@@ -2,49 +2,50 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import UniversityEditCard from '../../components/ai/UniversityEditCard';
 import UniversityEditModal from '../../components/ai/UniversityEditModal';
-import universitiesData from '../../assets/data/universities.json'; // Path to the universities.json
 import StepIndicator from '../../components/ai/StepIndicator';
 import ButtonContainer from '../../components/ai/ButtonContainer';
 
 const PageWrapper = styled.div`
-  max-width: 1200px;
+  max-width: 1080px;
   margin: 0 auto;
   padding: 40px 20px;
 `;
 
 const Title = styled.h1`
-  font-size: 24px;
+  font-size: 30px;
   font-weight: bold;
-  color: #333;
-  margin-bottom: 30px;
+  margin-top: 50px;
+  margin-bottom: 20px;
   text-align: center;
 `;
 
 const Subtitle = styled.h2`
   font-size: 18px;
-  color: #666;
+  font-weight: 400;
+  color: #000;
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
 `;
 
 const CardContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 30px;
+  margin-bottom: 5%;
 `;
 
 const AIUniversityPage: React.FC = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   
-  // Placeholder for universities selected
+  // 플레이스 홀더 대학교 선택
   const [targetUniversities, setTargetUniversities] = useState([
     { name: '서울대학교', major: '컴퓨터공학과' },
     { name: '', major: '' },
     { name: '', major: '' },
   ]);
   
-  // Open the modal to edit a university
+  // 대학교 정보를 수정을 위한 모달
   const openModal = (index: number) => {
     setSelectedIndex(index);
     setModalVisible(true);
@@ -52,14 +53,13 @@ const AIUniversityPage: React.FC = () => {
 
   const handleNext = () => {
     console.log('Next Step Clicked');
-    // Handle the next step navigation
   };
 
   const handleBack = () => {
     console.log('Back Step Clicked');
-    // Handle the back step navigation
   };
 
+  // 대학교 정보 저장 후 모달 닫기
   const saveUniversity = (name: string, major: string) => {
     if (selectedIndex !== null) {
       const updatedUniversities = [...targetUniversities];

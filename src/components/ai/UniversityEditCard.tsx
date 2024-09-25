@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Arrow from '../../assets/icons/arrow.png';
+import RightArrow from '../../assets/icons/RightArrow.png';
 import universities from '../../assets/data/universities.json';
 
 interface UniversityEditCardProps {
@@ -17,8 +18,7 @@ const Card = styled.div`
   align-items: center;
   background-color: #fff;
   border-radius: 20px;
-  width: 100%;
-  padding: 16px 10px;
+  padding: 15px 30px;
   border: 1px solid #cecece;
 `;
 
@@ -30,7 +30,7 @@ const Header = styled.div<{ color: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 5px;
+  margin-right: 20px;
 `;
 
 const ChoiceText = styled.p`
@@ -46,15 +46,14 @@ const ContentContainer = styled.div`
 `;
 
 const Icon = styled.img`
-  width: 60px;
-  height: 55px;
-  margin-right: 10px;
+  width: 70px;
+  height: 70px;
   object-fit: contain;
 `;
 
 const PlaceholderCircle = styled.div<{ color: string }>`
-  width: 55px;
-  height: 55px;
+  width: 70px;
+  height: 70px;
   background-color: ${(props) => props.color};
   border-radius: 50%;
   display: flex;
@@ -64,18 +63,18 @@ const PlaceholderCircle = styled.div<{ color: string }>`
 `;
 
 const TextContainer = styled.div`
+  margin-left: 20px;
   flex: 1;
 `;
 
 const UniversityName = styled.p`
   font-weight: bold;
-  font-size: 16px;
+  font-size: 18px;
   margin-bottom: 5px;
 `;
 
 const Major = styled.p`
-  font-size: 16px;
-  color: #666;
+  font-size: 18px;
 `;
 
 const NavButton = styled.button`
@@ -114,7 +113,7 @@ const UniversityEditCard: React.FC<UniversityEditCardProps> = ({
           <Icon src={iconSrc} alt={universityName} />
         ) : (
           <PlaceholderCircle color={color}>
-            <img src={Arrow} alt="arrow icon" style={{ width: '40px', height: '40px' }} />
+            <img src={Arrow} alt="arrow icon" style={{ width: '50px', height: '50px' }} />
           </PlaceholderCircle>
         )}
         <TextContainer>
@@ -122,8 +121,9 @@ const UniversityEditCard: React.FC<UniversityEditCardProps> = ({
           <Major>{major || '학과를 입력해주세요'}</Major>
         </TextContainer>
       </ContentContainer>
+
       <NavButton onClick={setModalVisible}>
-        <NavButtonImage src={Arrow} alt="arrow" />
+        <NavButtonImage src={RightArrow} alt="arrow" />
       </NavButton>
     </Card>
   );
