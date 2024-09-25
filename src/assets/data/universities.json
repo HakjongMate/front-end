@@ -2,226 +2,226 @@
   {
     "id": 1,
     "name": "서울대학교",
-    "icon": "../icons/university/snu.png"
+    "icon": "/icons/university/snu.png"
   },
   {
     "id": 2,
     "name": "연세대학교",
-    "icon": "../icons/university/yon.png"
+    "icon": "/icons/university/yon.png"
   },
   {
     "id": 3,
     "name": "고려대학교",
-    "icon": "../icons/university/kor.jpg"
+    "icon": "/icons/university/kor.jpg"
   },
   {
     "id": 4,
     "name": "서강대학교",
-    "icon": "../icons/university/sogang.gif"
+    "icon": "/icons/university/sogang.gif"
   },
   {
     "id": 5,
     "name": "한양대학교",
-    "icon": "../icons/university/hanyang.jpg"
+    "icon": "/icons/university/hanyang.jpg"
   },
   {
     "id": 6,
     "name": "성균관대학교",
-    "icon": "../icons/university/skku.png"
+    "icon": "/icons/university/skku.png"
   },
   {
     "id": 7,
     "name": "중앙대학교",
-    "icon": "../icons/university/cau.png"
+    "icon": "/icons/university/cau.png"
   },
   {
     "id": 8,
     "name": "이화여자대학교",
-    "icon": "../icons/university/ewha.png"
+    "icon": "/icons/university/ewha.png"
   },
   {
     "id": 9,
     "name": "서울시립대학교",
-    "icon": "../icons/university/uos.png"
+    "icon": "/icons/university/uos.png"
   },
   {
     "id": 10,
     "name": "경희대학교",
-    "icon": "../icons/university/kyunghee.png"
+    "icon": "/icons/university/kyunghee.png"
   },
   {
     "id": 11,
     "name": "건국대학교",
-    "icon": "../icons/university/konkuk.jpg"
+    "icon": "/icons/university/konkuk.jpg"
   },
   {
     "id": 12,
     "name": "경희대학교",
-    "icon": "../icons/university/kyunghee.png"
+    "icon": "/icons/university/kyunghee.png"
   },
   {
     "id": 13,
     "name": "서울교육대학교",
-    "icon": "../icons/university/snue.jpg"
+    "icon": "/icons/university/snue.jpg"
   },
   {
     "id": 14,
     "name": "한국외국어대학교",
-    "icon": "../icons/university/hufs.gif"
+    "icon": "/icons/university/hufs.gif"
   },
   {
     "id": 15,
     "name": "한국교원대학교",
-    "icon": "../icons/university/kcue.png"
+    "icon": "/icons/university/kcue.png"
   },
   {
     "id": 16,
     "name": "동국대학교",
-    "icon": "../icons/university/dongguk.png"
+    "icon": "/icons/university/dongguk.png"
   },
   {
     "id": 17,
     "name": "홍익대학교",
-    "icon": "../icons/university/hongik.jpg"
+    "icon": "/icons/university/hongik.jpg"
   },
   {
     "id": 18,
     "name": "숙명여자대학교",
-    "icon": "../icons/university/sookmyung.png"
+    "icon": "/icons/university/sookmyung.png"
   },
   {
     "id": 19,
     "name": "서울과학기술대학교",
-    "icon": "../icons/university/seoultech.png"
+    "icon": "/icons/university/seoultech.png"
   },
   {
     "id": 20,
     "name": "아주대학교",
-    "icon": "../icons/university/ajou.jpg"
+    "icon": "/icons/university/ajou.jpg"
   },
   {
     "id": 21,
     "name": "숭실대학교",
-    "icon": "../icons/university/soongsil.jpg"
+    "icon": "/icons/university/soongsil.jpg"
   },
   {
     "id": 22,
     "name": "경인교육대학교",
-    "icon": "../icons/university/ginue.jpg"
+    "icon": "/icons/university/ginue.jpg"
   },
   {
     "id": 23,
     "name": "국민대학교",
-    "icon": "../icons/university/kookmin.png"
+    "icon": "/icons/university/kookmin.png"
   },
   {
     "id": 24,
     "name": "인하대학교",
-    "icon": "../icons/university/inha.png"
+    "icon": "/icons/university/inha.png"
   },
   {
     "id": 25,
     "name": "세종대학교",
-    "icon": "../icons/university/sejong.png"
+    "icon": "/icons/university/sejong.png"
   },
   {
     "id": 26,
     "name": "부산대학교",
-    "icon": "../icons/university/pusan.png"
+    "icon": "/icons/university/pusan.png"
   },
   {
     "id": 27,
     "name": "성신여자대학교",
-    "icon": "../icons/university/sungshin.jpg"
+    "icon": "/icons/university/sungshin.jpg"
   },
   {
     "id": 28,
     "name": "단국대학교",
-    "icon": "../icons/university/dankook.png"
+    "icon": "/icons/university/dankook.png"
   },
   {
     "id": 29,
     "name": "경북대학교",
-    "icon": "../icons/university/knu.png"
+    "icon": "/icons/university/knu.png"
   },
   {
     "id": 30,
     "name": "한양대학교 에리카",
-    "icon": "../icons/university/hanyang.jpg"
+    "icon": "/icons/university/hanyang.jpg"
   },
   {
     "id": 31,
     "name": "한국항공대학교",
-    "icon": "../icons/university/kau.gif"
+    "icon": "/icons/university/kau.gif"
   },
   {
     "id": 32,
     "name": "인천대학교",
-    "icon": "../icons/university/incheon.png"
+    "icon": "/icons/university/incheon.png"
   },
   {
     "id": 33,
     "name": "광운대학교",
-    "icon": "../icons/university/kwangwoon.png"
+    "icon": "/icons/university/kwangwoon.png"
   },
   {
     "id": 34,
     "name": "한국외국어대학교 글로벌",
-    "icon": "../icons/university/hufs.gif"
+    "icon": "/icons/university/hufs.gif"
   },
   {
     "id": 35,
     "name": "중앙대학교 다빈치",
-    "icon": "../icons/university/cau.png"
+    "icon": "/icons/university/cau.png"
   },
   {
     "id": 36,
     "name": "전남대학교",
-    "icon": "../icons/university/chonnam.png"
+    "icon": "/icons/university/chonnam.png"
   },
   {
     "id": 37,
     "name": "충남대학교",
-    "icon": "../icons/university/chungnam.jpg"
+    "icon": "/icons/university/chungnam.jpg"
   },
   {
     "id": 38,
     "name": "상명대학교",
-    "icon": "../icons/university/smu.jpg"
+    "icon": "/icons/university/smu.jpg"
   },
   {
     "id": 39,
     "name": "가천대학교",
-    "icon": "../icons/university/gachon.jpg"
+    "icon": "/icons/university/gachon.jpg"
   },
   {
     "id": 40,
     "name": "덕성여자대학교",
-    "icon": "../icons/university/duksung.gif"
+    "icon": "/icons/university/duksung.gif"
   },
   {
     "id": 41,
     "name": "명지대학교",
-    "icon": "../icons/university/myongji.jpg"
+    "icon": "/icons/university/myongji.jpg"
   },
   {
     "id": 42,
     "name": "가톨릭대학교",
-    "icon": "../icons/university/catholic.jpg"
+    "icon": "/icons/university/catholic.jpg"
   },
   {
     "id": 43,
     "name": "동덕여자대학교",
-    "icon": "../icons/university/dongduk.png"
+    "icon": "/icons/university/dongduk.png"
   },
   {
     "id": 44,
     "name": "경기대학교",
-    "icon": "../icons/university/kyonggi.png"
+    "icon": "/icons/university/kyonggi.png"
   },
   {
     "id": 45,
     "name": "서울여자대학교",
-    "icon": "../icons/university/swuk.jpg"
+    "icon": "/icons/university/swuk.jpg"
   }
 ]
