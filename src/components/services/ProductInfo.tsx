@@ -202,6 +202,7 @@ const CartButton = styled(Button)`
 
 interface ProductInfoProps {
   product: {
+    id: number;
     title: string;
     subtitle: string;
     price: string;
@@ -219,19 +220,19 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const handleCartClick = () => {
     // LocalStorage에서 기존 장바구니 아이템 불러오기 (없으면 빈 배열)
     const cart = JSON.parse(localStorage.getItem("cartItems") || "[]");
-
+  
     // 새로운 아이템 생성 (고유 ID는 장바구니 아이템 수로 계산)
     const newItem = {
       id: cart.length + 1,
-      serviceId: product.title,
+      serviceId: product.id,
     };
-
+  
     // 장바구니에 아이템 추가
     cart.push(newItem);
-
+  
     // LocalStorage에 다시 저장
     localStorage.setItem("cartItems", JSON.stringify(cart));
-    
+  
     // 장바구니 추가 완료 메시지 표시
     toast.success("상품이 장바구니에 추가되었습니다!", {
       style: {
@@ -240,7 +241,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
         fontSize: "20px",
       },
     });
-  };
+  };  
 
   const handleShareClick = () => {
     navigator.clipboard.writeText(window.location.href);
