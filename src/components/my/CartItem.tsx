@@ -14,6 +14,7 @@ const CheckboxCell = styled.td`
 const ProductCell = styled.td`
   display: flex;
   align-items: center;
+  justify-content: space-between; /* 아이템과 X버튼 사이 간격 확보 */
   padding: 20px 10px;
 `;
 
@@ -94,6 +95,19 @@ const DeliveryCell = styled.td`
   width: 120px;
 `;
 
+const DeleteButton = styled.button`
+  background-color: transparent;
+  border: none;
+  font-size: 22px;
+  color: #888;
+  cursor: pointer;
+  margin-right: 10px;
+
+  &:hover {
+    color: #ff0000;
+  }
+`;
+
 interface CartItemProps {
   item: {
     id: number;
@@ -109,9 +123,10 @@ interface CartItemProps {
   };
   isSelected: boolean;
   onSelect: () => void;
+  onDelete: () => void;  // 삭제 기능 추가
 }
 
-const CartItem: React.FC<CartItemProps> = ({ item, isSelected, onSelect }) => {
+const CartItem: React.FC<CartItemProps> = ({ item, isSelected, onSelect, onDelete }) => {
   const originalPrice = parseInt(item.service.price.replace(',', ''));
   const discountPrice = Math.round(originalPrice * (1 - item.service.discout));
   const description = item.description ? item.description.join(' | ') : '';
@@ -128,6 +143,7 @@ const CartItem: React.FC<CartItemProps> = ({ item, isSelected, onSelect }) => {
           <ItemSubtitle>{item.service.subtitle}</ItemSubtitle>
           {description && <Description>{description}</Description>}
         </ItemDetails>
+        <DeleteButton onClick={onDelete}>×</DeleteButton> 
       </ProductCell>
       <PriceCell>
         <OriginalPrice>{originalPrice.toLocaleString()}원</OriginalPrice>

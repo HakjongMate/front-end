@@ -99,6 +99,7 @@ const MyCartSection: React.FC = () => {
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
+  // LocalStorage에서 cartItems 가져와서 cartItems 상태 업데이트
   useEffect(() => {
     // LocalStorage에서 cartItems 가져오기
     const cart = JSON.parse(localStorage.getItem("cartItems") || "[]");
@@ -115,6 +116,7 @@ const MyCartSection: React.FC = () => {
     setCartItems(itemsWithDetails);
   }, []);
 
+  // 아이템 선택/해제
   const handleSelectItem = (id: number) => {
     setSelectedItems((prevSelected) =>
       prevSelected.includes(id)
@@ -123,6 +125,19 @@ const MyCartSection: React.FC = () => {
     );
   };
 
+  // 아이템 삭제
+  const handleDeleteItem = (id: number) => {
+    const updatedCartItems = cartItems.filter((item) => item.id !== id);
+    setCartItems(updatedCartItems);
+
+    // LocalStorage에서 아이템도 삭제
+    const updatedCart = JSON.parse(localStorage.getItem("cartItems") || "[]").filter(
+      (cartItem: any) => cartItem.id !== id
+    );
+    localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+  };
+
+  // 선택된 아이템의 총 금액 계산
   const calculateTotal = () => {
     return cartItems
       .filter((item) => selectedItems.includes(item.id))
@@ -132,6 +147,7 @@ const MyCartSection: React.FC = () => {
       }, 0);
   };
 
+  // 선택된 아이템의 할인 적용 금액 계산
   const calculateDiscountTotal = () => {
     return cartItems
       .filter((item) => selectedItems.includes(item.id))
@@ -161,6 +177,7 @@ const MyCartSection: React.FC = () => {
               item={item}
               isSelected={selectedItems.includes(item.id)}
               onSelect={() => handleSelectItem(item.id)}
+              onDelete={() => handleDeleteItem(item.id)}
             />
           ))}
         </tbody>
