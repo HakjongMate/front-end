@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import CartItem from './CartItem';
-import cartItemsData from '../../assets/data/cartItems.json';
 import serviceData from '../../assets/data/service.json';
 
 const SectionWrapper = styled.div`
@@ -101,13 +100,18 @@ const MyCartSection: React.FC = () => {
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
   useEffect(() => {
-    const itemsWithDetails = cartItemsData.map((cartItem) => {
+    // LocalStorage에서 cartItems 가져오기
+    const cart = JSON.parse(localStorage.getItem("cartItems") || "[]");
+
+    // cartItems와 serviceData를 매칭하여 아이템 상세 정보 포함
+    const itemsWithDetails = cart.map((cartItem: any) => {
       const service = serviceData.find((service) => service.id === cartItem.serviceId);
       return {
         ...cartItem,
         service,
       };
     });
+
     setCartItems(itemsWithDetails);
   }, []);
 
