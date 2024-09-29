@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ExplorationCard from '../../components/common/ExplorationCard';
 import InterestCard from '../../components/common/InterestCard';
+import InterAddCard from '../../components/common/InterAddCard';
 import exploresData from '../../assets/data/explores.json';
 import interestsData from '../../assets/data/interest.json';
 import { UserProfile, Exploration, Interest } from '../../types';
@@ -92,6 +93,30 @@ const AIExplorationPage: React.FC = () => {
     navigate('/ai/university');
   };
 
+  const renderCards = () => {
+    const cards = [];
+
+    // 탐구 카드 추가
+    explorations.forEach((explore) => {
+      cards.push(<ExplorationCard key={explore.id} {...explore} />);
+    });
+
+    // 관심사 카드 추가
+    interests.forEach((interest) => {
+      cards.push(<InterestCard key={interest.id} {...interest} />);
+    });
+
+    // 데이터가 없는 경우에만 InterAddCard 추가 (최대 2개까지)
+    if (cards.length === 0) {
+      cards.push(<InterAddCard key="add-1" />);
+      cards.push(<InterAddCard key="add-2" />);
+    } else if (cards.length === 1) {
+      cards.push(<InterAddCard key="add-1" />);
+    }
+
+    return cards;
+  };
+
   return (
     <PageWrapper>
       <StepIndicator currentStep={2} />
@@ -101,12 +126,7 @@ const AIExplorationPage: React.FC = () => {
       <Description>더 구체적인 탐구 및 관심사는 앱을 통해 추가하실 수 있습니다.</Description>
 
       <CardsGrid>
-        {explorations.map((explore) => (
-          <ExplorationCard key={explore.id} {...explore} />
-        ))}
-        {interests.map((interest) => (
-          <InterestCard key={interest.id} {...interest} />
-        ))}
+        {renderCards()}
       </CardsGrid>
 
       <ButtonContainer
