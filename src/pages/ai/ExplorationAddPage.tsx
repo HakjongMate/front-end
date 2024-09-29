@@ -109,7 +109,6 @@ const ExplorationAddPage: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log({ subject, title, description });
-    // Here you would typically send the data to your backend
   };
 
   const openModal = () => setIsModalOpen(true);
