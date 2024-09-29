@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { UserProfile, Exploration, Interest } from '../../types';
-import ExplorationCard from '../../components/my/ExplorationCard';
-import InterestCard from '../../components/my/InterestCard';
+import ExplorationCard from '../../components/common/ExplorationCard';
+import InterestCard from '../../components/common/InterestCard';
 import exploresData from '../../assets/data/explores.json';
 import interestsData from '../../assets/data/interest.json';
 

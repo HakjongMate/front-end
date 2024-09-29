@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { UserProfile, Exploration, Interest } from '../../types';
-import ExplorationCard from './ExplorationCard'; 
-import InterestCard from './InterestCard'; 
+import ExplorationCard from '../common/ExplorationCard'; 
+import InterestCard from '../common/InterestCard'; 
 import exploresData from '../../assets/data/explores.json';
 import interestsData from '../../assets/data/interest.json';
 import { Link } from 'react-router-dom';
