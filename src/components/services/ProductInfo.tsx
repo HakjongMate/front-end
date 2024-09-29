@@ -217,7 +217,29 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   };
 
   const handleCartClick = () => {
-    alert("서비스 준비중입니다.");
+    // LocalStorage에서 기존 장바구니 아이템 불러오기 (없으면 빈 배열)
+    const cart = JSON.parse(localStorage.getItem("cartItems") || "[]");
+
+    // 새로운 아이템 생성 (고유 ID는 장바구니 아이템 수로 계산)
+    const newItem = {
+      id: cart.length + 1,
+      serviceId: product.title,
+    };
+
+    // 장바구니에 아이템 추가
+    cart.push(newItem);
+
+    // LocalStorage에 다시 저장
+    localStorage.setItem("cartItems", JSON.stringify(cart));
+    
+    // 장바구니 추가 완료 메시지 표시
+    toast.success("상품이 장바구니에 추가되었습니다!", {
+      style: {
+        maxWidth: "1000px",
+        width: "400px",
+        fontSize: "20px",
+      },
+    });
   };
 
   const handleShareClick = () => {
