@@ -47,6 +47,7 @@ const GuideText = styled.p`
 
 function PurchaseInfoSection() {
   const [userProfile, setUserProfile] = useState<{ username: string } | null>(null);
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [email, setEmail] = useState<string>("");
 
   // 유저 이름을 로컬스토리지에서 가져와서 userProfile 상태에 저장
@@ -57,6 +58,28 @@ function PurchaseInfoSection() {
       setUserProfile(parsedUser);
     }
   }, []);
+
+  // 전화번호 입력 시 자동으로 하이픈(-)을 추가하는 함수
+  const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\D+/g, "");
+    const numberLength = 11;
+
+    let result = "";
+    for (let i = 0; i < value.length && i < numberLength; i++) {
+      switch (i) {
+        case 3:
+          result += "-";
+          break;
+        case 7:
+          result += "-";
+          break;
+        default:
+          break;
+      }
+      result += value[i];
+    }
+    setPhoneNumber(result);
+  };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -71,16 +94,19 @@ function PurchaseInfoSection() {
         </InputWrapper>
         <InputWrapper>
           <Input
-            type="email"
+            type="tel"
             placeholder="연락처"
-            value={email}
-            onChange={handleEmailChange}
+            value={phoneNumber}
+            onChange={handlePhoneNumberChange}
+            maxLength={13}
           />
         </InputWrapper>
         <InputWrapper style={{ gridColumn: "1 / -1" }}>
           <Input
-            type="text"
+            type="email"
             placeholder="이메일"
+            value={email}
+            onChange={handleEmailChange}
           />
         </InputWrapper>
         <GuideText>
