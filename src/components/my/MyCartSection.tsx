@@ -165,6 +165,11 @@ const MyCartSection: React.FC = () => {
     navigate('/purchase', { state: { selectedCartItems } });
   };
 
+  // 개별 구매 버튼 클릭 시 해당 상품만 결제 페이지로 이동
+  const handleBuyItem = (item: any) => {
+    navigate('/purchase', { state: { selectedCartItems: [item] } });
+  };
+
   return (
     <SectionWrapper>
       <Title>장바구니</Title>
@@ -185,6 +190,7 @@ const MyCartSection: React.FC = () => {
               isSelected={selectedItems.includes(item.id)}
               onSelect={() => handleSelectItem(item.id)}
               onDelete={() => handleDeleteItem(item.id)}
+              onBuy={() => handleBuyItem(item)} 
             />
           ))}
         </tbody>
