@@ -1,5 +1,10 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
+
+interface PurchasePointSectionProps {
+  pointUsed: number;
+  setPointUsed: (points: number) => void;
+}
 
 const SectionWrapper = styled.div`
   border: 1px solid #e0e0e0;
@@ -65,31 +70,32 @@ const ErrorMessage = styled.p`
   text-align: right;
 `;
 
-const PurchasePointSection: React.FC = () => {
+const PurchasePointSection: React.FC<PurchasePointSectionProps> = ({
+  pointUsed,
+  setPointUsed,
+}) => {
   const totalAvailablePoints = 1000;
-  const [usedPoints, setUsedPoints] = useState<string>(''); 
-  const [error, setError] = useState<string>(''); 
+  const [error, setError] = useState<string>("");
 
   // 포인트 입력 핸들러
   const handlePointChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.replace(/[^0-9]/g, ''); 
+    let value = e.target.value.replace(/[^0-9]/g, "");
     const numericValue = parseInt(value, 10);
 
     // 보유 포인트를 초과하면 에러 메시지와 최대 포인트로 변경
     if (numericValue > totalAvailablePoints) {
-      value = totalAvailablePoints.toString();
-      setError('보유 포인트를 초과하여 사용할 수 없습니다.');
+      setError("보유 포인트를 초과하여 사용할 수 없습니다.");
+      setPointUsed(totalAvailablePoints);
     } else {
-      setError(''); // 에러가 없을 경우 에러 메시지 초기화
+      setError("");
+      setPointUsed(numericValue || 0);
     }
-
-    setUsedPoints(value); 
   };
 
   // 전액 사용 버튼 핸들러
   const handleApplyPoints = () => {
-    setUsedPoints(totalAvailablePoints.toString()); 
-    setError(''); 
+    setPointUsed(totalAvailablePoints);
+    setError("");
   };
 
   return (
@@ -98,7 +104,7 @@ const PurchasePointSection: React.FC = () => {
       <PointInputWrapper>
         <PointInput
           type="text"
-          value={usedPoints}
+          value={pointUsed.toString()}
           onChange={handlePointChange}
           placeholder="0"
         />

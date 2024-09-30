@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import PurchaseItemSection from "../components/purchase/PurchaseItemSection";
 import PurchaseInfoSection from "../components/purchase/PurchaseInfoSection";
 import PurchasePointSection from "../components/purchase/PurchasePointSection";
 import PurchasePaymentSection from "../components/purchase/PurchasePaymentSection";
-import PurchaseSummerySection from "../components/purchase/PurchaseSummerySection";
+import PurchaseSummarySection from "../components/purchase/PurchaseSummerySection";
 import PurchaseAgreeSection from "../components/purchase/PurchaseAgreeSection";
 
 const PageContainer = styled.div`
@@ -31,16 +31,18 @@ const RightSection = styled.div`
 `;
 
 function PurchasePage() {
+  const [pointUsed, setPointUsed] = useState<number>(0);
+
   return (
     <PageContainer>
       <LeftSection>
         <PurchaseItemSection />
         <PurchaseInfoSection />
-        <PurchasePointSection />
+        <PurchasePointSection pointUsed={pointUsed} setPointUsed={setPointUsed} />
         <PurchasePaymentSection />
       </LeftSection>
       <RightSection>
-        <PurchaseSummerySection />
+        <PurchaseSummarySection pointUsed={pointUsed} />
         <PurchaseAgreeSection />
       </RightSection>
     </PageContainer>

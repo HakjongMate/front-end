@@ -17,6 +17,10 @@ interface CartItem {
   description?: string[];
 }
 
+interface PurchaseSummarySectionProps {
+  pointUsed: number;
+}
+
 const SummaryWrapper = styled.div`
   border: 1px solid #e0e0e0;
   border-radius: 8px;
@@ -82,14 +86,13 @@ const PointInfo = styled.div`
   color: #7d7d7d;
 `;
 
-function PurchaseSummarySection() {
+const PurchaseSummarySection: React.FC<PurchaseSummarySectionProps> = ({ pointUsed }) => {
   const location = useLocation();
   const { selectedCartItems }: { selectedCartItems: CartItem[] } =
     location.state || { selectedCartItems: [] };
 
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalDiscount, setTotalDiscount] = useState(0);
-  const [pointUsed, setPointUsed] = useState(1000);
   const [finalPrice, setFinalPrice] = useState(0);
   const [pointsToBeEarned, setPointsToBeEarned] = useState(0);
 
