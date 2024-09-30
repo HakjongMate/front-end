@@ -6,9 +6,9 @@ const SectionWrapper = styled.div`
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 14px;
+  font-size: 15px;
   color: #202594;
-  font-weight: 500;
+  font-weight: 600;
   margin-bottom: 20px;
 `;
 
@@ -43,7 +43,7 @@ const ToggleContent = styled.div`
 const Divider = styled.hr`
   border: none;
   border-top: 1px solid #e0e0e0;
-  margin: 15px 0;
+  margin: 5px 0;
 `;
 
 function PurchaseAgreeSection() {
