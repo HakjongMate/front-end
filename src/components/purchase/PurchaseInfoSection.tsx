@@ -20,7 +20,7 @@ interface CartItem {
 const SectionWrapper = styled.div`
   border: 1px solid #e0e0e0;
   border-radius: 8px;
-  padding: 10px 20px;
+  padding: 10px 20px 30px;
   margin-bottom: 20px;
 `;
 
@@ -35,7 +35,7 @@ const SectionTitle = styled.h2`
 const ItemContent = styled.div`
   display: flex;
   align-items: flex-start;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 
   &:last-child {
     margin-bottom: 0;
@@ -52,18 +52,22 @@ const ItemImage = styled.img`
 
 const ItemDetails = styled.div`
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 const ItemTitle = styled.h3`
-  font-size: 14px;
-  font-weight: normal;
-  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #000;
+  margin-bottom: 0px;
 `;
 
 const ItemSubtitle = styled.p`
-  font-size: 12px;
-  color: #888;
-  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+  color: #000;
 `;
 
 const Description = styled.p`
@@ -74,7 +78,8 @@ const Description = styled.p`
 `;
 
 const PriceDetails = styled.div`
-  text-align: right;
+  align-self: center;
+  text-align: center;
   min-width: 80px;
 `;
 
