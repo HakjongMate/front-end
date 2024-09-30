@@ -14,6 +14,7 @@ import ReviewPage from './pages/ReviewPage';
 import ContactPage from './pages/ContactPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import PurchasePage from './pages/PurchasePage';
 
 import MyPage from './pages/MyPages/MyPage';
 import MyCartPage from './pages/MyPages/MyCartPage';
@@ -46,6 +47,7 @@ function App() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/purchase" element={<PurchasePage />} />
 
         <Route path="/my" element={<MyPage />} />
         <Route path="/my/cart" element={<MyCartPage />} />

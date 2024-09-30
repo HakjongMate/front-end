@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import CartItem from './CartItem';
-import cartItemsData from '../../assets/data/cartItems.json';
 import serviceData from '../../assets/data/service.json';
 
 const SectionWrapper = styled.div`
@@ -65,12 +65,6 @@ const FinalPrice = styled.p`
   color: #007BFF;
 `;
 
-const DiscountAmount = styled.span`
-  color: #e74c3c;
-  font-weight: bold;
-  margin-left: 10px;
-`;
-
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -99,18 +93,26 @@ const CancelButton = styled(Button)`
 const MyCartSection: React.FC = () => {
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
+  const navigate = useNavigate();
 
+  // LocalStorage에서 cartItems 가져와서 cartItems 상태 업데이트
   useEffect(() => {
-    const itemsWithDetails = cartItemsData.map((cartItem) => {
+    // LocalStorage에서 cartItems 가져오기
+    const cart = JSON.parse(localStorage.getItem("cartItems") || "[]");
+
+    // cartItems와 serviceData를 매칭하여 아이템 상세 정보 포함
+    const itemsWithDetails = cart.map((cartItem: any) => {
       const service = serviceData.find((service) => service.id === cartItem.serviceId);
       return {
         ...cartItem,
         service,
       };
     });
+
     setCartItems(itemsWithDetails);
   }, []);
 
+  // 아이템 선택/해제
   const handleSelectItem = (id: number) => {
     setSelectedItems((prevSelected) =>
       prevSelected.includes(id)
@@ -119,6 +121,19 @@ const MyCartSection: React.FC = () => {
     );
   };
 
+  // 아이템 삭제
+  const handleDeleteItem = (id: number) => {
+    const updatedCartItems = cartItems.filter((item) => item.id !== id);
+    setCartItems(updatedCartItems);
+
+    // LocalStorage에서 아이템도 삭제
+    const updatedCart = JSON.parse(localStorage.getItem("cartItems") || "[]").filter(
+      (cartItem: any) => cartItem.id !== id
+    );
+    localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+  };
+
+  // 선택된 아이템의 총 금액 계산
   const calculateTotal = () => {
     return cartItems
       .filter((item) => selectedItems.includes(item.id))
@@ -128,6 +143,7 @@ const MyCartSection: React.FC = () => {
       }, 0);
   };
 
+  // 선택된 아이템의 할인 적용 금액 계산
   const calculateDiscountTotal = () => {
     return cartItems
       .filter((item) => selectedItems.includes(item.id))
@@ -136,6 +152,22 @@ const MyCartSection: React.FC = () => {
         const discountPrice = Math.round(price * (1 - item.service.discout));
         return total + discountPrice;
       }, 0);
+  };
+
+  // 전체 결제 버튼 클릭 시 모든 상품을 결제 페이지로 이동
+  const handleCheckout = () => {
+    navigate('/purchase', { state: { selectedCartItems: cartItems } });
+  };
+
+  // 선택 결제 버튼 클릭 시 선택된 상품만 결제 페이지로 이동
+  const handleSelectCheckout = () => {
+    const selectedCartItems = cartItems.filter(item => selectedItems.includes(item.id));
+    navigate('/purchase', { state: { selectedCartItems } });
+  };
+
+  // 개별 구매 버튼 클릭 시 해당 상품만 결제 페이지로 이동
+  const handleBuyItem = (item: any) => {
+    navigate('/purchase', { state: { selectedCartItems: [item] } });
   };
 
   return (
@@ -157,6 +189,8 @@ const MyCartSection: React.FC = () => {
               item={item}
               isSelected={selectedItems.includes(item.id)}
               onSelect={() => handleSelectItem(item.id)}
+              onDelete={() => handleDeleteItem(item.id)}
+              onBuy={() => handleBuyItem(item)} 
             />
           ))}
         </tbody>
@@ -175,8 +209,8 @@ const MyCartSection: React.FC = () => {
       <Divider />
 
       <ButtonContainer>
-        <CancelButton>선택 결제하기</CancelButton>
-        <CheckoutButton>전체 결제하기</CheckoutButton>
+        <CancelButton onClick={handleSelectCheckout}>선택 결제하기</CancelButton>
+        <CheckoutButton onClick={handleCheckout}>전체 결제하기</CheckoutButton>
       </ButtonContainer>
     </SectionWrapper>
   );
