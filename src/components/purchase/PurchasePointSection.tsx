@@ -58,17 +58,38 @@ const TotalPoint = styled.span`
   font-weight: 600;
 `;
 
+const ErrorMessage = styled.p`
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+  text-align: right;
+`;
+
 const PurchasePointSection: React.FC = () => {
   const totalAvailablePoints = 1000;
-  const [usedPoints, setUsedPoints] = useState<string>('0');
+  const [usedPoints, setUsedPoints] = useState<string>(''); 
+  const [error, setError] = useState<string>(''); 
 
+  // 포인트 입력 핸들러
   const handlePointChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^0-9]/g, '');
-    setUsedPoints(value);
+    let value = e.target.value.replace(/[^0-9]/g, ''); 
+    const numericValue = parseInt(value, 10);
+
+    // 보유 포인트를 초과하면 에러 메시지와 최대 포인트로 변경
+    if (numericValue > totalAvailablePoints) {
+      value = totalAvailablePoints.toString();
+      setError('보유 포인트를 초과하여 사용할 수 없습니다.');
+    } else {
+      setError(''); // 에러가 없을 경우 에러 메시지 초기화
+    }
+
+    setUsedPoints(value); 
   };
 
+  // 전액 사용 버튼 핸들러
   const handleApplyPoints = () => {
-    setUsedPoints(totalAvailablePoints.toString());
+    setUsedPoints(totalAvailablePoints.toString()); 
+    setError(''); 
   };
 
   return (
@@ -83,9 +104,12 @@ const PurchasePointSection: React.FC = () => {
         />
         <ApplyButton onClick={handleApplyPoints}>전액사용</ApplyButton>
       </PointInputWrapper>
+
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+
       <TotalPointWrapper>
         <span>보유 포인트</span>
-        <TotalPoint>{totalAvailablePoints.toLocaleString()}</TotalPoint>
+        <TotalPoint>{totalAvailablePoints.toLocaleString()}원</TotalPoint>
       </TotalPointWrapper>
     </SectionWrapper>
   );
