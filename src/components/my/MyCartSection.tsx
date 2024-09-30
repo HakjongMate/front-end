@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import CartItem from './CartItem';
 import serviceData from '../../assets/data/service.json';
@@ -64,12 +65,6 @@ const FinalPrice = styled.p`
   color: #007BFF;
 `;
 
-const DiscountAmount = styled.span`
-  color: #e74c3c;
-  font-weight: bold;
-  margin-left: 10px;
-`;
-
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -98,6 +93,7 @@ const CancelButton = styled(Button)`
 const MyCartSection: React.FC = () => {
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
+  const navigate = useNavigate();
 
   // LocalStorage에서 cartItems 가져와서 cartItems 상태 업데이트
   useEffect(() => {
@@ -158,6 +154,17 @@ const MyCartSection: React.FC = () => {
       }, 0);
   };
 
+  // 전체 결제 버튼 클릭 시 모든 상품을 결제 페이지로 이동
+  const handleCheckout = () => {
+    navigate('/purchase', { state: { selectedCartItems: cartItems } });
+  };
+
+  // 선택 결제 버튼 클릭 시 선택된 상품만 결제 페이지로 이동
+  const handleSelectCheckout = () => {
+    const selectedCartItems = cartItems.filter(item => selectedItems.includes(item.id));
+    navigate('/purchase', { state: { selectedCartItems } });
+  };
+
   return (
     <SectionWrapper>
       <Title>장바구니</Title>
@@ -196,8 +203,8 @@ const MyCartSection: React.FC = () => {
       <Divider />
 
       <ButtonContainer>
-        <CancelButton>선택 결제하기</CancelButton>
-        <CheckoutButton>전체 결제하기</CheckoutButton>
+        <CancelButton onClick={handleSelectCheckout}>선택 결제하기</CancelButton>
+        <CheckoutButton onClick={handleCheckout}>전체 결제하기</CheckoutButton>
       </ButtonContainer>
     </SectionWrapper>
   );
