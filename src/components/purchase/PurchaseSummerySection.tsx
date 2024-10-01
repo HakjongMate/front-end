@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
+import AIContext from "../../contexts/AIContext";
 
 interface Service {
   id: number;
   title: string;
   subtitle: string;
   image: string;
-  price: string; 
+  price: string;
   discout: number;
 }
 
@@ -89,6 +90,10 @@ const PointInfo = styled.div`
 const PurchaseSummarySection: React.FC<PurchaseSummarySectionProps> = ({ pointUsed }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { selectedSubject, setSelectedSubject, dream, setDream, targetUniversities, setTargetUniversities } =
+    useContext(AIContext);
+
+  // 선택된 카트 항목을 받아옴
   const { selectedCartItems }: { selectedCartItems: CartItem[] } =
     location.state || { selectedCartItems: [] };
 
@@ -110,9 +115,8 @@ const PurchaseSummarySection: React.FC<PurchaseSummarySectionProps> = ({ pointUs
 
       // 선택된 상품들의 가격과 할인을 계산
       selectedCartItems.forEach((item) => {
-        const price = parsePrice(item.service.price); 
+        const price = parsePrice(item.service.price);
         const discount = item.service.discout;
-
         const discountedPrice = Math.round(price * (1 - discount));
 
         priceSum += price;
@@ -123,7 +127,6 @@ const PurchaseSummarySection: React.FC<PurchaseSummarySectionProps> = ({ pointUs
       setTotalDiscount(discountSum);
       const calculatedFinalPrice = priceSum - discountSum - pointUsed;
       setFinalPrice(calculatedFinalPrice >= 0 ? calculatedFinalPrice : 0);
-      // 예시로 0.01% 적립, 추후 수정 필요
       setPointsToBeEarned(Math.floor((priceSum - discountSum) * 0.01));
     };
 
@@ -145,7 +148,16 @@ const PurchaseSummarySection: React.FC<PurchaseSummarySectionProps> = ({ pointUs
     // 필터링된 상품들로 LocalStorage 업데이트
     localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
 
-    // AI 서비스가 포함된 경우에는 '/ai/waiting'으로 이동
+    // AIContext를 초기화하여 다음 세특 작성 시 새 데이터를 입력할 수 있게 함
+    setSelectedSubject(""); // 과목 초기화
+    setDream(""); // 꿈 초기화
+    setTargetUniversities([ // 목표 대학 초기화
+      { name: "", major: "" },
+      { name: "", major: "" },
+      { name: "", major: "" },
+    ]);
+
+    // AI 서비스가 포함된 경우 '/ai/waiting'으로 이동
     const containsAIService = selectedCartItems.some(item =>
       item.service.title.includes("패스")
     );
