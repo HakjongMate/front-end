@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
+import ColorPickerModal from '../components/common/ColorPickerModal';
 
 const RegisterContainer = styled.div`
   max-width: 700px;
@@ -138,8 +139,41 @@ const Select = styled.select`
   }
 `;
 
+const ProfileSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+`;
+
+const ProfileCircle = styled.div<{ bgColor: string }>`
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: ${props => props.bgColor};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+`;
+
+const ProfileText = styled.span`
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+`;
+
+const ColorChangeButton = styled.button`
+  background: none;
+  border: none;
+  color: #202594;
+  font-weight: bold;
+  font-size: 18px;
+  cursor: pointer;
+`;
+
 const RegisterPage: React.FC = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     username: '',
@@ -148,9 +182,12 @@ const RegisterPage: React.FC = () => {
     school: '',
     grade: '1',
     gpa: '',
-    customGpa: '', 
+    customGpa: '',
     career: '',
+    profileName: '',
+    profileColor: '#202594',
   });
+  const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
@@ -164,6 +201,15 @@ const RegisterPage: React.FC = () => {
       ...formData,
       grade,
     });
+  };
+
+  // 색상 변경 핸들러
+  const handleColorChange = (color: string) => {
+    setFormData({
+      ...formData,
+      profileColor: color,
+    });
+    setIsColorPickerVisible(false);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -189,6 +235,28 @@ const RegisterPage: React.FC = () => {
     <RegisterContainer>
       <Title>회원가입</Title>
       <Form onSubmit={handleSubmit}>
+        <ProfileSection>
+          <ProfileCircle bgColor={formData.profileColor}>
+            <ProfileText>
+              {formData.profileName ? formData.profileName : '?'}
+            </ProfileText>
+          </ProfileCircle>
+          <ColorChangeButton type="button" onClick={() => setIsColorPickerVisible(true)}>
+            프로필 색상 변경
+          </ColorChangeButton>
+        </ProfileSection>
+
+        <Label htmlFor="profileName">프로필 이름</Label>
+        <Input
+          id="profileName"
+          type="text"
+          name="profileName"
+          value={formData.profileName}
+          onChange={handleChange}
+          placeholder="프로필에 표시될 이름을 입력해주세요"
+          required
+        />
+
         <Label htmlFor="name">성함</Label>
         <Input
           id="name"
@@ -320,6 +388,13 @@ const RegisterPage: React.FC = () => {
 
         <SubmitButton type="submit">회원가입</SubmitButton>
       </Form>
+
+      {/* 색상 선택 모달 */}
+      <ColorPickerModal
+        visible={isColorPickerVisible}
+        onClose={() => setIsColorPickerVisible(false)}
+        onSelectColor={handleColorChange}
+      />
     </RegisterContainer>
   );
 };
