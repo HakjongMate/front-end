@@ -145,8 +145,17 @@ const PurchaseSummarySection: React.FC<PurchaseSummarySectionProps> = ({ pointUs
     // 필터링된 상품들로 LocalStorage 업데이트
     localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
 
-    // 결제 완료 후 구매 페이지로 이동
-    navigate('/my/purchase');
+    // AI 서비스가 포함된 경우에는 '/ai/waiting'으로 이동
+    const containsAIService = selectedCartItems.some(item =>
+      item.service.title.includes("패스")
+    );
+
+    if (containsAIService) {
+      navigate('/ai/waiting');
+    } else {
+      // 결제 완료 후 구매 페이지로 이동
+      navigate('/my/purchase');
+    }
   };
 
   if (selectedCartItems.length === 0) {
