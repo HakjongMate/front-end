@@ -44,5 +44,39 @@
     "rating": 5,
     "detailImage": [],
     "deliveryInfo": "결제 후\n즉시 확인"
+  },
+
+  {
+    "id": 4,
+    "title": "종합 성장 패스",
+    "subtitle": "관심사와 진로를 종합적으로 반영한 AI 주제 추천",
+    "image": "/images/pass1-main.webp",
+    "price": "29,900",
+    "discout": 0.1,
+    "rating": 5,
+    "detailImage": [],
+    "deliveryInfo": "결제 후 즉시 사용 가능"
+  },
+  {
+    "id": 5,
+    "title": "진로 성장 패스",
+    "subtitle": "희망 대학 및 학과에 맞춘 AI 주제 추천",
+    "image": "/images/pass2-main.webp",
+    "price": "19,900",
+    "discout": 0.2,
+    "rating": 5,
+    "detailImage": [],
+    "deliveryInfo": "결제 후 즉시 사용 가능"
+  },
+  {
+    "id": 6,
+    "title": "학업 탐구 패스",
+    "subtitle": "관심 분야에 맞춘 AI 주제 추천",
+    "image": "/images/pass3-main.webp",
+    "price": "9,900",
+    "discout": 0.3,
+    "rating": 5,
+    "detailImage": [],
+    "deliveryInfo": "결제 후 즉시 사용 가능"
   }
 ]
