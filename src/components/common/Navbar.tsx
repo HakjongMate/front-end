@@ -378,6 +378,9 @@ function Navbar() {
                 <AuthLink>
                   <Link to="/my">마이페이지</Link>
                 </AuthLink>
+                <AuthLink>
+                  <Link to="/my/cart">장바구니</Link>
+                </AuthLink>
               </>
             ) : (
               <AuthLink>
@@ -467,6 +470,11 @@ function Navbar() {
             <SideMenuLink isActive={isActive("/my")}>
               <Link to="/my" onClick={toggleMenu}>
                 마이페이지
+              </Link>
+            </SideMenuLink>
+            <SideMenuLink isActive={isActive("/my/cart")}>
+              <Link to="/my/cart" onClick={toggleMenu}>
+                장바구니
               </Link>
             </SideMenuLink>
           </>
