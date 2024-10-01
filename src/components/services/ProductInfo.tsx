@@ -214,14 +214,19 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const navigate = useNavigate();
 
   const handleBuyClick = () => {
-    const selectedCartItems = [
-      {
-        id: 1,
-        service: product,
-      }
-    ];
-
-    navigate('/purchase', { state: { selectedCartItems } });
+    // AI 서비스라면 '/ai/subject'로 이동
+    if (product.title.includes("AI")) {
+      navigate('/ai/subject', { state: { product } });
+    } else {
+      // AI가 아닌 서비스는 기존 구매 로직 유지
+      const selectedCartItems = [
+        {
+          id: 1,
+          service: product,
+        }
+      ];
+      navigate('/purchase', { state: { selectedCartItems } });
+    }
   };
 
   const handleCartClick = () => {
