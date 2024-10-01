@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import ScrollToTop from './components/common/ScrollToTop';
+import { AIProvider } from './contexts/AIContext';
 
 import HomePage from './pages/HomePage';
 import IntroPage from './pages/IntroPage';
@@ -32,7 +33,7 @@ import ExplorationAddPage from './pages/ai/ExplorationAddPage';
 
 function App() {
   return (
-    <>
+    <AIProvider>
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -63,7 +64,7 @@ function App() {
         <Route path="/ai/waiting" element={<AIWaitingPage />} />
         <Route path="/ai/exploration/add" element={<ExplorationAddPage />} />
       </Routes>
-    </>
+    </AIProvider>
   );
 }
 

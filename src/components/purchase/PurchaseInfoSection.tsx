@@ -110,7 +110,7 @@ function PurchaseInfoSection() {
           />
         </InputWrapper>
         <GuideText>
-          * 이메일 주소로 전자책이 전송될 예정이니 반드시 정확히 기입해주시길 바랍니다.
+          * 이메일 주소로 전자책 혹은 분석본이 전송될 예정이니 반드시 정확히 기입해주시길 바랍니다.
         </GuideText>
       </InputGrid>
     </SectionWrapper>

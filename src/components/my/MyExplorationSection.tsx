@@ -8,7 +8,7 @@ import interestsData from '../../assets/data/interest.json';
 import { Link } from 'react-router-dom';
 
 const SectionWrapper = styled.div`
-  padding: 40px 20px;
+  padding: 40px 20px 0px;
   max-width: 1080px;
   margin: 0 auto;
 `;

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import CartItem from './CartItem';
-import serviceData from '../../assets/data/service.json';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import CartItem from "./CartItem";
+import serviceData from "../../assets/data/service.json";
 
 const SectionWrapper = styled.div`
   padding: 20px;
@@ -62,7 +62,7 @@ const OriginalTotalPrice = styled.p`
 const FinalPrice = styled.p`
   font-size: 24px;
   font-weight: bold;
-  color: #007BFF;
+  color: #007bff;
 `;
 
 const ButtonContainer = styled.div`
@@ -102,7 +102,9 @@ const MyCartSection: React.FC = () => {
 
     // cartItems와 serviceData를 매칭하여 아이템 상세 정보 포함
     const itemsWithDetails = cart.map((cartItem: any) => {
-      const service = serviceData.find((service) => service.id === cartItem.serviceId);
+      const service = serviceData.find(
+        (service) => service.id === cartItem.serviceId
+      );
       return {
         ...cartItem,
         service,
@@ -123,13 +125,18 @@ const MyCartSection: React.FC = () => {
 
   // 아이템 삭제
   const handleDeleteItem = (id: number) => {
+    // 장바구니에서 아이템을 삭제한 새로운 배열 생성
     const updatedCartItems = cartItems.filter((item) => item.id !== id);
+
+    // 상태 업데이트
     setCartItems(updatedCartItems);
 
-    // LocalStorage에서 아이템도 삭제
-    const updatedCart = JSON.parse(localStorage.getItem("cartItems") || "[]").filter(
-      (cartItem: any) => cartItem.id !== id
-    );
+    // LocalStorage에서 아이템을 삭제한 새로운 배열 생성
+    const updatedCart = JSON.parse(
+      localStorage.getItem("cartItems") || "[]"
+    ).filter((cartItem: any) => cartItem.id !== id);
+
+    // LocalStorage에 다시 저장
     localStorage.setItem("cartItems", JSON.stringify(updatedCart));
   };
 
@@ -138,7 +145,7 @@ const MyCartSection: React.FC = () => {
     return cartItems
       .filter((item) => selectedItems.includes(item.id))
       .reduce((total, item) => {
-        const price = parseInt(item.service.price.replace(',', ''));
+        const price = parseInt(item.service.price.replace(",", ""));
         return total + price;
       }, 0);
   };
@@ -148,7 +155,7 @@ const MyCartSection: React.FC = () => {
     return cartItems
       .filter((item) => selectedItems.includes(item.id))
       .reduce((total, item) => {
-        const price = parseInt(item.service.price.replace(',', ''));
+        const price = parseInt(item.service.price.replace(",", ""));
         const discountPrice = Math.round(price * (1 - item.service.discout));
         return total + discountPrice;
       }, 0);
@@ -156,18 +163,20 @@ const MyCartSection: React.FC = () => {
 
   // 전체 결제 버튼 클릭 시 모든 상품을 결제 페이지로 이동
   const handleCheckout = () => {
-    navigate('/purchase', { state: { selectedCartItems: cartItems } });
+    navigate("/purchase", { state: { selectedCartItems: cartItems } });
   };
 
   // 선택 결제 버튼 클릭 시 선택된 상품만 결제 페이지로 이동
   const handleSelectCheckout = () => {
-    const selectedCartItems = cartItems.filter(item => selectedItems.includes(item.id));
-    navigate('/purchase', { state: { selectedCartItems } });
+    const selectedCartItems = cartItems.filter((item) =>
+      selectedItems.includes(item.id)
+    );
+    navigate("/purchase", { state: { selectedCartItems } });
   };
 
   // 개별 구매 버튼 클릭 시 해당 상품만 결제 페이지로 이동
   const handleBuyItem = (item: any) => {
-    navigate('/purchase', { state: { selectedCartItems: [item] } });
+    navigate("/purchase", { state: { selectedCartItems: [item] } });
   };
 
   return (
@@ -176,10 +185,10 @@ const MyCartSection: React.FC = () => {
       <Table>
         <thead>
           <tr>
-            <TableHeader style={{ width: '50px' }}></TableHeader>
+            <TableHeader style={{ width: "50px" }}></TableHeader>
             <TableHeader>상품</TableHeader>
-            <TableHeader style={{ width: '150px' }}>금액</TableHeader>
-            <TableHeader style={{ width: '120px' }}>배송 내용</TableHeader>
+            <TableHeader style={{ width: "150px" }}>금액</TableHeader>
+            <TableHeader style={{ width: "120px" }}>배송 내용</TableHeader>
           </tr>
         </thead>
         <tbody>
@@ -190,7 +199,7 @@ const MyCartSection: React.FC = () => {
               isSelected={selectedItems.includes(item.id)}
               onSelect={() => handleSelectItem(item.id)}
               onDelete={() => handleDeleteItem(item.id)}
-              onBuy={() => handleBuyItem(item)} 
+              onBuy={() => handleBuyItem(item)}
             />
           ))}
         </tbody>
@@ -199,7 +208,9 @@ const MyCartSection: React.FC = () => {
       <CartSummary>
         <TotalItems>총 상품 개수: {selectedItems.length}개</TotalItems>
         <TotalPrice>
-          <OriginalTotalPrice>상품 금액: {calculateTotal().toLocaleString()}원</OriginalTotalPrice>
+          <OriginalTotalPrice>
+            상품 금액: {calculateTotal().toLocaleString()}원
+          </OriginalTotalPrice>
           <FinalPrice>
             결제 예정 금액: {calculateDiscountTotal().toLocaleString()}원
           </FinalPrice>
@@ -209,7 +220,9 @@ const MyCartSection: React.FC = () => {
       <Divider />
 
       <ButtonContainer>
-        <CancelButton onClick={handleSelectCheckout}>선택 결제하기</CancelButton>
+        <CancelButton onClick={handleSelectCheckout}>
+          선택 결제하기
+        </CancelButton>
         <CheckoutButton onClick={handleCheckout}>전체 결제하기</CheckoutButton>
       </ButtonContainer>
     </SectionWrapper>

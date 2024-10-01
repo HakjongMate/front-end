@@ -6,7 +6,7 @@ import serviceData from "../../assets/data/service.json";
 import { Link } from "react-router-dom";
 
 const SectionWrapper = styled.div`
-  padding: 40px 20px;
+  padding: 20px 20px 40px;
   max-width: 1080px;
   margin: 0 auto;
   font-family: sans-serif;

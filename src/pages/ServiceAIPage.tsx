@@ -95,8 +95,8 @@ function ServiceAIPage() {
             imageSrc={AIImage}
             title="AI 생기부 주제 추천 서비스"
             subtitle={"AI를 통해 나만의 맞춤 주제를 찾아 \n 3개년 유직적인 생활기록부를 만드세요."}
-            // link="/service/ai/detail"
-            showAlert={true}
+            link="/service/ai/detail"
+            // showAlert={true}
           />
         </CardsContainer>
       </TitleContainer>

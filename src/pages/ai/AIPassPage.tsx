@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import StepIndicator from '../../components/ai/StepIndicator';
-import ButtonContainer from '../../components/ai/ButtonContainer';
-import blueIcon from '../../assets/icons/blue-icon.svg';
-import greenIcon from '../../assets/icons/green-icon.svg';
-import yellowIcon from '../../assets/icons/yellow-icon.svg';
-import passData from '../../assets/data/pass.json';
-import PassCard from '../../components/ai/PassCard';
+import React, { useContext, useState, useEffect } from "react";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import AIContext from "../../contexts/AIContext";
+import StepIndicator from "../../components/ai/StepIndicator";
+import ButtonContainer from "../../components/ai/ButtonContainer";
+import blueIcon from "../../assets/icons/blue-icon.svg";
+import greenIcon from "../../assets/icons/green-icon.svg";
+import yellowIcon from "../../assets/icons/yellow-icon.svg";
+import passData from "../../assets/data/pass.json";
+import serviceData from "../../assets/data/service.json";
+import PassCard from "../../components/ai/PassCard";
 
 const PageWrapper = styled.div`
   max-width: 1080px;
@@ -33,31 +35,83 @@ const CardsContainer = styled.div`
 // Icon을 선택하는 함수
 const getIcon = (iconName: string) => {
   switch (iconName) {
-    case 'blueIcon':
+    case "blueIcon":
       return blueIcon;
-    case 'greenIcon':
+    case "greenIcon":
       return greenIcon;
-    case 'yellowIcon':
+    case "yellowIcon":
       return yellowIcon;
     default:
-      return '';
+      return "";
   }
 };
 
 const AIPassPage: React.FC = () => {
   const navigate = useNavigate();
+  const { selectedSubject, targetUniversities } = useContext(AIContext);
   const [selectedPass, setSelectedPass] = useState<number | null>(null);
+  const [dream, setDream] = useState<string>("");
+
+  // LocalStorage에서 dream 값을 가져옴
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+    setDream(storedUser.dream || ""); // dream 값이 없으면 빈 문자열
+  }, []);
+
+  // 선택한 패스에 맞는 서비스 ID 매핑
+  const getServiceByPassId = (passId: number) => {
+    switch (passId) {
+      // 종합 성장 패스에 맞는 서비스
+      case 1:
+        return serviceData.find((service) => service.id === 4);
+      // 진로 성장 패스에 맞는 서비스
+      case 2:
+        return serviceData.find((service) => service.id === 5);
+      // 학업 탐구 패스에 맞는 서비스
+      case 3:
+        return serviceData.find((service) => service.id === 6);
+      default:
+        return null;
+    }
+  };
 
   const handleNext = () => {
     if (selectedPass !== null) {
-      navigate('/ai/waiting');
+      const selectedService = getServiceByPassId(selectedPass);
+      if (selectedService) {
+        // 선택된 과목, 꿈, 대학 리스트를 description 배열로 생성
+        const descriptionArray = [
+          `${selectedSubject || "선택된 과목 없음"}`,
+          `${dream || "선택된 꿈 없음"}`,
+          `${
+            targetUniversities
+              .map((uni) =>
+                uni.name && uni.major ? `${uni.name} - ${uni.major}` : ""
+              )
+              .filter(Boolean)
+              .join(", ") || "선택된 대학 없음"
+          }`, // 대학 또는 학과가 없으면 빈칸
+        ];
+
+        // 선택한 서비스와 함께 purchase 페이지로 이동
+        const selectedCartItems = [
+          {
+            id: selectedService.id,
+            service: selectedService,
+            description: descriptionArray,
+          },
+        ];
+        navigate("/purchase", { state: { selectedCartItems } });
+      } else {
+        alert("해당 패스에 맞는 서비스를 찾을 수 없습니다.");
+      }
     } else {
-      alert('패스를 선택해주세요.');
+      alert("패스를 선택해주세요.");
     }
   };
 
   const handleBack = () => {
-    navigate('/ai/exploration');
+    navigate("/ai/exploration");
   };
 
   return (
