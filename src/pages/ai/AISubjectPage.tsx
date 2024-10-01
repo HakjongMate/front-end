@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import AIContext from "../../contexts/AIContext";
 import StepIndicator from "../../components/ai/StepIndicator";
 import subjectData from "../../assets/data/subject.json";
 import ButtonContainer from "../../components/ai/ButtonContainer";
@@ -70,8 +71,7 @@ const SubjectButton = styled.button<{ isSelected: boolean }>`
 `;
 
 const AISubjectPage: React.FC = () => {
-  const [selectedSubject, setSelectedSubject] = useState<string>("");
-
+  const { selectedSubject, setSelectedSubject } = useContext(AIContext);
   const navigate = useNavigate();
 
   const handleSubjectClick = (subject: string) => {

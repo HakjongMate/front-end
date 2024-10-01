@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import AIContext from '../../contexts/AIContext';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import UniversityEditCard from '../../components/ai/UniversityEditCard';
@@ -36,15 +37,9 @@ const CardContainer = styled.div`
 `;
 
 const AIUniversityPage: React.FC = () => {
+  const { targetUniversities, setTargetUniversities } = useContext(AIContext);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  
-  // 플레이스 홀더 대학교 선택
-  const [targetUniversities, setTargetUniversities] = useState([
-    { name: '서울대학교', major: '컴퓨터공학과' },
-    { name: '', major: '' },
-    { name: '', major: '' },
-  ]);
   
   // useNavigate 훅을 사용하여 경로 이동 함수 생성
   const navigate = useNavigate();
