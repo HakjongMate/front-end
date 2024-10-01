@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 interface UniversityEditModalProps {
@@ -9,59 +9,6 @@ interface UniversityEditModalProps {
   onSave: (name: string, major: string) => void;
 }
 
-const UniversityEditModal: React.FC<UniversityEditModalProps> = ({
-  modalVisible,
-  setModalVisible,
-  university,
-  major,
-  onSave,
-}) => {
-  const [universityName, setUniversityName] = useState(university);
-  const [majorName, setMajorName] = useState(major);
-
-  const handleSave = () => {
-    onSave(universityName, majorName);
-    setModalVisible(false);
-  };
-
-  return (
-    <>
-      {modalVisible && (
-        <ModalOverlay>
-          <ModalContent>
-            <ModalHeader>대학교와 학과 입력</ModalHeader>
-            <ModalBody>
-              <InputWrapper>
-                <Label>대학교명</Label>
-                <Input
-                  value={universityName}
-                  onChange={(e) => setUniversityName(e.target.value)}
-                  placeholder="대학교명을 입력하세요"
-                />
-              </InputWrapper>
-              <InputWrapper>
-                <Label>학과명</Label>
-                <Input
-                  value={majorName}
-                  onChange={(e) => setMajorName(e.target.value)}
-                  placeholder="학과명을 입력하세요"
-                />
-              </InputWrapper>
-            </ModalBody>
-            <ModalFooter>
-              <CancelButton onClick={() => setModalVisible(false)}>
-                취소
-              </CancelButton>
-              <SaveButton onClick={handleSave}>저장</SaveButton>
-            </ModalFooter>
-          </ModalContent>
-        </ModalOverlay>
-      )}
-    </>
-  );
-};
-
-// Styled Components
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -139,5 +86,61 @@ const SaveButton = styled.button`
     background-color: #0009bd;
   }
 `;
+
+const UniversityEditModal: React.FC<UniversityEditModalProps> = ({
+  modalVisible,
+  setModalVisible,
+  university,
+  major,
+  onSave,
+}) => {
+  const [universityName, setUniversityName] = useState(university);
+  const [majorName, setMajorName] = useState(major);
+
+  // 모달이 열릴 때마다 university와 major 값을 리셋
+  useEffect(() => {
+    setUniversityName(university);
+    setMajorName(major);
+  }, [university, major, modalVisible]);
+
+  const handleSave = () => {
+    onSave(universityName, majorName);
+    setModalVisible(false);
+  };
+
+  return (
+    <>
+      {modalVisible && (
+        <ModalOverlay>
+          <ModalContent>
+            <ModalHeader>대학교와 학과 입력</ModalHeader>
+            <ModalBody>
+              <InputWrapper>
+                <Label>대학교명</Label>
+                <Input
+                  value={universityName}
+                  onChange={(e) => setUniversityName(e.target.value)}
+                  placeholder="희망 대학교의 정확한 이름을 입력하세요 ex) 서울대학교"
+                />
+              </InputWrapper>
+              <InputWrapper>
+                <Label>학과명</Label>
+                <Input
+                  value={majorName}
+                  onChange={(e) => setMajorName(e.target.value)}
+                  placeholder="희망 학과명을 입력하세요 ex) 컴퓨터공학과"
+                />
+              </InputWrapper>
+            </ModalBody>
+            <ModalFooter>
+              <CancelButton onClick={() => setModalVisible(false)}>취소</CancelButton>
+              <SaveButton onClick={handleSave}>저장</SaveButton>
+            </ModalFooter>
+          </ModalContent>
+        </ModalOverlay>
+      )}
+    </>
+  );
+};
 
 export default UniversityEditModal;
