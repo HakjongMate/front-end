@@ -175,6 +175,7 @@ const UserMenuItem = styled.a`
   text-decoration: none;
   cursor: pointer;
   white-space: nowrap;
+  text-align: center;
 
   &:hover {
     background-color: #f0f0f0;
