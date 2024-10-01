@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface Service {
   id: number;
@@ -87,6 +87,7 @@ const PointInfo = styled.div`
 `;
 
 const PurchaseSummarySection: React.FC<PurchaseSummarySectionProps> = ({ pointUsed }) => {
+  const navigate = useNavigate();
   const location = useLocation();
   const { selectedCartItems }: { selectedCartItems: CartItem[] } =
     location.state || { selectedCartItems: [] };
@@ -129,6 +130,25 @@ const PurchaseSummarySection: React.FC<PurchaseSummarySectionProps> = ({ pointUs
     calculateTotalPriceAndDiscount();
   }, [selectedCartItems, pointUsed]);
 
+  // 결제하기 버튼 클릭 핸들러
+  const handlePurchase = () => {
+    // LocalStorage에서 기존 장바구니를 가져옴
+    const currentCartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+
+    // 결제된 상품을 제외한 나머지 상품들로 필터링
+    const updatedCartItems = currentCartItems.filter(
+      (cartItem: any) => !selectedCartItems.some(
+        (selectedItem) => selectedItem.id === cartItem.id
+      )
+    );
+
+    // 필터링된 상품들로 LocalStorage 업데이트
+    localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+
+    // 결제 완료 후 구매 페이지로 이동
+    navigate('/my/purchase');
+  };
+
   if (selectedCartItems.length === 0) {
     return <p>선택된 상품이 없습니다.</p>;
   }
@@ -155,11 +175,11 @@ const PurchaseSummarySection: React.FC<PurchaseSummarySectionProps> = ({ pointUs
         <FinalPrice>{finalPrice.toLocaleString()} 원</FinalPrice>
       </SummaryItem>
       <ButtonWrapper>
-        <PurchaseButton>결제하기</PurchaseButton>
+        <PurchaseButton onClick={handlePurchase}>결제하기</PurchaseButton>
       </ButtonWrapper>
       <PointInfo>{pointsToBeEarned.toLocaleString()} 포인트 적립 예정</PointInfo>
     </SummaryWrapper>
   );
-}
+};
 
 export default PurchaseSummarySection;
