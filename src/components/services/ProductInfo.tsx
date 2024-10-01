@@ -214,11 +214,10 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const navigate = useNavigate();
 
   const handleBuyClick = () => {
-    // 바로 구매를 클릭했을 때 상품을 구매 페이지로 전달
     const selectedCartItems = [
       {
-        id: 1, // 상품 고유 ID
-        service: product, // 상품 정보 전체를 service로 전달
+        id: 1,
+        service: product,
       }
     ];
 
@@ -226,23 +225,17 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   };
 
   const handleCartClick = () => {
-    // LocalStorage에서 기존 장바구니 아이템 불러오기 (없으면 빈 배열)
     const cart = JSON.parse(localStorage.getItem("cartItems") || "[]");
 
-    // 새로운 아이템 생성
     const newItem = {
       id: cart.length + 1,
       serviceId: product.id,
-      service: product, // 상품 정보를 그대로 추가
+      service: product,
     };
 
-    // 장바구니에 아이템 추가
     cart.push(newItem);
-
-    // LocalStorage에 다시 저장
     localStorage.setItem("cartItems", JSON.stringify(cart));
 
-    // 장바구니 추가 완료 메시지 표시
     toast.success("상품이 장바구니에 추가되었습니다!", {
       style: {
         maxWidth: "1000px",
@@ -250,6 +243,11 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
         fontSize: "20px",
       },
     });
+
+    const shouldNavigate = window.confirm("장바구니로 이동하시겠습니까?");
+    if (shouldNavigate) {
+      navigate('/my/cart');
+    }
   };
 
   const handleShareClick = () => {
