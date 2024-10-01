@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import { Share } from "@mui/icons-material";
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -41,9 +42,6 @@ const ProductImage = styled.img`
   height: auto;
   object-fit: cover;
   border-radius: 8px;
-
-  @media (max-width: 768px) {
-  }
 `;
 
 const ProductRight = styled.div`
@@ -213,26 +211,37 @@ interface ProductInfoProps {
 }
 
 const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
+  const navigate = useNavigate();
+
   const handleBuyClick = () => {
-    alert("구매 및 기타 문의는 010-0000-0000으로 연락 부탁드립니다.");
+    // 바로 구매를 클릭했을 때 상품을 구매 페이지로 전달
+    const selectedCartItems = [
+      {
+        id: 1, // 상품 고유 ID
+        service: product, // 상품 정보 전체를 service로 전달
+      }
+    ];
+
+    navigate('/purchase', { state: { selectedCartItems } });
   };
 
   const handleCartClick = () => {
     // LocalStorage에서 기존 장바구니 아이템 불러오기 (없으면 빈 배열)
     const cart = JSON.parse(localStorage.getItem("cartItems") || "[]");
-  
-    // 새로운 아이템 생성 (고유 ID는 장바구니 아이템 수로 계산)
+
+    // 새로운 아이템 생성
     const newItem = {
       id: cart.length + 1,
       serviceId: product.id,
+      service: product, // 상품 정보를 그대로 추가
     };
-  
+
     // 장바구니에 아이템 추가
     cart.push(newItem);
-  
+
     // LocalStorage에 다시 저장
     localStorage.setItem("cartItems", JSON.stringify(cart));
-  
+
     // 장바구니 추가 완료 메시지 표시
     toast.success("상품이 장바구니에 추가되었습니다!", {
       style: {
@@ -241,7 +250,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
         fontSize: "20px",
       },
     });
-  };  
+  };
 
   const handleShareClick = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -269,7 +278,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
             <Share />
           </ShareButton>
         </ProductHeader>
-        
+
         <Divider />
         <PriceWrapper>
           <ProductPrice>{product.discountedPrice}원</ProductPrice>
