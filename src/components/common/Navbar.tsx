@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import IconBlue from "../../assets/icons/HakjongMate_Blue.png";
+import { User, ShoppingCart, LogIn } from "lucide-react";
 
 interface SideMenuProps {
   isOpen: boolean;
@@ -28,24 +29,6 @@ const MainNavbar = styled.div`
 
   @media (max-width: 768px) {
     height: 60px;
-  }
-`;
-
-const ServiceLinks = styled.ul`
-  display: flex;
-  flex-direction: column;
-  list-style: none;
-  margin: 0;
-  padding: 10px 0;
-  border-top: 1px solid #e9eaff;
-  width: 100%;
-
-  @media (min-width: 769px) {
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
-    padding: 20px 0;
   }
 `;
 
@@ -134,77 +117,67 @@ const NavLink = styled.li<{ isActive: boolean }>`
   }
 `;
 
-const ServiceLink = styled(NavLink)`
-  margin: 10px 0;
-  text-align: center;
-
-  a {
-    text-decoration: none;
-    color: ${({ isActive }) => (isActive ? "#202594" : "#333")};
-    font-size: 16px;
-    font-weight: 700;
-    transition: all 0.3s ease;
-
-    &:hover {
-      color: #202594;
-    }
-  }
-
-  @media (min-width: 769px) {
-    margin: 0;
-  }
-`;
-
 const AuthContainer = styled.div`
   display: flex;
   justify-content: flex-end;
+  align-items: center;
 
   @media (max-width: 768px) {
     display: none;
   }
 `;
 
-const AuthLinks = styled.ul`
-  display: flex;
-  list-style: none;
-  gap: 15px;
+const IconLink = styled(Link)`
+  color: #333;
+  margin-left: 15px;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: #202594;
+  }
 `;
 
-const AuthLink = styled.li`
-  a {
-    text-decoration: none;
-    color: #333;
-    font-size: 18px;
-    font-weight: 700;
-    position: relative;
-    transition: all 0.3s ease;
+const UserMenuContainer = styled.div`
+  position: relative;
+`;
 
-    &:hover {
-      color: #202594;
-    }
+const UserMenuButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+  transition: color 0.3s ease;
 
-    &::after {
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 3px;
-      left: 0;
-      bottom: -5px;
-      background-color: #202594;
-      transition: all 0.3s ease;
-      transform: scaleX(0);
-      transform-origin: left;
-    }
-
-    &:hover::after {
-      transform: scaleX(1);
-    }
+  &:hover {
+    color: #202594;
   }
+`;
 
-  @media (max-width: 1024px) {
-    a {
-      font-size: 16px;
-    }
+const UserMenuDropdown = styled.div<{ isOpen: boolean }>`
+  position: absolute;
+  top: 100%;
+  right: 50%;
+  transform: translateX(50%);
+  background-color: #ffffff;
+  border: 1px solid #e9eaff;
+  border-radius: 4px;
+  padding: 5px 0;
+  display: ${({ isOpen }) => (isOpen ? "block" : "none")};
+  z-index: 1000;
+  min-width: 120px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+`;
+
+const UserMenuItem = styled.a`
+  display: block;
+  padding: 8px 12px;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: #f0f0f0;
   }
 `;
 
@@ -300,39 +273,90 @@ const ServiceSubLink = styled.li`
   }
 `;
 
+const ServiceLinks = styled.ul`
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 10px 0;
+  border-top: 1px solid #e9eaff;
+  width: 100%;
+
+  @media (min-width: 769px) {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    padding: 20px 0;
+  }
+`;
+
+const ServiceLink = styled(NavLink)`
+  margin: 10px 0;
+  text-align: center;
+
+  a {
+    text-decoration: none;
+    color: ${({ isActive }) => (isActive ? "#202594" : "#333")};
+    font-size: 16px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: #202594;
+    }
+  }
+
+  @media (min-width: 769px) {
+    margin: 0;
+  }
+`;
+
 function Navbar() {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [showServiceLinks, setShowServiceLinks] = useState<boolean>(false);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname.startsWith(path);
 
+  // 로그인을 확인해 로그인 상태를 저장
   useEffect(() => {
-    // 로그인 상태를 로컬 스토리지에서 확인
-    const userData = localStorage.getItem('user');
+    const userData = localStorage.getItem("user");
     setLoggedIn(!!userData);
   }, []);
 
+  // 페이지 이동 시 메뉴를 닫음
+  useEffect(() => {
+    setIsUserMenuOpen(false); 
+    setIsMenuOpen(false);
+  }, [location]);
+
+  // 서비스 페이지인 경우 서비스 메뉴를 보여줌
   useEffect(() => {
     setShowServiceLinks(location.pathname.startsWith("/service"));
   }, [location]);
+
+  const toggleUserMenu = () => {
+    setIsUserMenuOpen(!isUserMenuOpen);
+  };
 
   const toggleService = () => {
     setShowServiceLinks(!showServiceLinks);
     navigate("/service/book");
   };
 
-  const handleLogout = () => {
-    // 저장된 데이터 삭제
-    localStorage.removeItem('user');
-    setLoggedIn(false);
-    navigate('/');
-  };
-
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setLoggedIn(false);
+    setIsUserMenuOpen(false);
+    navigate("/");
   };
 
   return (
@@ -349,7 +373,6 @@ function Navbar() {
           <Bar isOpen={isMenuOpen} />
         </MenuButton>
 
-        {/* 메인 나브바 */}
         <NavLinksContainer>
           <NavLinks>
             <NavLink isActive={isActive("/intro")}>
@@ -367,31 +390,30 @@ function Navbar() {
           </NavLinks>
         </NavLinksContainer>
 
-        {/* 인증 관련 탭 */}
         <AuthContainer>
-          <AuthLinks>
-            {loggedIn ? (
-              <>
-                <AuthLink>
-                  <a onClick={handleLogout}>로그아웃</a>
-                </AuthLink>
-                <AuthLink>
-                  <Link to="/my">마이페이지</Link>
-                </AuthLink>
-                <AuthLink>
-                  <Link to="/my/cart">장바구니</Link>
-                </AuthLink>
-              </>
-            ) : (
-              <AuthLink>
-                <Link to="/login">로그인</Link>
-              </AuthLink>
-            )}
-          </AuthLinks>
+          {loggedIn ? (
+            <>
+              <UserMenuContainer>
+                <UserMenuButton onClick={toggleUserMenu}>
+                  <User size={24} />
+                </UserMenuButton>
+                <UserMenuDropdown isOpen={isUserMenuOpen}>
+                  <UserMenuItem as={Link} to="/my">마이페이지</UserMenuItem>
+                  <UserMenuItem onClick={handleLogout}>로그아웃</UserMenuItem>
+                </UserMenuDropdown>
+              </UserMenuContainer>
+              <IconLink to="/my/cart">
+                <ShoppingCart size={24} />
+              </IconLink>
+            </>
+          ) : (
+            <IconLink to="/login">
+              <LogIn size={24} />
+            </IconLink>
+          )}
         </AuthContainer>
       </MainNavbar>
 
-      {/* 서비스 탭 */}
       {showServiceLinks && (
         <ServiceLinks>
           <ServiceLink isActive={isActive("/service/book")}>
@@ -406,7 +428,6 @@ function Navbar() {
         </ServiceLinks>
       )}
 
-      {/* 사이드 메뉴 */}
       <SideMenu isOpen={isMenuOpen}>
         <SideMenuLink isActive={isActive("/intro")}>
           <Link to="/intro" onClick={toggleMenu}>
@@ -424,7 +445,6 @@ function Navbar() {
           </a>
         </SideMenuLink>
 
-        {/* 사이드 메뉴 용 서비스 탭 */}
         {showServiceLinks && (
           <ServiceSubLinks>
             <ServiceSubLink>
@@ -480,12 +500,7 @@ function Navbar() {
           </>
         ) : (
           <SideMenuLink isActive={false}>
-            <Link
-              to="/login"
-              onClick={() => {
-                toggleMenu();
-              }}
-            >
+            <Link to="/login" onClick={toggleMenu}>
               로그인
             </Link>
           </SideMenuLink>
