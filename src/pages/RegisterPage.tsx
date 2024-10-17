@@ -110,6 +110,7 @@ const RegisterPage: React.FC = () => {
     customGpa: '',
     career: '',
   });
+  const [isUsernameChecked, setIsUsernameChecked] = useState(false);
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
 
   const steps: Step[] = [
@@ -118,13 +119,16 @@ const RegisterPage: React.FC = () => {
     { label: '추가 정보', isActive: step >= 3 },
   ];
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+
+    // 아이디 변경 시 중복 확인 상태를 리셋
+    if (e.target.name === 'username') {
+      setIsUsernameChecked(false);
+    }
   };
 
   const handleColorChange = (color: string) => {
@@ -137,6 +141,12 @@ const RegisterPage: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (step === 1 && !isUsernameChecked) {
+      alert('아이디 중복 확인을 해주세요.');
+      return;
+    }
+
     if (step < 3) {
       setStep(step + 1);
     } else {
@@ -153,9 +163,10 @@ const RegisterPage: React.FC = () => {
 
     try {
       alert('사용 가능한 아이디입니다.');
+      setIsUsernameChecked(true);
     } catch (error) {
-      console.error('중복확인 중 오류 발생:', error);
-      alert('중복확인 중 오류가 발생했습니다.');
+      alert('중복 확인 중 오류가 발생했습니다.');
+      console.error('중복 확인 중 오류 발생:', error);
     }
   };
 
