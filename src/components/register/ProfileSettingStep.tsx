@@ -18,6 +18,14 @@ const ProfileSection = styled.div`
   flex-direction: column;
   align-items: center;
   margin-bottom: 30px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 480px) {
+    margin-bottom: 15px;
+  }
 `;
 
 const ProfileCircle = styled.div<{ bgColor: string }>`
@@ -30,15 +38,35 @@ const ProfileCircle = styled.div<{ bgColor: string }>`
   align-items: center;
   margin-bottom: 15px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    width: 80px;
+    height: 80px;
+  }
+
+  @media (max-width: 480px) {
+    width: 60px;
+    height: 60px;
+  }
 `;
 
 const ProfileText = styled.span`
   color: white;
   font-size: 36px;
   font-weight: bold;
+
+  @media (max-width: 768px) {
+    font-size: 30px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 24px;
+  }
 `;
 
-const ColorChangeButton = styled.button`
+const ColorChangeButton = styled.button.attrs({
+  type: 'button',
+})`
   background-color: transparent;
   color: #202594;
   border: 2px solid #202594;
@@ -52,6 +80,16 @@ const ColorChangeButton = styled.button`
     background-color: #202594;
     color: white;
   }
+
+  @media (max-width: 768px) {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 5px 10px;
+    font-size: 10px;
+  }
 `;
 
 const Label = styled.label`
@@ -59,6 +97,14 @@ const Label = styled.label`
   font-weight: 600;
   color: #555;
   margin-bottom: 8px;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 10px;
+  }
 `;
 
 const Input = styled.input`
@@ -73,6 +119,16 @@ const Input = styled.input`
   &:focus {
     border-color: #202594;
     box-shadow: 0 0 0 3px rgba(32, 37, 148, 0.1);
+  }
+
+  @media (max-width: 768px) {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 8px 10px;
+    font-size: 12px;
   }
 `;
 

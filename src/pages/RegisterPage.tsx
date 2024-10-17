@@ -1,4 +1,3 @@
-// src/components/register/RegisterPage.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -18,6 +17,30 @@ const RegisterContainer = styled.div`
   margin: 0 auto;
   padding: 50px 30px;
   background: white;
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  @media (max-width: 1024px) {
+    max-width: 600px;
+    padding: 40px 25px;
+  }
+
+  @media (max-width: 768px) {
+    max-width: 500px;
+    padding: 40px 20px;
+  }
+
+  @media (max-width: 480px) {
+    max-width: 300px;
+    padding: 30px 15px;
+  }
+
+  @media (max-width: 320px) {
+    max-width: 280px;
+    padding: 20px 10px;
+  }
 `;
 
 const Title = styled.h2`
@@ -26,11 +49,22 @@ const Title = styled.h2`
   color: #333;
   text-align: center;
   margin-bottom: 30px;
+
+  @media (max-width: 768px) {
+    font-size: 24px;
+    margin-bottom: 25px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 
 const Button = styled.button`
@@ -47,6 +81,16 @@ const Button = styled.button`
 
   &:hover {
     background-color: #181d75;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+    padding: 10px 0;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    padding: 8px 0;
   }
 `;
 
@@ -66,6 +110,7 @@ const RegisterPage: React.FC = () => {
     customGpa: '',
     career: '',
   });
+  const [isUsernameChecked, setIsUsernameChecked] = useState(false);
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
 
   const steps: Step[] = [
@@ -74,13 +119,16 @@ const RegisterPage: React.FC = () => {
     { label: '추가 정보', isActive: step >= 3 },
   ];
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+
+    // 아이디 변경 시 중복 확인 상태를 리셋
+    if (e.target.name === 'username') {
+      setIsUsernameChecked(false);
+    }
   };
 
   const handleColorChange = (color: string) => {
@@ -93,6 +141,12 @@ const RegisterPage: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (step === 1 && !isUsernameChecked) {
+      alert('아이디 중복 확인을 해주세요.');
+      return;
+    }
+
     if (step < 3) {
       setStep(step + 1);
     } else {
@@ -108,11 +162,11 @@ const RegisterPage: React.FC = () => {
     }
 
     try {
-      // 여기에 실제 중복 확인 로직을 구현해야 함
       alert('사용 가능한 아이디입니다.');
+      setIsUsernameChecked(true);
     } catch (error) {
-      console.error('중복확인 중 오류 발생:', error);
-      alert('중복확인 중 오류가 발생했습니다.');
+      alert('중복 확인 중 오류가 발생했습니다.');
+      console.error('중복 확인 중 오류 발생:', error);
     }
   };
 

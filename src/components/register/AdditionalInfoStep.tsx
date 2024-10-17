@@ -20,6 +20,14 @@ const Label = styled.label`
   font-weight: 600;
   color: #555;
   margin-bottom: 8px;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 10px;
+  }
 `;
 
 const Input = styled.input`
@@ -34,6 +42,16 @@ const Input = styled.input`
   &:focus {
     border-color: #202594;
     box-shadow: 0 0 0 3px rgba(32, 37, 148, 0.1);
+  }
+
+  @media (max-width: 768px) {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 8px 10px;
+    font-size: 12px;
   }
 `;
 
@@ -55,6 +73,16 @@ const Select = styled.select`
     border-color: #202594;
     box-shadow: 0 0 0 3px rgba(32, 37, 148, 0.1);
   }
+
+  @media (max-width: 768px) {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
 `;
 
 const SelectIcon = styled(ArrowDropDownIcon)`
@@ -64,6 +92,14 @@ const SelectIcon = styled(ArrowDropDownIcon)`
   transform: translateY(-50%);
   pointer-events: none;
   color: #202594;
+
+  @media (max-width: 768px) {
+    right: 12px;
+  }
+
+  @media (max-width: 480px) {
+    right: 10px;
+  }
 `;
 
 const AdditionalInfoStep: React.FC<AdditionalInfoStepProps> = ({
@@ -122,7 +158,7 @@ const AdditionalInfoStep: React.FC<AdditionalInfoStepProps> = ({
           name="customGpa"
           value={formData.customGpa}
           onChange={handleChange}
-          placeholder="내신을 입력해주세요 (1.0 ~ 5.0)"
+          placeholder="내신을 입력해주세요. ex) 1.4와 같이 대략적인 숫자로 적어주세요."
           min="1.0"
           max="5.0"
           step="0.1"

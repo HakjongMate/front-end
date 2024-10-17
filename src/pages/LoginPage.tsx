@@ -8,16 +8,42 @@ const LoginContainer = styled.div`
   max-width: 500px;
   margin: 0 auto;
   padding: 50px 20px;
+  min-height: 70vh; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    padding: 40px 15px;
+    max-width: 400px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 30px 10px;
+    max-width: 300px;
+  }
 `;
 
 const Header = styled.div`
   text-align: center;
   margin-bottom: 40px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 30px;
+  }
+
+  @media (max-width: 480px) {
+    margin-bottom: 20px;
+  }
 `;
 
 const Logo = styled.img`
   width: 100px;
   margin-bottom: 10px;
+
+  @media (max-width: 480px) {
+    width: 80px;
+  }
 `;
 
 const Title = styled.h1`
@@ -25,11 +51,27 @@ const Title = styled.h1`
   font-weight: 700;
   color: #202594;
   margin-bottom: 10px;
+
+  @media (max-width: 768px) {
+    font-size: 30px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 24px;
+  }
 `;
 
 const Slogan = styled.p`
   font-size: 18px;
   color: #555;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+  }
 `;
 
 const Form = styled.form`
@@ -42,6 +84,14 @@ const Label = styled.label`
   font-weight: 500;
   color: #202594;
   margin-bottom: 10px;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+  }
 `;
 
 const Input = styled.input`
@@ -54,6 +104,16 @@ const Input = styled.input`
 
   &:focus {
     border-color: #202594;
+  }
+
+  @media (max-width: 768px) {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 10px;
+    font-size: 12px;
   }
 `;
 
@@ -79,6 +139,16 @@ const SubmitButton = styled.button`
   &:hover {
     background-color: #0f3a8f;
   }
+
+  @media (max-width: 768px) {
+    padding: 12px 0;
+    font-size: 16px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 10px 0;
+    font-size: 14px;
+  }
 `;
 
 const SignUpText = styled.p`
@@ -92,12 +162,28 @@ const SignUpText = styled.p`
     color: #202594;
     text-decoration: underline;
   }
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
 `;
 
 const ErrorMessage = styled.p`
   color: red;
   font-size: 14px;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 10px;
+  }
 `;
 
 const LoginPage: React.FC = () => {
@@ -118,12 +204,12 @@ const LoginPage: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // users.json의 id가 '1'인 유저의 데이터를 저장
     const userData = users.find((user) => user.id === '1');
 
     if (userData) {
       // 유저 데이터를 로컬 스토리지에 저장 임시용
       localStorage.setItem('user', JSON.stringify(userData));
+
       // 홈 페이지로 이동
       navigate('/');
       window.location.reload();
