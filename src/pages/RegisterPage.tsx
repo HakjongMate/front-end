@@ -1,4 +1,3 @@
-// src/components/register/RegisterPage.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -18,6 +17,30 @@ const RegisterContainer = styled.div`
   margin: 0 auto;
   padding: 50px 30px;
   background: white;
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  @media (max-width: 1024px) {
+    max-width: 600px;
+    padding: 40px 25px;
+  }
+
+  @media (max-width: 768px) {
+    max-width: 500px;
+    padding: 40px 20px;
+  }
+
+  @media (max-width: 480px) {
+    max-width: 300px;
+    padding: 30px 15px;
+  }
+
+  @media (max-width: 320px) {
+    max-width: 280px;
+    padding: 20px 10px;
+  }
 `;
 
 const Title = styled.h2`
@@ -26,11 +49,22 @@ const Title = styled.h2`
   color: #333;
   text-align: center;
   margin-bottom: 30px;
+
+  @media (max-width: 768px) {
+    font-size: 24px;
+    margin-bottom: 25px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 
 const Button = styled.button`
@@ -47,6 +81,16 @@ const Button = styled.button`
 
   &:hover {
     background-color: #181d75;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+    padding: 10px 0;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    padding: 8px 0;
   }
 `;
 
@@ -108,7 +152,6 @@ const RegisterPage: React.FC = () => {
     }
 
     try {
-      // 여기에 실제 중복 확인 로직을 구현해야 함
       alert('사용 가능한 아이디입니다.');
     } catch (error) {
       console.error('중복확인 중 오류 발생:', error);
