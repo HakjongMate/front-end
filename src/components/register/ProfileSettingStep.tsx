@@ -64,7 +64,9 @@ const ProfileText = styled.span`
   }
 `;
 
-const ColorChangeButton = styled.button`
+const ColorChangeButton = styled.button.attrs({
+  type: 'button',
+})`
   background-color: transparent;
   color: #202594;
   border: 2px solid #202594;
