@@ -110,13 +110,13 @@ const MyExplorationSection: React.FC = () => {
       default:
         items = [...interests, ...explorations];
     }
-    return items.slice(0, 6).map((item) => 
+    return items.slice(0, 6).map((item) =>
       'state' in item ? (
-        <ExplorationCard key={item.id} {...item} />
+        <ExplorationCard key={`explore-${item.id}`} {...item} />
       ) : (
-        <InterestCard key={item.id} {...item} />
+        <InterestCard key={`interest-${item.id}`} {...item} />
       )
-    );
+    );    
   };
 
   return (
