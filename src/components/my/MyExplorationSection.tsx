@@ -79,18 +79,19 @@ const MyExplorationSection: React.FC = () => {
       const parsedUser = JSON.parse(storedUser);
       setUserProfile(parsedUser);
     }
-    const userId = userProfile?.id;
+  }, []);
 
-    if (userId) {
+  useEffect(() => {
+    if (userProfile) {
       const filteredExplorations = exploresData
-        .filter((explore) => explore.userId === userId)
+        .filter((explore) => explore.userId === userProfile.id)
         .map((explore) => ({
           ...explore,
           state: explore.state as 'IN_PROGRESS' | 'NOT_STARTED' | 'COMPLETED',
         }));
       setExplorations(filteredExplorations);
 
-      const filteredInterests = interestsData.filter((interest) => interest.userId === userId);
+      const filteredInterests = interestsData.filter((interest) => interest.userId === userProfile.id);
       setInterests(filteredInterests);
     }
   }, [userProfile]);
@@ -110,13 +111,13 @@ const MyExplorationSection: React.FC = () => {
       default:
         items = [...interests, ...explorations];
     }
-    return items.slice(0, 6).map((item) =>
+    return items.slice(0, 6).map((item) => 
       'state' in item ? (
         <ExplorationCard key={`explore-${item.id}`} {...item} />
       ) : (
         <InterestCard key={`interest-${item.id}`} {...item} />
       )
-    );    
+    );
   };
 
   return (
