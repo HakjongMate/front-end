@@ -85,7 +85,7 @@ const ViewMoreButton = styled(Link)`
 const MyPurchaseSection: React.FC = () => {
   const [purchaseItems, setPurchaseItems] = useState<any[]>([]);
   const [activeTab, setActiveTab] = useState<
-    "전체" | "AI 주제 추천 서비스" | "학종 가이드북" | "생활기록부 진단 서비스"
+    "전체" | "AI 주제 추천 서비스" | "학종 가이드북" | "생활기록부 분석 서비스"
   >("전체");
 
   useEffect(() => {
@@ -121,7 +121,7 @@ const MyPurchaseSection: React.FC = () => {
           "전체",
           "AI 주제 추천 서비스",
           "학종 가이드북",
-          "생활기록부 진단 서비스",
+          "생활기록부 분석 서비스",
         ].map((tab) => (
           <TabButton
             key={tab}
