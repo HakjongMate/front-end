@@ -74,7 +74,9 @@ const ProfileCircle = styled.div<{ color: string }>`
   margin-right: 30px;
 
   @media (max-width: 480px) {
-    margin-right: 20px;
+    width: 70px;
+    height: 70px;
+    margin-right: 10px;
     margin-bottom: 10px;
   }
 `;
