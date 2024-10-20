@@ -9,6 +9,14 @@ const PageWrapper = styled.div`
   min-height: 70vh;
   margin: 0 auto;
   padding: 40px 20px;
+
+  @media (max-width: 768px) {
+    padding: 30px 15px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 20px 10px;
+  }
 `;
 
 const PageType = styled.h2`
@@ -16,6 +24,14 @@ const PageType = styled.h2`
   font-weight: 600;
   color: #333;
   margin-bottom: 10px;
+
+  @media (max-width: 768px) {
+    font-size: 22px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 20px;
+  }
 `;
 
 const Divider = styled.hr`
@@ -29,6 +45,14 @@ const Title = styled.h1`
   font-weight: bold;
   color: #000;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 24px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 22px;
+  }
 `;
 
 const TagContainer = styled.div`
@@ -44,6 +68,11 @@ const Tag = styled.span<{ backgroundColor: string; color: string }>`
   font-weight: 400;
   padding: 8px 15px;
   border-radius: 15px;
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
 `;
 
 const ContentSection = styled.div`
@@ -55,6 +84,14 @@ const SectionTitle = styled.h3`
   font-weight: 600;
   color: #333;
   margin-bottom: 10px;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+  }
 `;
 
 const Content = styled.p`
@@ -66,6 +103,14 @@ const Content = styled.p`
   border: 1px solid #ccc;
   border-radius: 10px;
   background-color: #fff;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 13px;
+  }
 `;
 
 const InsightInput = styled.textarea`
@@ -79,6 +124,14 @@ const InsightInput = styled.textarea`
   margin-bottom: 20px;
   background-color: #fff;
   box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 13px;
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -98,6 +151,14 @@ const SaveButton = styled.button`
 
   &:hover {
     background-color: #0009bd;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 13px;
   }
 `;
 
@@ -119,7 +180,6 @@ const MyInterestDetailPage: React.FC = () => {
 
   const handleSave = () => {
     console.log('Saving insight:', insight);
-    // 실제로 백엔드에 데이터를 보내는 로직 추가 가능
   };
 
   return (
@@ -128,9 +188,7 @@ const MyInterestDetailPage: React.FC = () => {
       <Divider />
       <Title>{interest.title}</Title>
       <TagContainer>
-        <Tag backgroundColor="#0F4ABE" color="#FFF">
-          최근 관심사
-        </Tag>
+        <Tag backgroundColor="#0F4ABE" color="#FFF">최근 관심사</Tag>
       </TagContainer>
 
       <ContentSection>
