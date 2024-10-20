@@ -33,6 +33,14 @@ const ModalContainer = styled.div`
   width: 400px;
   max-width: 100%;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+@media (max-width: 768px) {
+  max-width: 90%;
+}
+
+@media (max-width: 480px) {
+  max-width: 80%;
+}
 `;
 
 const ProfileCircle = styled.div<{ bgColor: string }>`
