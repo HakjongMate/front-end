@@ -265,9 +265,9 @@ const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
               name="customScore"
               value={customScore || ''}
               onChange={(e) => setCustomScore(parseFloat(e.target.value))}
-              placeholder="내신을 입력해주세요 (1.0 ~ 5.0)"
+              placeholder="내신을 입력해주세요. ex) 1.4와 같이 대략적인 숫자로 적어주세요."
               min="1.0"
-              max="5.0"
+              max="9.0"
               step="0.1"
             />
           )}
