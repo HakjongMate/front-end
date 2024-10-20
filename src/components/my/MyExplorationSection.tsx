@@ -69,7 +69,7 @@ const ViewMoreButton = styled(Link)`
 
 const MyExplorationSection: React.FC = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [activeTab, setActiveTab] = useState<'전체' | '관심사' | 'AI 탐구 결과' | '탐구 결과'>('전체');
+  const [activeTab, setActiveTab] = useState<'전체' | '관심사' | 'AI 탐구' | '탐구'>('전체');
   const [explorations, setExplorations] = useState<Exploration[]>([]);
   const [interests, setInterests] = useState<Interest[]>([]);
 
@@ -102,10 +102,10 @@ const MyExplorationSection: React.FC = () => {
       case '관심사':
         items = interests;
         break;
-      case 'AI 탐구 결과':
+      case 'AI 탐구':
         items = explorations.filter((explore) => explore.ai);
         break;
-      case '탐구 결과':
+      case '탐구':
         items = explorations.filter((explore) => explore);
         break;
       default:
@@ -125,7 +125,7 @@ const MyExplorationSection: React.FC = () => {
       <Title>My 탐구 & 관심사</Title>
 
       <TabContainer>
-        {['전체', '관심사', 'AI 탐구 결과', '탐구 결과'].map((tab) => (
+        {['전체', '관심사', 'AI 탐구', '탐구'].map((tab) => (
           <TabButton
             key={tab}
             active={activeTab === tab}
