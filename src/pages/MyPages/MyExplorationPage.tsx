@@ -48,7 +48,6 @@ const HeaderSubtitle = styled.p`
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.5;
-  white-space: pre-wrap;
 
   @media (max-width: 768px) {
     font-size: 18px;
@@ -58,6 +57,7 @@ const HeaderSubtitle = styled.p`
   @media (max-width: 480px) {
     font-size: 16px;
     max-width: 300px;
+    white-space: pre-wrap;
   }
 `;
 
@@ -206,9 +206,9 @@ const MyExplorationPage: React.FC = () => {
     }
     return items.map((item) =>
       'state' in item ? (
-        <ExplorationCard key={item.id} {...item} />
+        <ExplorationCard key={`explore-${item.id}`} {...item} />
       ) : (
-        <InterestCard key={item.id} {...item} />
+        <InterestCard key={`interest-${item.id}`} {...item} />
       )
     );
   };
@@ -229,8 +229,12 @@ const MyExplorationPage: React.FC = () => {
       <HeaderSection>
         <HeaderTitle>탐구 및 관심사의 추가는 {'\n'} 앱을 통해 가능합니다.</HeaderTitle>
         <HeaderSubtitle>
-          아래 QR코드를 통해 앱을 설치하시면 {'\n'}
-          학생부 종합 전형 준비를 위한 {'\n'} 다양한 기능을 이용하실 수 있습니다. {'\n'}
+          아래 QR코드를 통해 앱을 설치하시면
+        </HeaderSubtitle>
+        <HeaderSubtitle>
+          학생부 종합 전형 준비를 위한 {'\n'} 다양한 기능을 이용하실 수 있습니다.
+        </HeaderSubtitle>
+        <HeaderSubtitle>
           현재 본 서비스는 준비중입니다.
         </HeaderSubtitle>
       </HeaderSection>
