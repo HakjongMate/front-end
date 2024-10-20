@@ -163,7 +163,7 @@ const EmptyStateText = styled.p`
 
 const MyExplorationPage: React.FC = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [activeTab, setActiveTab] = useState<'전체' | '관심사' | 'AI 탐구 결과' | '탐구 결과'>('전체');
+  const [activeTab, setActiveTab] = useState<'전체' | '관심사' | 'AI 탐구' | '탐구'>('전체');
   const [explorations, setExplorations] = useState<Exploration[]>([]);
   const [interests, setInterests] = useState<Interest[]>([]);
 
@@ -173,18 +173,19 @@ const MyExplorationPage: React.FC = () => {
       const parsedUser = JSON.parse(storedUser);
       setUserProfile(parsedUser);
     }
-    const userId = userProfile?.id;
+  }, []);
 
-    if (userId) {
+  useEffect(() => {
+    if (userProfile) {
       const filteredExplorations = exploresData
-        .filter((explore) => explore.userId === userId)
+        .filter((explore) => explore.userId === userProfile.id)
         .map((explore) => ({
           ...explore,
           state: explore.state as 'IN_PROGRESS' | 'NOT_STARTED' | 'COMPLETED',
         }));
       setExplorations(filteredExplorations);
 
-      const filteredInterests = interestsData.filter((interest) => interest.userId === userId);
+      const filteredInterests = interestsData.filter((interest) => interest.userId === userProfile.id);
       setInterests(filteredInterests);
     }
   }, [userProfile]);
@@ -195,10 +196,10 @@ const MyExplorationPage: React.FC = () => {
       case '관심사':
         items = interests;
         break;
-      case 'AI 탐구 결과':
+      case 'AI 탐구':
         items = explorations.filter((explore) => explore.ai);
         break;
-      case '탐구 결과':
+      case '탐구':
         items = explorations.filter((explore) => explore);
         break;
       default:
@@ -241,7 +242,7 @@ const MyExplorationPage: React.FC = () => {
 
       <ContentSection>
         <TabContainer>
-          {['전체', '관심사', 'AI 탐구 결과', '탐구 결과'].map((tab) => (
+          {['전체', '관심사', 'AI 탐구', '탐구'].map((tab) => (
             <TabButton
               key={tab}
               active={activeTab === tab}
