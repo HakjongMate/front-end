@@ -31,11 +31,19 @@ const Title = styled.h3`
   font-weight: 600;
   color: #000;
   margin: 0;
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+  }
 `;
 
 const Date = styled.span`
   font-size: 14px;
   color: #888;
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
 `;
 
 const TagContainer = styled.div`
@@ -75,7 +83,7 @@ const ExplorationCard: React.FC<Exploration> = ({
   createDate,
   ai,
 }) => {
-  const navigate = useNavigate(); // useNavigate hook으로 페이지 이동 구현
+  const navigate = useNavigate();
 
   const getStateText = (state: string) => {
     switch (state) {
@@ -91,7 +99,7 @@ const ExplorationCard: React.FC<Exploration> = ({
   };
 
   const handleClick = () => {
-    navigate(`/my/exploration/detail/${id}`); // 탐구 상세 페이지로 이동
+    navigate(`/my/exploration/detail/${id}`);
   };
 
   return (

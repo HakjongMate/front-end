@@ -29,14 +29,22 @@ const TitleContainer = styled.div`
 
 const Title = styled.h3`
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 600;
   color: #000;
   margin: 0;
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+  }
 `;
 
 const Date = styled.span`
   font-size: 14px;
   color: #888;
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
 `;
 
 const TagContainer = styled.div`
