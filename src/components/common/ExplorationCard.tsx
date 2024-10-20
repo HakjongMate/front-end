@@ -51,9 +51,9 @@ const TagContainer = styled.div`
   margin-bottom: 12px;
 `;
 
-const Tag = styled.span<{ bgColor: string; textColor: string }>`
-  background-color: ${(props) => props.bgColor};
-  color: ${(props) => props.textColor};
+const Tag = styled.span<{ $bgColor: string; $textColor: string }>`
+  background-color: ${(props) => props.$bgColor};
+  color: ${(props) => props.$textColor};
   font-size: 14px;
   font-weight: 400;
   padding: 8px 15px;
@@ -66,11 +66,6 @@ const Tag = styled.span<{ bgColor: string; textColor: string }>`
     padding: 6px 12px;
   }
 `;
-
-const CustomTag = styled(Tag).attrs(() => ({
-  bgColor: undefined,
-  textColor: undefined,
-}))``;
 
 const Description = styled.p`
   font-size: 15px;
@@ -123,10 +118,10 @@ const ExplorationCard: React.FC<Exploration> = ({
         <StyledDate>{new Date(createDate).toLocaleDateString()}</StyledDate>
       </TitleContainer>
       <TagContainer>
-        {ai && <CustomTag bgColor="#FFC107" textColor="#000">AI 추천</CustomTag>}
-        <CustomTag bgColor="#28A745" textColor="#000">
+        {ai && <Tag $bgColor="#FFC107" $textColor="#000">AI 추천</Tag>}
+        <Tag $bgColor="#28A745" $textColor="#000">
           {getStateText(state)}
-        </CustomTag>
+        </Tag>
       </TagContainer>
       <Description>{contents}</Description>
     </CardWrapper>
