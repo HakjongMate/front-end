@@ -10,18 +10,38 @@ const SectionWrapper = styled.div`
   min-height: 100vh;
   margin: 0 auto;
   font-family: sans-serif;
+
+  @media (max-width: 768px) {
+    padding: 30px 15px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 20px 10px;
+  }
 `;
 
 const Title = styled.h2`
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 18px;
+  }
 `;
 
 const TabContainer = styled.div`
   display: flex;
   margin-bottom: 20px;
   border-bottom: 1px solid #e0e0e0;
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+  }
 `;
 
 const TabButton = styled.button<{ active: boolean }>`
@@ -42,6 +62,16 @@ const TabButton = styled.button<{ active: boolean }>`
   &:hover {
     color: #3f5bf6;
   }
+
+  @media (max-width: 768px) {
+    padding: 8px 15px;
+    font-size: 13px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
 `;
 
 const PurchaseList = styled.div`
@@ -49,12 +79,20 @@ const PurchaseList = styled.div`
   flex-direction: column;
   gap: 20px;
   margin-bottom: 40px;
+
+  @media (max-width: 768px) {
+    gap: 15px;
+  }
+
+  @media (max-width: 480px) {
+    gap: 10px;
+  }
 `;
 
 const MyPurchasePage: React.FC = () => {
   const [purchaseItems, setPurchaseItems] = useState<any[]>([]);
   const [activeTab, setActiveTab] = useState<
-    "전체" | "AI 주제 추천 서비스" | "학종 가이드북" | "생활기록부 진단 서비스"
+    "전체" | "AI 주제 추천 서비스" | "학종 가이드북" | "생활기록부 분석 서비스"
   >("전체");
 
   useEffect(() => {
@@ -87,7 +125,7 @@ const MyPurchasePage: React.FC = () => {
           "전체",
           "AI 주제 추천 서비스",
           "학종 가이드북",
-          "생활기록부 진단 서비스",
+          "생활기록부 분석 서비스",
         ].map((tab) => (
           <TabButton
             key={tab}
