@@ -10,6 +10,14 @@ const PageWrapper = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 40px 20px;
+
+  @media (max-width: 768px) {
+    padding: 30px 15px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 20px 10px;
+  }
 `;
 
 const PageTitle = styled.h1`
@@ -18,12 +26,28 @@ const PageTitle = styled.h1`
   color: #333;
   margin-bottom: 30px;
   text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 22px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 20px;
+  }
 `;
 
 const SubjectsTable = styled.table`
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 30px;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
 `;
 
 const TableHeader = styled.th`
@@ -33,8 +57,19 @@ const TableHeader = styled.th`
   text-align: center;
   font-weight: bold;
   white-space: nowrap;
+
   &:first-child {
     text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 8px;
+    font-size: 12px;
   }
 `;
 
@@ -43,9 +78,18 @@ const TableCell = styled.td`
   padding: 12px;
   vertical-align: middle;
   text-align: center;
+
   &:last-child {
     text-align: left;
     padding-left: 16px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 8px;
   }
 `;
 
@@ -53,6 +97,18 @@ const SubjectGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   gap: 10px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 const SubjectButton = styled.button<{ isSelected: boolean }>`
@@ -67,6 +123,16 @@ const SubjectButton = styled.button<{ isSelected: boolean }>`
 
   &:hover {
     background-color: ${(props) => (props.isSelected ? "#0d47a1" : "#e8eaf6")};
+  }
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+    padding: 5px 8px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 10px;
+    padding: 4px 6px;
   }
 `;
 
