@@ -33,11 +33,11 @@ const Title = styled.h3`
   margin: 0;
 
   @media (max-width: 480px) {
-    font-size: 14px;
+    font-size: 16px;
   }
 `;
 
-const Date = styled.span`
+const StyledDate = styled.span`
   font-size: 14px;
   color: #888;
 
@@ -51,16 +51,26 @@ const TagContainer = styled.div`
   margin-bottom: 12px;
 `;
 
-const Tag = styled.span<{ backgroundColor: string; color: string }>`
-  background-color: ${(props) => props.backgroundColor};
-  color: ${(props) => props.color};
+const Tag = styled.span<{ bgColor: string; textColor: string }>`
+  background-color: ${(props) => props.bgColor};
+  color: ${(props) => props.textColor};
   font-size: 14px;
   font-weight: 400;
   padding: 8px 15px;
   border-radius: 15px;
   display: inline-block;
   margin-right: 7px;
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
 `;
+
+const CustomTag = styled(Tag).attrs(() => ({
+  bgColor: undefined,
+  textColor: undefined,
+}))``;
 
 const Description = styled.p`
   font-size: 15px;
@@ -73,6 +83,10 @@ const Description = styled.p`
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+  }
 `;
 
 const ExplorationCard: React.FC<Exploration> = ({
@@ -106,13 +120,13 @@ const ExplorationCard: React.FC<Exploration> = ({
     <CardWrapper onClick={handleClick}>
       <TitleContainer>
         <Title>{title}</Title>
-        <Date>{createDate}</Date>
+        <StyledDate>{new Date(createDate).toLocaleDateString()}</StyledDate>
       </TitleContainer>
       <TagContainer>
-        {ai && <Tag backgroundColor="#FFC107" color="#000">AI 추천</Tag>}
-        <Tag backgroundColor="#28A745" color="#000">
+        {ai && <CustomTag bgColor="#FFC107" textColor="#000">AI 추천</CustomTag>}
+        <CustomTag bgColor="#28A745" textColor="#000">
           {getStateText(state)}
-        </Tag>
+        </CustomTag>
       </TagContainer>
       <Description>{contents}</Description>
     </CardWrapper>
