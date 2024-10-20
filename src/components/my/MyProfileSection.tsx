@@ -13,6 +13,17 @@ const SectionContainer = styled.div`
 const ProfileContainer = styled.div`
   display: flex;
   gap: 16px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
 `;
 
 const Card = styled.div`
@@ -21,17 +32,32 @@ const Card = styled.div`
   padding: 20px;
   flex: 1;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    padding: 15px;
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    max-width: 300px;
+    padding: 15px;
+  }
 `;
 
 const ProfileInfo = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  flex-wrap: wrap;
+
+  @media (max-width: 480px) {
+    align-items: center;
+  }
 `;
 
 const UserDetails = styled.div`
   display: flex;
-  align-items: center;
+  align-items: center
 `;
 
 const ProfileCircle = styled.div<{ color: string }>`
@@ -46,6 +72,13 @@ const ProfileCircle = styled.div<{ color: string }>`
   font-size: 18px;
   font-weight: 500;
   margin-right: 30px;
+
+  @media (max-width: 480px) {
+    width: 70px;
+    height: 70px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
 `;
 
 const TextInfo = styled.div`
@@ -58,6 +91,10 @@ const Username = styled.span`
   font-weight: 500;
   color: #000;
   line-height: 1.6;
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+  }
 `;
 
 const UserInfo = styled.span`
@@ -65,6 +102,10 @@ const UserInfo = styled.span`
   font-weight: 300;
   color: #000;
   line-height: 1.6;
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+  }
 `;
 
 const EditButton = styled.button`
@@ -73,6 +114,10 @@ const EditButton = styled.button`
   cursor: pointer;
   color: #000;
   padding: 4px;
+
+  @media (max-width: 480px) {
+    margin-top: 10px;
+  }
 `;
 
 const StatItem = styled.div`
@@ -86,16 +131,31 @@ const StatItem = styled.div`
     margin-bottom: 0;
   }
 
+  @media (max-width: 480px) {
+    justify-content: space-between;
+    width: 100%;
+  }
+
   svg {
     margin-right: 12px;
     color: #000;
     font-size: 24px;
+
+    @media (max-width: 480px) {
+      font-size: 18px;
+      margin-right: 8px;
+    }
   }
 `;
 
 const StatValue = styled.span`
   margin-left: auto;
   font-weight: bold;
+
+  @media (max-width: 480px) {
+    margin-left: 0;
+    font-size: 14px;
+  }
 `;
 
 const MyProfileSection: React.FC = () => {
@@ -106,14 +166,12 @@ const MyProfileSection: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    // LocalStorage에서 사용자 정보 가져오기
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
       setUserProfile(parsedUser);
     }
 
-    // 탐구력 코인 및 기타 정보 설정
     setCoin(1000);
     setExplorationCount(5);
     setDaysTogether(324);

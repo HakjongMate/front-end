@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import PurchaseItem from "./PurchaseItem";
-import purchasedItemsData from "../../assets/data/purchasedItems.json";
-import serviceData from "../../assets/data/service.json";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import PurchaseItem from './PurchaseItem';
+import purchasedItemsData from '../../assets/data/purchasedItems.json';
+import serviceData from '../../assets/data/service.json';
+import { Link } from 'react-router-dom';
 
 const SectionWrapper = styled.div`
   padding: 20px 20px 40px;
@@ -16,6 +16,14 @@ const Title = styled.h2`
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 18px;
+  }
 `;
 
 const TabContainer = styled.div`
@@ -29,9 +37,9 @@ const TabButton = styled.button<{ active: boolean }>`
   font-size: 14px;
   font-weight: 500;
   background-color: transparent;
-  color: ${({ active }) => (active ? "#3F5BF6" : "#333")};
+  color: ${({ active }) => (active ? '#3F5BF6' : '#333')};
   border: none;
-  border-bottom: ${({ active }) => (active ? "2px solid #3F5BF6" : "none")};
+  border-bottom: ${({ active }) => (active ? '2px solid #3F5BF6' : 'none')};
   cursor: pointer;
   transition: all 0.3s ease;
 
@@ -41,6 +49,11 @@ const TabButton = styled.button<{ active: boolean }>`
 
   &:hover {
     color: #3f5bf6;
+  }
+
+  @media (max-width: 480px) {
+    padding: 5px;
+    font-size: 12px;
   }
 `;
 
@@ -72,7 +85,7 @@ const ViewMoreButton = styled(Link)`
 const MyPurchaseSection: React.FC = () => {
   const [purchaseItems, setPurchaseItems] = useState<any[]>([]);
   const [activeTab, setActiveTab] = useState<
-    "전체" | "AI 주제 추천 서비스" | "학종 가이드북" | "생활기록부 진단 서비스"
+    "전체" | "AI 주제 추천 서비스" | "학종 가이드북" | "생활기록부 분석 서비스"
   >("전체");
 
   useEffect(() => {
@@ -108,7 +121,7 @@ const MyPurchaseSection: React.FC = () => {
           "전체",
           "AI 주제 추천 서비스",
           "학종 가이드북",
-          "생활기록부 진단 서비스",
+          "생활기록부 분석 서비스",
         ].map((tab) => (
           <TabButton
             key={tab}

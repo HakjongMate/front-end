@@ -160,7 +160,7 @@ const AdditionalInfoStep: React.FC<AdditionalInfoStepProps> = ({
           onChange={handleChange}
           placeholder="내신을 입력해주세요. ex) 1.4와 같이 대략적인 숫자로 적어주세요."
           min="1.0"
-          max="5.0"
+          max="9.0"
           step="0.1"
           required
         />

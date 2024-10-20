@@ -17,12 +17,31 @@ const Title = styled.h2`
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 18px;
+  }
 `;
 
 const CardsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 768px) {
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const TabContainer = styled.div`
@@ -49,6 +68,10 @@ const TabButton = styled.button<{ active: boolean }>`
   &:hover {
     color: #3F5BF6;
   }
+
+  @media (max-width: 480px) {
+    padding: 10px;
+  }
 `;
 
 const ViewMoreButton = styled(Link)`
@@ -69,7 +92,7 @@ const ViewMoreButton = styled(Link)`
 
 const MyExplorationSection: React.FC = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [activeTab, setActiveTab] = useState<'전체' | '관심사' | 'AI 탐구 결과' | '탐구 결과'>('전체');
+  const [activeTab, setActiveTab] = useState<'전체' | '관심사' | 'AI 탐구' | '탐구'>('전체');
   const [explorations, setExplorations] = useState<Exploration[]>([]);
   const [interests, setInterests] = useState<Interest[]>([]);
 
@@ -79,18 +102,19 @@ const MyExplorationSection: React.FC = () => {
       const parsedUser = JSON.parse(storedUser);
       setUserProfile(parsedUser);
     }
-    const userId = userProfile?.id;
+  }, []);
 
-    if (userId) {
+  useEffect(() => {
+    if (userProfile) {
       const filteredExplorations = exploresData
-        .filter((explore) => explore.userId === userId)
+        .filter((explore) => explore.userId === userProfile.id)
         .map((explore) => ({
           ...explore,
           state: explore.state as 'IN_PROGRESS' | 'NOT_STARTED' | 'COMPLETED',
         }));
       setExplorations(filteredExplorations);
 
-      const filteredInterests = interestsData.filter((interest) => interest.userId === userId);
+      const filteredInterests = interestsData.filter((interest) => interest.userId === userProfile.id);
       setInterests(filteredInterests);
     }
   }, [userProfile]);
@@ -101,10 +125,10 @@ const MyExplorationSection: React.FC = () => {
       case '관심사':
         items = interests;
         break;
-      case 'AI 탐구 결과':
+      case 'AI 탐구':
         items = explorations.filter((explore) => explore.ai);
         break;
-      case '탐구 결과':
+      case '탐구':
         items = explorations.filter((explore) => explore);
         break;
       default:
@@ -112,9 +136,9 @@ const MyExplorationSection: React.FC = () => {
     }
     return items.slice(0, 6).map((item) => 
       'state' in item ? (
-        <ExplorationCard key={item.id} {...item} />
+        <ExplorationCard key={`explore-${item.id}`} {...item} />
       ) : (
-        <InterestCard key={item.id} {...item} />
+        <InterestCard key={`interest-${item.id}`} {...item} />
       )
     );
   };
@@ -124,7 +148,7 @@ const MyExplorationSection: React.FC = () => {
       <Title>My 탐구 & 관심사</Title>
 
       <TabContainer>
-        {['전체', '관심사', 'AI 탐구 결과', '탐구 결과'].map((tab) => (
+        {['전체', '관심사', 'AI 탐구', '탐구'].map((tab) => (
           <TabButton
             key={tab}
             active={activeTab === tab}

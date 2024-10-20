@@ -1,17 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import ColorPickerModal from '../common/ColorPickerModal';
-
-interface UserProfile {
-  id: string;
-  username: string;
-  high_school: string;
-  grade: number;
-  score: number;
-  dream: string;
-  profile_color: string;
-  profile_name: string;
-}
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { UserProfile } from '../../types';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -24,22 +15,33 @@ const ModalOverlay = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  overflow-y: auto;
 `;
 
 const ModalContainer = styled.div`
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
-  width: 400px;
+  width: 450px;
   max-width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    max-width: 90%;
+  }
+
+  @media (max-width: 480px) {
+    max-width: 80%;
+  }
 `;
 
 const ProfileCircle = styled.div<{ bgColor: string }>`
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background-color: ${props => props.bgColor};
+  background-color: ${(props) => props.bgColor};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -89,6 +91,27 @@ const Input = styled.input`
   border-radius: 4px;
 `;
 
+const SelectWrapper = styled.div`
+  position: relative;
+`;
+
+const Select = styled.select`
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  appearance: none;
+`;
+
+const SelectIcon = styled(ArrowDropDownIcon)`
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none;
+`;
+
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -128,28 +151,32 @@ const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
 }) => {
   const [profile, setProfile] = useState<UserProfile | null>(userProfile);
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
+  const [customScore, setCustomScore] = useState<number | undefined>(undefined);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setProfile(prevProfile => {
+    setProfile((prevProfile) => {
       if (!prevProfile) return null;
-      
-      // Handle numeric inputs
-      if (name === 'grade' || name === 'score') {
+
+      // 학년을 숫자로 변환하여 저장
+      if (name === 'grade') {
         return { ...prevProfile, [name]: Number(value) };
       }
-      
-      // Update both username and profile_name if username changes
-      if (name === 'username') {
-        return { ...prevProfile, username: value, profile_name: value };
+
+      // 성적 입력 처리
+      if (name === 'score') {
+        if (value === 'custom') {
+          return { ...prevProfile, score: customScore || 0 }; // 커스텀 점수 처리
+        }
+        return { ...prevProfile, score: Number(value) };
       }
-      
+
       return { ...prevProfile, [name]: value };
     });
   };
 
   const handleColorChange = (color: string) => {
-    setProfile(prevProfile => 
+    setProfile((prevProfile) =>
       prevProfile ? { ...prevProfile, profile_color: color } : null
     );
     setIsColorPickerVisible(false);
@@ -185,7 +212,7 @@ const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
             onChange={handleInputChange}
           />
 
-          <Label>프로필이름</Label>
+          <Label>프로필 이름</Label>
           <Input
             type="text"
             name="profile_name"
@@ -202,25 +229,48 @@ const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
           />
 
           <Label>학년</Label>
-          <Input
-            type="number"
-            name="grade"
-            value={profile.grade}
-            onChange={handleInputChange}
-            min={1}
-            max={3}
-          />
+          <SelectWrapper>
+            <Select
+              id="grade"
+              name="grade"
+              value={profile.grade}
+              onChange={handleInputChange}
+            >
+              <option value="1">1학년</option>
+              <option value="2">2학년</option>
+              <option value="3">3학년</option>
+            </Select>
+            <SelectIcon />
+          </SelectWrapper>
 
-          <Label>등급</Label>
-          <Input
-            type="number"
-            name="score"
-            value={profile.score}
-            onChange={handleInputChange}
-            step={0.1}
-            min={1}
-            max={9}
-          />
+          <Label>성적</Label>
+          <SelectWrapper>
+            <Select
+              id="score"
+              name="score"
+              value={profile.score.toString()}
+              onChange={handleInputChange}
+            >
+              <option value="1.0">1.0</option>
+              <option value="2.0">2.0</option>
+              <option value="3.0">3.0</option>
+              <option value="custom">직접 입력</option>
+            </Select>
+            <SelectIcon />
+          </SelectWrapper>
+
+          {profile.score === 0 && (
+            <Input
+              type="number"
+              name="customScore"
+              value={customScore || ''}
+              onChange={(e) => setCustomScore(parseFloat(e.target.value))}
+              placeholder="내신을 입력해주세요. ex) 1.4와 같이 대략적인 숫자로 적어주세요."
+              min="1.0"
+              max="9.0"
+              step="0.1"
+            />
+          )}
 
           <Label>꿈</Label>
           <Input
