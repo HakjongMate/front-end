@@ -16,12 +16,30 @@ const HeaderSection = styled.div`
   padding: 30px 20px 50px;
   color: white;
   text-align: center;
+
+  @media (max-width: 768px) {
+    padding: 20px 15px 40px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 15px 10px 30px;
+  }
 `;
 
 const HeaderTitle = styled.h1`
   font-size: 30px;
   font-weight: 700;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 26px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 22px;
+    white-space: pre-wrap;
+    line-height: 1.5;
+  }
 `;
 
 const HeaderSubtitle = styled.p`
@@ -30,19 +48,41 @@ const HeaderSubtitle = styled.p`
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.5;
-  white-space: pre-wrap;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+    max-width: 500px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+    max-width: 300px;
+    white-space: pre-wrap;
+  }
 `;
 
 const ContentSection = styled.div`
   max-width: 1080px;
   margin: 0 auto;
   padding: 40px 20px;
+
+  @media (max-width: 768px) {
+    padding: 30px 15px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 20px 10px;
+  }
 `;
 
 const TabContainer = styled.div`
   display: flex;
   margin-bottom: 20px;
   border-bottom: 1px solid #e0e0e0;
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+  }
 `;
 
 const TabButton = styled.button<{ active: boolean }>`
@@ -63,12 +103,33 @@ const TabButton = styled.button<{ active: boolean }>`
   &:hover {
     color: #3F5BF6;
   }
+
+  @media (max-width: 768px) {
+    padding: 8px 15px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
 `;
 
 const CardsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const EmptyState = styled.div`
@@ -77,16 +138,32 @@ const EmptyState = styled.div`
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    padding: 30px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 20px;
+  }
 `;
 
 const EmptyStateText = styled.p`
   font-size: 18px;
   color: #666;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+  }
 `;
 
 const MyExplorationPage: React.FC = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [activeTab, setActiveTab] = useState<'전체' | '관심사' | 'AI 탐구 결과' | '탐구 결과'>('전체');
+  const [activeTab, setActiveTab] = useState<'전체' | '관심사' | 'AI 탐구' | '탐구'>('전체');
   const [explorations, setExplorations] = useState<Exploration[]>([]);
   const [interests, setInterests] = useState<Interest[]>([]);
 
@@ -96,18 +173,19 @@ const MyExplorationPage: React.FC = () => {
       const parsedUser = JSON.parse(storedUser);
       setUserProfile(parsedUser);
     }
-    const userId = userProfile?.id;
+  }, []);
 
-    if (userId) {
+  useEffect(() => {
+    if (userProfile) {
       const filteredExplorations = exploresData
-        .filter((explore) => explore.userId === userId)
+        .filter((explore) => explore.userId === userProfile.id)
         .map((explore) => ({
           ...explore,
           state: explore.state as 'IN_PROGRESS' | 'NOT_STARTED' | 'COMPLETED',
         }));
       setExplorations(filteredExplorations);
 
-      const filteredInterests = interestsData.filter((interest) => interest.userId === userId);
+      const filteredInterests = interestsData.filter((interest) => interest.userId === userProfile.id);
       setInterests(filteredInterests);
     }
   }, [userProfile]);
@@ -118,10 +196,10 @@ const MyExplorationPage: React.FC = () => {
       case '관심사':
         items = interests;
         break;
-      case 'AI 탐구 결과':
+      case 'AI 탐구':
         items = explorations.filter((explore) => explore.ai);
         break;
-      case '탐구 결과':
+      case '탐구':
         items = explorations.filter((explore) => explore);
         break;
       default:
@@ -129,9 +207,9 @@ const MyExplorationPage: React.FC = () => {
     }
     return items.map((item) =>
       'state' in item ? (
-        <ExplorationCard key={item.id} {...item} />
+        <ExplorationCard key={`explore-${item.id}`} {...item} />
       ) : (
-        <InterestCard key={item.id} {...item} />
+        <InterestCard key={`interest-${item.id}`} {...item} />
       )
     );
   };
@@ -150,17 +228,21 @@ const MyExplorationPage: React.FC = () => {
   return (
     <PageWrapper>
       <HeaderSection>
-        <HeaderTitle>탐구 및 관심사의 추가는 앱을 통해 가능합니다.</HeaderTitle>
+        <HeaderTitle>탐구 및 관심사의 추가는 {'\n'} 앱을 통해 가능합니다.</HeaderTitle>
         <HeaderSubtitle>
-          아래 QR코드를 통해 앱을 설치하시면 {'\n'}
-          학생부 종합 전형 준비를 위한 다양한 기능을 이용하실 수 있습니다. {'\n'}
+          아래 QR코드를 통해 앱을 설치하시면
+        </HeaderSubtitle>
+        <HeaderSubtitle>
+          학생부 종합 전형 준비를 위한 {'\n'} 다양한 기능을 이용하실 수 있습니다.
+        </HeaderSubtitle>
+        <HeaderSubtitle>
           현재 본 서비스는 준비중입니다.
         </HeaderSubtitle>
       </HeaderSection>
 
       <ContentSection>
         <TabContainer>
-          {['전체', '관심사', 'AI 탐구 결과', '탐구 결과'].map((tab) => (
+          {['전체', '관심사', 'AI 탐구', '탐구'].map((tab) => (
             <TabButton
               key={tab}
               active={activeTab === tab}

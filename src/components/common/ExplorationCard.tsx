@@ -31,11 +31,19 @@ const Title = styled.h3`
   font-weight: 600;
   color: #000;
   margin: 0;
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+  }
 `;
 
-const Date = styled.span`
+const StyledDate = styled.span`
   font-size: 14px;
   color: #888;
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
 `;
 
 const TagContainer = styled.div`
@@ -43,15 +51,20 @@ const TagContainer = styled.div`
   margin-bottom: 12px;
 `;
 
-const Tag = styled.span<{ backgroundColor: string; color: string }>`
-  background-color: ${(props) => props.backgroundColor};
-  color: ${(props) => props.color};
+const Tag = styled.span<{ $bgColor: string; $textColor: string }>`
+  background-color: ${(props) => props.$bgColor};
+  color: ${(props) => props.$textColor};
   font-size: 14px;
   font-weight: 400;
   padding: 8px 15px;
   border-radius: 15px;
   display: inline-block;
   margin-right: 7px;
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
 `;
 
 const Description = styled.p`
@@ -65,6 +78,10 @@ const Description = styled.p`
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+  }
 `;
 
 const ExplorationCard: React.FC<Exploration> = ({
@@ -75,7 +92,7 @@ const ExplorationCard: React.FC<Exploration> = ({
   createDate,
   ai,
 }) => {
-  const navigate = useNavigate(); // useNavigate hook으로 페이지 이동 구현
+  const navigate = useNavigate();
 
   const getStateText = (state: string) => {
     switch (state) {
@@ -91,18 +108,18 @@ const ExplorationCard: React.FC<Exploration> = ({
   };
 
   const handleClick = () => {
-    navigate(`/my/exploration/detail/${id}`); // 탐구 상세 페이지로 이동
+    navigate(`/my/exploration/detail/${id}`);
   };
 
   return (
     <CardWrapper onClick={handleClick}>
       <TitleContainer>
         <Title>{title}</Title>
-        <Date>{createDate}</Date>
+        <StyledDate>{new Date(createDate).toLocaleDateString()}</StyledDate>
       </TitleContainer>
       <TagContainer>
-        {ai && <Tag backgroundColor="#FFC107" color="#000">AI 추천</Tag>}
-        <Tag backgroundColor="#28A745" color="#000">
+        {ai && <Tag $bgColor="#FFC107" $textColor="#000">AI 추천</Tag>}
+        <Tag $bgColor="#28A745" $textColor="#000">
           {getStateText(state)}
         </Tag>
       </TagContainer>
