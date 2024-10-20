@@ -11,6 +11,14 @@ const PageWrapper = styled.div`
   max-width: 1080px;
   margin: 0 auto;
   padding: 40px 20px;
+
+  @media (max-width: 768px) {
+    padding: 30px 15px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 20px 10px;
+  }
 `;
 
 const Title = styled.h1`
@@ -19,6 +27,17 @@ const Title = styled.h1`
   margin-top: 50px;
   margin-bottom: 20px;
   text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 26px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 22px;
+    white-space: pre-wrap;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
 `;
 
 const Subtitle = styled.h2`
@@ -27,6 +46,16 @@ const Subtitle = styled.h2`
   color: #000;
   text-align: center;
   margin-bottom: 50px;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+    white-space: pre-wrap;
+    line-height: 1.5;
+  }
 `;
 
 const CardContainer = styled.div`
@@ -34,6 +63,14 @@ const CardContainer = styled.div`
   flex-direction: column;
   gap: 30px;
   margin-bottom: 5%;
+
+  @media (max-width: 768px) {
+    gap: 20px;
+  }
+
+  @media (max-width: 480px) {
+    gap: 15px;
+  }
 `;
 
 const AIUniversityPage: React.FC = () => {
@@ -41,10 +78,8 @@ const AIUniversityPage: React.FC = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   
-  // useNavigate 훅을 사용하여 경로 이동 함수 생성
   const navigate = useNavigate();
   
-  // 대학교 정보를 수정을 위한 모달
   const openModal = (index: number) => {
     setSelectedIndex(index);
     setModalVisible(true);
@@ -58,7 +93,6 @@ const AIUniversityPage: React.FC = () => {
     navigate('/ai/subject');
   };
 
-  // 대학교 정보 저장 후 모달 닫기
   const saveUniversity = (name: string, major: string) => {
     if (selectedIndex !== null) {
       const updatedUniversities = [...targetUniversities];
@@ -71,8 +105,8 @@ const AIUniversityPage: React.FC = () => {
   return (
     <PageWrapper>
       <StepIndicator currentStep={2} />
-      <Title>목표하는 대학과 학과를 입력해주세요</Title>
-      <Subtitle>희망하는 대학과 학과에 맞는 맞춤형 주제를 생성할 수 있습니다.</Subtitle>
+      <Title>목표하는 대학과 학과를 {'\n'} 입력해주세요</Title>
+      <Subtitle>희망하는 대학과 학과에 맞는 {'\n'} 맞춤형 주제를 생성할 수 있습니다.</Subtitle>
 
       <CardContainer>
         {targetUniversities.map((choice, index) => (
