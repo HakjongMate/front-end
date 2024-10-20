@@ -31,6 +31,16 @@ const PreviewButton = styled.button<{ disabled: boolean }>`
   &:hover {
     background-color: ${(props) => (props.disabled ? "#ffffff" : "#f5f5f5")};
   }
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+    padding: 8px 30px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+    padding: 8px 25px;
+  }
 `;
 
 const NextButton = styled.button<{ disabled: boolean }>`
@@ -46,6 +56,16 @@ const NextButton = styled.button<{ disabled: boolean }>`
 
   &:hover {
     background-color: ${(props) => (props.disabled ? "#e0e0e0" : "#0d47a1")};
+  }
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+    padding: 8px 30px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+    padding: 8px 25px;
   }
 `;
 
