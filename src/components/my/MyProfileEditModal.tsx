@@ -15,14 +15,17 @@ const ModalOverlay = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  overflow-y: auto;
 `;
 
 const ModalContainer = styled.div`
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
-  width: 400px;
+  width: 450px;
   max-width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 
   @media (max-width: 768px) {
@@ -38,7 +41,7 @@ const ProfileCircle = styled.div<{ bgColor: string }>`
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background-color: ${props => props.bgColor};
+  background-color: ${(props) => props.bgColor};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -152,7 +155,7 @@ const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setProfile(prevProfile => {
+    setProfile((prevProfile) => {
       if (!prevProfile) return null;
 
       // 학년을 숫자로 변환하여 저장
@@ -163,7 +166,7 @@ const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
       // 성적 입력 처리
       if (name === 'score') {
         if (value === 'custom') {
-          return { ...prevProfile, score: customScore || 0 };  // 커스텀 점수 처리
+          return { ...prevProfile, score: customScore || 0 }; // 커스텀 점수 처리
         }
         return { ...prevProfile, score: Number(value) };
       }
@@ -173,7 +176,7 @@ const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
   };
 
   const handleColorChange = (color: string) => {
-    setProfile(prevProfile => 
+    setProfile((prevProfile) =>
       prevProfile ? { ...prevProfile, profile_color: color } : null
     );
     setIsColorPickerVisible(false);
@@ -261,7 +264,7 @@ const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
               type="number"
               name="customScore"
               value={customScore || ''}
-              onChange={e => setCustomScore(parseFloat(e.target.value))}
+              onChange={(e) => setCustomScore(parseFloat(e.target.value))}
               placeholder="내신을 입력해주세요 (1.0 ~ 5.0)"
               min="1.0"
               max="5.0"
