@@ -25,6 +25,19 @@ const CardWrapper = styled.div<{ isBest?: boolean; isSelected?: boolean }>`
   &:hover {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   }
+
+  @media (max-width: 1024px) {
+    width: 260px;
+  }
+
+  @media (max-width: 768px) {
+    width: 240px;
+  }
+
+  @media (max-width: 480px) {
+    width: 220px;
+    padding: 15px;
+  }
 `;
 
 const BestLabel = styled.div`
@@ -38,6 +51,11 @@ const BestLabel = styled.div`
   border-radius: 12px;
   font-size: 14px;
   font-weight: bold;
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    padding: 2px 8px;
+  }
 `;
 
 const PassTitle = styled.h3`
@@ -45,6 +63,14 @@ const PassTitle = styled.h3`
   font-weight: 700;
   color: #202594;
   margin-bottom: 10px;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+  }
 `;
 
 const PassDescription = styled.p`
@@ -53,6 +79,14 @@ const PassDescription = styled.p`
   line-height: 1.4;
   color: #000000;
   white-space: pre-wrap;
+
+  @media (max-width: 768px) {
+    font-size: 13px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
 `;
 
 const BenefitsList = styled.ul`
@@ -66,6 +100,14 @@ const BenefitItem = styled.li`
   margin-bottom: 5px;
   display: flex;
   align-items: center;
+
+  @media (max-width: 768px) {
+    font-size: 13px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
 `;
 
 const PassIcon = styled.img`
@@ -73,9 +115,18 @@ const PassIcon = styled.img`
   height: 140px;
   margin-bottom: 20px;
   align-self: center;
+
+  @media (max-width: 768px) {
+    width: 160px;
+    height: 120px;
+  }
+
+  @media (max-width: 480px) {
+    width: 140px;
+    height: 100px;
+  }
 `;
 
-// Props for PassCard component
 interface PassCardProps {
   title: string;
   description: string;
