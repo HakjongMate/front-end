@@ -7,6 +7,14 @@ const PageWrapper = styled.div`
   min-height: 70vh;
   margin: 0 auto;
   padding: 40px 20px;
+
+  @media (max-width: 768px) {
+    padding: 30px 15px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 20px 10px;
+  }
 `;
 
 const PageType = styled.h2`
@@ -14,6 +22,14 @@ const PageType = styled.h2`
   font-weight: 600;
   color: #333;
   margin-bottom: 10px;
+
+  @media (max-width: 768px) {
+    font-size: 22px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 20px;
+  }
 `;
 
 const Divider = styled.hr`
@@ -35,6 +51,11 @@ const Tag = styled.span<{ backgroundColor: string; color: string }>`
   font-weight: 400;
   padding: 8px 15px;
   border-radius: 15px;
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
 `;
 
 const ContentSection = styled.div`
@@ -46,6 +67,14 @@ const SectionTitle = styled.h3`
   font-weight: 600;
   color: #333;
   margin-bottom: 10px;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+  }
 `;
 
 const Content = styled.div`
@@ -56,6 +85,14 @@ const Content = styled.div`
   padding: 10px 0px;
   border-radius: 10px;
   background-color: #fff;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 13px;
+  }
 `;
 
 const Input = styled.input`
@@ -66,6 +103,14 @@ const Input = styled.input`
   border-radius: 10px;
   background-color: #fff;
   box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 13px;
+  }
 `;
 
 const TextArea = styled.textarea`
@@ -78,6 +123,14 @@ const TextArea = styled.textarea`
   resize: none;
   background-color: #fff;
   box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 13px;
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -97,6 +150,14 @@ const Button = styled.button`
 
   &:hover {
     background-color: #0009bd;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 13px;
   }
 `;
 
@@ -124,9 +185,7 @@ const ExplorationAddPage: React.FC = () => {
       <PageType>관심사 추가</PageType>
       <Divider />
       <TagContainer>
-        <Tag backgroundColor="#0F4ABE" color="#FFF">
-          새 관심사
-        </Tag>
+        <Tag backgroundColor="#0F4ABE" color="#FFF">새 관심사</Tag>
       </TagContainer>
       <form onSubmit={handleSubmit}>
         <ContentSection>

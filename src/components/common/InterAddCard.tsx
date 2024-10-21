@@ -44,7 +44,7 @@ const InterAddCard: React.FC = () => {
   return (
     <CardWrapper onClick={handleClick}>
       <AddIcon>+</AddIcon>
-      <AddText>새로운 탐구/관심사 추가</AddText>
+      <AddText>새로운 관심사 추가</AddText>
     </CardWrapper>
   );
 };
