@@ -26,17 +26,37 @@ const ModalContent = styled.div`
   padding: 20px;
   border-radius: 10px;
   width: 400px;
+
+  @media (max-width: 768px) {
+    width: 350px;
+  }
+
+  @media (max-width: 480px) {
+    width: 80%;
+  }
 `;
 
 const ModalHeader = styled.h2`
   font-size: 22px;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 18px;
+  }
 `;
 
 const ModalBody = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  @media (max-width: 480px) {
+    gap: 15px;
+  }
 `;
 
 const InputWrapper = styled.div`
@@ -47,6 +67,14 @@ const InputWrapper = styled.div`
 const Label = styled.label`
   font-size: 16px;
   margin-bottom: 8px;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
 `;
 
 const Input = styled.input`
@@ -54,6 +82,21 @@ const Input = styled.input`
   border-radius: 5px;
   border: 1px solid #ccc;
   font-size: 16px;
+
+  @media (max-width: 768px) {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 6px;
+    font-size: 12px;
+  }
+  
+  @media (max-width: 320px) {
+    padding: 5px;
+    font-size: 10px;
+  }
 `;
 
 const ModalFooter = styled.div`
@@ -61,6 +104,10 @@ const ModalFooter = styled.div`
   justify-content: flex-end;
   gap: 10px;
   margin-top: 20px;
+
+  @media (max-width: 480px) {
+    margin-top: 15px;
+  }
 `;
 
 const CancelButton = styled.button`
@@ -70,8 +117,17 @@ const CancelButton = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
+
   &:hover {
     background-color: #999;
+  }
+
+  @media (max-width: 768px) {
+    padding: 8px 16px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 6px 12px;
   }
 `;
 
@@ -82,8 +138,17 @@ const SaveButton = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
+
   &:hover {
     background-color: #0009bd;
+  }
+
+  @media (max-width: 768px) {
+    padding: 8px 16px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 6px 12px;
   }
 `;
 
@@ -97,7 +162,6 @@ const UniversityEditModal: React.FC<UniversityEditModalProps> = ({
   const [universityName, setUniversityName] = useState(university);
   const [majorName, setMajorName] = useState(major);
 
-  // 모달이 열릴 때마다 university와 major 값을 리셋
   useEffect(() => {
     setUniversityName(university);
     setMajorName(major);

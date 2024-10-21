@@ -15,6 +15,14 @@ const PageWrapper = styled.div`
   min-height: 70vh;
   margin: 0 auto;
   padding: 40px 20px;
+
+  @media (max-width: 768px) {
+    padding: 30px 15px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 20px 10px;
+  }
 `;
 
 const Title = styled.h1`
@@ -23,6 +31,18 @@ const Title = styled.h1`
   margin-top: 50px;
   margin-bottom: 20px;
   text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 26px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 22px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    line-height: 1.5;
+  }
 `;
 
 const Subtitle = styled.h2`
@@ -31,6 +51,17 @@ const Subtitle = styled.h2`
   color: #000;
   text-align: center;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    line-height: 1.5;
+  }
 `;
 
 const Divider = styled.hr`
@@ -45,6 +76,17 @@ const Description = styled.p`
   color: #666;
   text-align: left;
   margin-bottom: 30px;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    margin-bottom: 20px;
+    white-space: pre-wrap;
+    line-height: 1.5;
+  }
 `;
 
 const CardsGrid = styled.div`
@@ -52,6 +94,18 @@ const CardsGrid = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   margin-bottom: 50px;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+  }
 `;
 
 const AIExplorationPage: React.FC = () => {
@@ -120,8 +174,8 @@ const AIExplorationPage: React.FC = () => {
   return (
     <PageWrapper>
       <StepIndicator currentStep={3} />
-      <Title>주제 생성 시 반영할 관심사와 탐구를 확인해주세요</Title>
-      <Subtitle>평소 관심사나 지난 탐구 이력에 맞춰 주제를 추천받을 수 있습니다.</Subtitle>
+      <Title>주제 생성 시 반영할 관심사와 {'\n'}탐구를 확인해주세요</Title>
+      <Subtitle>평소 관심사나 지난 탐구 이력에 맞춰 {'\n'}주제를 추천받을 수 있습니다.</Subtitle>
       <Divider />
       <Description>더 구체적인 탐구 및 관심사는 앱을 통해 추가하실 수 있습니다.</Description>
 

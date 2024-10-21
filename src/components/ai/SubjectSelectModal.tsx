@@ -23,6 +23,16 @@ const ModalContent = styled.div`
   border-radius: 10px;
   max-height: 80vh;
   overflow-y: auto;
+
+  @media (max-width: 768px) {
+    padding: 15px;
+    max-width: 600px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 10px;
+    max-width: 400px;
+  }
 `;
 
 const Title = styled.h2`
@@ -30,12 +40,30 @@ const Title = styled.h2`
   font-weight: bold;
   text-align: center;
   margin-bottom: 30px;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
 `;
 
 const SubjectsTable = styled.table`
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
 `;
 
 const TableHeader = styled.th`
@@ -44,18 +72,46 @@ const TableHeader = styled.th`
   padding: 12px 50px;
   text-align: center;
   font-weight: bold;
+
+  @media (max-width: 768px) {
+    padding: 10px 30px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 8px 20px;
+  }
 `;
 
 const TableCell = styled.td`
   border: 1px solid #dee2e6;
   padding: 12px;
   text-align: center;
+
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 8px;
+  }
 `;
 
 const SubjectGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 10px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 const SubjectButton = styled.button<{ isSelected: boolean }>`
@@ -68,6 +124,16 @@ const SubjectButton = styled.button<{ isSelected: boolean }>`
 
   &:hover {
     background-color: ${(props) => (props.isSelected ? "#0d47a1" : "#e8eaf6")};
+  }
+
+  @media (max-width: 768px) {
+    padding: 5px 8px;
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 4px 6px;
+    font-size: 12px;
   }
 `;
 
@@ -91,6 +157,16 @@ const SaveButton = styled.button`
   &:hover {
     background-color: ${(props) => (props.disabled ? "#e0e0e0" : "#0d47a1")};
   }
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+    padding: 8px 30px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+    padding: 6px 25px;
+  }
 `;
 
 const CancelButton = styled.button`
@@ -107,6 +183,16 @@ const CancelButton = styled.button`
 
   &:hover {
     background-color: ${(props) => (props.disabled ? "#ffffff" : "#f5f5f5")};
+  }
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+    padding: 8px 30px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+    padding: 6px 25px;
   }
 `;
 

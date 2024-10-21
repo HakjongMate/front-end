@@ -20,6 +20,14 @@ const Card = styled.div`
   border-radius: 20px;
   padding: 15px 30px;
   border: 1px solid #cecece;
+
+  @media (max-width: 768px) {
+    padding: 15px 20px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 10px 15px;
+  }
 `;
 
 const Header = styled.div<{ color: string }>`
@@ -31,12 +39,31 @@ const Header = styled.div<{ color: string }>`
   justify-content: center;
   align-items: center;
   margin-right: 20px;
+
+  @media (max-width: 768px) {
+    width: 60px;
+    height: 30px;
+  }
+
+  @media (max-width: 480px) {
+    width: 50px;
+    height: 25px;
+    margin-right: 7px;
+  }
 `;
 
 const ChoiceText = styled.p`
   color: white;
   font-size: 16px;
   font-weight: bold;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
 `;
 
 const ContentContainer = styled.div`
@@ -49,6 +76,16 @@ const Icon = styled.img`
   width: 70px;
   height: 70px;
   object-fit: contain;
+
+  @media (max-width: 768px) {
+    width: 60px;
+    height: 60px;
+  }
+
+  @media (max-width: 480px) {
+    width: 50px;
+    height: 50px;
+  }
 `;
 
 const PlaceholderCircle = styled.div<{ color: string }>`
@@ -60,32 +97,90 @@ const PlaceholderCircle = styled.div<{ color: string }>`
   justify-content: center;
   align-items: center;
   margin-right: 7px;
+
+  @media (max-width: 768px) {
+    width: 60px;
+    height: 60px;
+  }
+
+  @media (max-width: 480px) {
+    width: 50px;
+    height: 50px;
+  }
+`;
+
+const ArrowIcon = styled.img`
+  width: 50px;
+  height: 50px;
+
+  @media (max-width: 768px) {
+    width: 40px;
+    height: 40px;
+  }
+
+  @media (max-width: 480px) {
+    width: 30px;
+    height: 30px;
+  }
 `;
 
 const TextContainer = styled.div`
   margin-left: 20px;
   flex: 1;
+
+  @media (max-width: 768px) {
+    margin-left: 15px;
+  }
+
+  @media (max-width: 480px) {
+    margin-left: 5px;
+  }
 `;
 
 const UniversityName = styled.p`
   font-weight: bold;
   font-size: 18px;
   margin-bottom: 5px;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+  }
 `;
 
 const Major = styled.p`
   font-size: 18px;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
 `;
 
 const NavButton = styled.button`
   background: none;
   border: none;
   padding: 10px;
+
+  @media (max-width: 480px) {
+    padding: 5px;
+  }
 `;
 
 const NavButtonImage = styled.img`
   width: 10px;
   height: 20px;
+
+  @media (max-width: 480px) {
+    width: 8px;
+    height: 16px;
+  }
 `;
 
 const UniversityEditCard: React.FC<UniversityEditCardProps> = ({
@@ -113,7 +208,7 @@ const UniversityEditCard: React.FC<UniversityEditCardProps> = ({
           <Icon src={iconSrc} alt={universityName} />
         ) : (
           <PlaceholderCircle color={color}>
-            <img src={Arrow} alt="arrow icon" style={{ width: '50px', height: '50px' }} />
+            <ArrowIcon src={Arrow} alt="arrow icon" />
           </PlaceholderCircle>
         )}
         <TextContainer>
