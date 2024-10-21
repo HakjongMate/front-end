@@ -40,6 +40,8 @@ const Title = styled.h1`
     font-size: 22px;
     margin-bottom: 10px;
     line-height: 1.5;
+    white-space: pre-wrap;
+    line-height: 1.5;
   }
 `;
 
@@ -57,6 +59,8 @@ const Subtitle = styled.h2`
   @media (max-width: 480px) {
     font-size: 14px;
     line-height: 1.4;
+    white-space: pre-wrap;
+    line-height: 1.5;
   }
 `;
 
@@ -80,6 +84,8 @@ const Description = styled.p`
   @media (max-width: 480px) {
     font-size: 12px;
     margin-bottom: 20px;
+    white-space: pre-wrap;
+    line-height: 1.5;
   }
 `;
 
@@ -168,8 +174,8 @@ const AIExplorationPage: React.FC = () => {
   return (
     <PageWrapper>
       <StepIndicator currentStep={3} />
-      <Title>주제 생성 시 반영할 관심사와 탐구를 확인해주세요</Title>
-      <Subtitle>평소 관심사나 지난 탐구 이력에 맞춰 주제를 추천받을 수 있습니다.</Subtitle>
+      <Title>주제 생성 시 반영할 관심사와 {'\n'}탐구를 확인해주세요</Title>
+      <Subtitle>평소 관심사나 지난 탐구 이력에 맞춰 {'\n'}주제를 추천받을 수 있습니다.</Subtitle>
       <Divider />
       <Description>더 구체적인 탐구 및 관심사는 앱을 통해 추가하실 수 있습니다.</Description>
 
