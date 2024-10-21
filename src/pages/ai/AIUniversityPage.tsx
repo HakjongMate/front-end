@@ -28,7 +28,6 @@ const PageWrapper = styled.div`
 const Title = styled.h1`
   font-size: 30px;
   font-weight: bold;
-  margin-top: 50px;
   margin-bottom: 10px;
   text-align: center;
 
@@ -40,7 +39,6 @@ const Title = styled.h1`
     font-size: 22px;
     white-space: pre-wrap;
     line-height: 1.5;
-    margin-top: 30px;
     margin-bottom: 0px;
   }
 `;
