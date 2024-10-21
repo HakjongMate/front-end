@@ -15,6 +15,14 @@ const PageWrapper = styled.div`
   max-width: 1080px;
   margin: 0 auto;
   padding: 40px 20px;
+
+  @media (max-width: 768px) {
+    padding: 30px 15px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 20px 10px;
+  }
 `;
 
 const Title = styled.h1`
@@ -23,6 +31,14 @@ const Title = styled.h1`
   margin-top: 40px;
   margin-bottom: 30px;
   text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 22px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 20px;
+  }
 `;
 
 const CardsContainer = styled.div`
@@ -30,6 +46,16 @@ const CardsContainer = styled.div`
   justify-content: center;
   gap: 20px;
   margin-top: 40px;
+
+  @media (max-width: 1024px) {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 // Icon을 선택하는 함수
