@@ -11,6 +11,10 @@ const PageWrapper = styled.div`
   max-width: 1080px;
   margin: 0 auto;
   padding: 40px 20px;
+  min-height: calc(100vh - 300px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
   @media (max-width: 768px) {
     padding: 30px 15px;
@@ -25,7 +29,7 @@ const Title = styled.h1`
   font-size: 30px;
   font-weight: bold;
   margin-top: 50px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   text-align: center;
 
   @media (max-width: 768px) {
@@ -36,7 +40,8 @@ const Title = styled.h1`
     font-size: 22px;
     white-space: pre-wrap;
     line-height: 1.5;
-    margin-bottom: 10px;
+    margin-top: 30px;
+    margin-bottom: 0px;
   }
 `;
 

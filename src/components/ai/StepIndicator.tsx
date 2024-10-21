@@ -24,6 +24,10 @@ const StepContainer = styled.div`
   align-items: flex-start;
   margin-bottom: 40px;
   flex-wrap: wrap;
+
+  @media (max-width: 780px) {
+    margin-bottom: 0px;
+  }
 `;
 
 const StepItem = styled.div<{ isActive: boolean }>`
