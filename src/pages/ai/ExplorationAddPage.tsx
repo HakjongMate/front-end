@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import SubjectSelectModal from '../../components/ai/SubjectSelectModal';
 
 const PageWrapper = styled.div`
@@ -166,10 +167,13 @@ const ExplorationAddPage: React.FC = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log({ subject, title, description });
+
+    navigate(-1);
   };
 
   const openModal = () => setIsModalOpen(true);
