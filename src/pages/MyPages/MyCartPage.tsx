@@ -9,6 +9,16 @@ const PageWrapper = styled.div`
   margin: 0 auto;
   background-color: #fff;
   border-radius: 8px;
+
+  @media (max-width: 768px) {
+    padding: 30px;
+    max-width: 90%;
+  }
+
+  @media (max-width: 480px) {
+    padding: 20px;
+    max-width: 95%;
+  }
 `;
 
 const MyCartPage: React.FC = () => {
