@@ -6,6 +6,14 @@ const SectionWrapper = styled.div`
   border-radius: 8px;
   padding: 10px 20px 20px;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    padding: 10px 15px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 10px;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -14,6 +22,10 @@ const SectionTitle = styled.h2`
   margin-bottom: 15px;
   padding-bottom: 15px;
   border-bottom: 1px solid #e0e0e0;
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+  }
 `;
 
 const GuideText = styled.div`
@@ -24,6 +36,16 @@ const GuideText = styled.div`
   color: #000;
   line-height: 1.6;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 13px;
+    padding: 15px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    padding: 10px;
+  }
 `;
 
 const RadioButtonWrapper = styled.div`
@@ -35,6 +57,10 @@ const RadioButtonLabel = styled.label`
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
 `;
 
 const RadioButton = styled.input`
@@ -51,12 +77,32 @@ const BankTransferInfo = styled.div`
   padding: 10px;
   margin: 10px 20px;
   font-size: 14px;
+
+  @media (max-width: 768px) {
+    margin: 10px 15px;
+    font-size: 13px;
+  }
+
+  @media (max-width: 480px) {
+    margin: 10px 10px;
+    font-size: 12px;
+  }
 `;
 
 const InputWrapper = styled.div`
   display: flex;
   gap: 10px;
   margin: 10px 20px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    margin: 10px 15px;
+  }
+
+  @media (max-width: 480px) {
+    margin: 10px 10px;
+    gap: 5px;
+  }
 `;
 
 const Input = styled.input`
@@ -65,6 +111,16 @@ const Input = styled.input`
   border-radius: 4px;
   font-size: 14px;
   flex: 1;
+
+  @media (max-width: 768px) {
+    padding: 6px;
+    font-size: 13px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 5px;
+    font-size: 12px;
+  }
 `;
 
 const PurchasePaymentSection: React.FC = () => {
