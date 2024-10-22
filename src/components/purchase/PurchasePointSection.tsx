@@ -11,6 +11,14 @@ const SectionWrapper = styled.div`
   border-radius: 8px;
   padding: 10px 20px 20px;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    padding: 8px 15px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 6px 10px;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -19,6 +27,18 @@ const SectionTitle = styled.h2`
   margin-bottom: 15px;
   padding-bottom: 15px;
   border-bottom: 1px solid #e0e0e0;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+  }
 `;
 
 const PointInputWrapper = styled.div`
@@ -26,6 +46,11 @@ const PointInputWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
 `;
 
 const PointInput = styled.input`
@@ -35,6 +60,19 @@ const PointInput = styled.input`
   border-radius: 4px;
   font-size: 14px;
   text-align: right;
+
+  @media (max-width: 768px) {
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    box-sizing: border-box; 
+    padding: 8px;
+    margin-bottom: 10px;
+    font-size: 12px;
+  }
 `;
 
 const ApplyButton = styled.button`
@@ -49,6 +87,16 @@ const ApplyButton = styled.button`
   &:hover {
     background-color: #f0f0f0;
   }
+
+  @media (max-width: 768px) {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 8px;
+    font-size: 12px;
+  }
 `;
 
 const TotalPointWrapper = styled.div`
@@ -56,11 +104,24 @@ const TotalPointWrapper = styled.div`
   justify-content: flex-end;
   align-items: center;
   font-size: 14px;
+
+  @media (max-width: 768px) {
+    font-size: 13px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    justify-content: space-between;
+  }
 `;
 
 const TotalPoint = styled.span`
   margin-left: 10px;
   font-weight: 600;
+
+  @media (max-width: 480px) {
+    margin-left: 0;
+  }
 `;
 
 const ErrorMessage = styled.p`
@@ -68,6 +129,15 @@ const ErrorMessage = styled.p`
   font-size: 12px;
   margin-top: 5px;
   text-align: right;
+
+  @media (max-width: 768px) {
+    font-size: 11px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 10px;
+    text-align: left;
+  }
 `;
 
 const PurchasePointSection: React.FC<PurchasePointSectionProps> = ({
