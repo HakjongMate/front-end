@@ -9,6 +9,14 @@ const SectionWrapper = styled.div`
   max-width: 1080px;
   margin: 0 auto;
   font-family: sans-serif;
+
+  @media (max-width: 768px) {
+    padding: 15px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 10px;
+  }
 `;
 
 const Title = styled.h2`
@@ -17,17 +25,41 @@ const Title = styled.h2`
   margin-bottom: 20px;
   border-bottom: 2px solid #e0e0e0;
   padding-bottom: 10px;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 18px;
+  }
 `;
 
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
 `;
 
 const TableHeader = styled.th`
   border-bottom: 2px solid #e0e0e0;
   padding: 0 10px 20px 10px;
   text-align: center;
+
+  @media (max-width: 768px) {
+    padding: 0 5px 15px 5px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0 0 10px 0;
+  }
 `;
 
 const CartSummary = styled.div`
@@ -37,6 +69,16 @@ const CartSummary = styled.div`
   padding: 20px 0 0;
   border-top: 1px solid #e0e0e0;
   font-size: 16px;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+    flex-direction: column;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    flex-direction: column;
+  }
 `;
 
 const Divider = styled.hr`
@@ -47,27 +89,67 @@ const Divider = styled.hr`
 
 const TotalItems = styled.p`
   font-size: 14px;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 11px;
+  }
 `;
 
 const TotalPrice = styled.div`
   text-align: right;
+
+  @media (max-width: 768px) {
+    text-align: left;
+  }
+
+  @media (max-width: 480px) {
+    text-align: left;
+  }
 `;
 
 const OriginalTotalPrice = styled.p`
   font-size: 14px;
   color: #888;
   text-decoration: line-through;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 11px;
+  }
 `;
 
 const FinalPrice = styled.p`
   font-size: 24px;
   font-weight: bold;
   color: #007bff;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 18px;
+  }
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
+
+  @media (max-width: 768px) {
+    gap: 10px;
+  }
+
+  @media (max-width: 480px) {
+    gap: 10px;
+  }
 `;
 
 const Button = styled.button`
@@ -77,6 +159,20 @@ const Button = styled.button`
   border-radius: 20px;
   cursor: pointer;
   font-size: 16px;
+
+  @media (max-width: 768px) {
+    padding: 10px 20px;
+    font-size: 14px;
+    margin-left: 0;
+    margin-bottom: 10px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 8px 15px;
+    font-size: 12px;
+    margin-left: 0;
+    margin-bottom: 10px;
+  }
 `;
 
 const CheckoutButton = styled(Button)`

@@ -14,6 +14,12 @@ const PageContainer = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 20px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 10px;
+    gap: 10px;
+  }
 `;
 
 const LeftSection = styled.div`
@@ -21,6 +27,11 @@ const LeftSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  @media (max-width: 768px) {
+    flex: 1;
+    gap: 10px;
+  }
 `;
 
 const RightSection = styled.div`
@@ -28,6 +39,59 @@ const RightSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  @media (max-width: 768px) {
+    flex: 1;
+    gap: 10px;
+  }
+`;
+
+const PurchaseItemSectionStyled = styled(PurchaseItemSection)`
+  padding: 20px;
+
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
+`;
+
+const PurchaseInfoSectionStyled = styled(PurchaseInfoSection)`
+  padding: 20px;
+
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
+`;
+
+const PurchasePointSectionStyled = styled(PurchasePointSection)`
+  padding: 20px;
+
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
+`;
+
+const PurchasePaymentSectionStyled = styled(PurchasePaymentSection)`
+  padding: 20px;
+
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
+`;
+
+const PurchaseSummarySectionStyled = styled(PurchaseSummarySection)`
+  padding: 20px;
+
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
+`;
+
+const PurchaseAgreeSectionStyled = styled(PurchaseAgreeSection)`
+  padding: 20px;
+
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
 `;
 
 function PurchasePage() {
@@ -36,14 +100,14 @@ function PurchasePage() {
   return (
     <PageContainer>
       <LeftSection>
-        <PurchaseItemSection />
-        <PurchaseInfoSection />
-        <PurchasePointSection pointUsed={pointUsed} setPointUsed={setPointUsed} />
-        <PurchasePaymentSection />
+        <PurchaseItemSectionStyled />
+        <PurchaseInfoSectionStyled />
+        <PurchasePointSectionStyled pointUsed={pointUsed} setPointUsed={setPointUsed} />
+        <PurchasePaymentSectionStyled />
       </LeftSection>
       <RightSection>
-        <PurchaseSummarySection pointUsed={pointUsed} />
-        <PurchaseAgreeSection />
+        <PurchaseSummarySectionStyled pointUsed={pointUsed} />
+        <PurchaseAgreeSectionStyled />
       </RightSection>
     </PageContainer>
   );

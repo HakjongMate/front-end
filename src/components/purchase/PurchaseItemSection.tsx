@@ -21,6 +21,14 @@ const SectionWrapper = styled.div`
   border-radius: 8px;
   padding: 10px 20px 30px;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    padding: 8px 15px 20px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 5px 10px 15px;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -29,6 +37,18 @@ const SectionTitle = styled.h2`
   margin-bottom: 15px;
   padding-bottom: 15px;
   border-bottom: 1px solid #e0e0e0;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+  }
 `;
 
 function PurchaseItemSection() {
@@ -44,7 +64,7 @@ function PurchaseItemSection() {
     <SectionWrapper>
       <SectionTitle>주문상품 {selectedCartItems.length}개</SectionTitle>
       {selectedCartItems.map((selectedItem: CartItem) => (
-        <PurchaseItem key={selectedItem.id} item={selectedItem} /> 
+        <PurchaseItem key={selectedItem.id} item={selectedItem} />
       ))}
     </SectionWrapper>
   );

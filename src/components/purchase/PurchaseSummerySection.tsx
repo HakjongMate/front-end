@@ -27,6 +27,14 @@ const SummaryWrapper = styled.div`
   border-radius: 8px;
   padding: 10px 20px 20px;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    padding: 10px 15px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 10px;
+  }
 `;
 
 const SummaryTitle = styled.h2`
@@ -35,6 +43,10 @@ const SummaryTitle = styled.h2`
   margin-bottom: 15px;
   padding-bottom: 15px;
   border-bottom: 1px solid #e0e0e0;
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+  }
 `;
 
 const SummaryItem = styled.div`
@@ -42,6 +54,10 @@ const SummaryItem = styled.div`
   justify-content: space-between;
   margin-bottom: 10px;
   font-size: 14px;
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
 `;
 
 const Divider = styled.hr`
@@ -58,6 +74,10 @@ const FinalPrice = styled.div`
   font-size: 18px;
   font-weight: bold;
   color: #000;
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+  }
 `;
 
 const ButtonWrapper = styled.div`
@@ -78,6 +98,11 @@ const PurchaseButton = styled.button`
   &:hover {
     background-color: #0056b3;
   }
+
+  @media (max-width: 480px) {
+    padding: 8px;
+    font-size: 14px;
+  }
 `;
 
 const PointInfo = styled.div`
@@ -85,6 +110,10 @@ const PointInfo = styled.div`
   font-size: 12px;
   margin-top: 10px;
   color: #7d7d7d;
+
+  @media (max-width: 480px) {
+    font-size: 11px;
+  }
 `;
 
 const PurchaseSummarySection: React.FC<PurchaseSummarySectionProps> = ({ pointUsed }) => {
@@ -93,7 +122,6 @@ const PurchaseSummarySection: React.FC<PurchaseSummarySectionProps> = ({ pointUs
   const { selectedSubject, setSelectedSubject, dream, setDream, targetUniversities, setTargetUniversities } =
     useContext(AIContext);
 
-  // 선택된 카트 항목을 받아옴
   const { selectedCartItems }: { selectedCartItems: CartItem[] } =
     location.state || { selectedCartItems: [] };
 
@@ -102,18 +130,15 @@ const PurchaseSummarySection: React.FC<PurchaseSummarySectionProps> = ({ pointUs
   const [finalPrice, setFinalPrice] = useState(0);
   const [pointsToBeEarned, setPointsToBeEarned] = useState(0);
 
-  // 문자열로 된 가격을 숫자로 변환하는 함수
   const parsePrice = (price: string) => {
     return parseInt(price.replace(/,/g, ""), 10) || 0;
   };
 
-  // 가격과 할인 및 최종 가격 계산
   useEffect(() => {
     const calculateTotalPriceAndDiscount = () => {
       let priceSum = 0;
       let discountSum = 0;
 
-      // 선택된 상품들의 가격과 할인을 계산
       selectedCartItems.forEach((item) => {
         const price = parsePrice(item.service.price);
         const discount = item.service.discout;
@@ -133,31 +158,25 @@ const PurchaseSummarySection: React.FC<PurchaseSummarySectionProps> = ({ pointUs
     calculateTotalPriceAndDiscount();
   }, [selectedCartItems, pointUsed]);
 
-  // 결제하기 버튼 클릭 핸들러
   const handlePurchase = () => {
-    // LocalStorage에서 기존 장바구니를 가져옴
     const currentCartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
 
-    // 결제된 상품을 제외한 나머지 상품들로 필터링
     const updatedCartItems = currentCartItems.filter(
       (cartItem: any) => !selectedCartItems.some(
         (selectedItem) => selectedItem.id === cartItem.id
       )
     );
 
-    // 필터링된 상품들로 LocalStorage 업데이트
     localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
 
-    // AIContext를 초기화하여 다음 세특 작성 시 새 데이터를 입력할 수 있게 함
-    setSelectedSubject(""); // 과목 초기화
-    setDream(""); // 꿈 초기화
-    setTargetUniversities([ // 목표 대학 초기화
+    setSelectedSubject("");
+    setDream("");
+    setTargetUniversities([
       { name: "", major: "" },
       { name: "", major: "" },
       { name: "", major: "" },
     ]);
 
-    // AI 서비스가 포함된 경우 '/ai/waiting'으로 이동
     const containsAIService = selectedCartItems.some(item =>
       item.service.title.includes("패스")
     );
@@ -165,7 +184,6 @@ const PurchaseSummarySection: React.FC<PurchaseSummarySectionProps> = ({ pointUs
     if (containsAIService) {
       navigate('/ai/waiting');
     } else {
-      // 결제 완료 후 구매 페이지로 이동
       navigate('/my/purchase');
     }
   };

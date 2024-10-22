@@ -3,6 +3,14 @@ import styled from "styled-components";
 
 const SectionWrapper = styled.div`
   padding: 20px 20px;
+
+  @media (max-width: 768px) {
+    padding: 15px 15px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 10px 10px;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -10,6 +18,14 @@ const SectionTitle = styled.h2`
   color: #202594;
   font-weight: 600;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 13px;
+  }
 `;
 
 const ToggleWrapper = styled.div`
@@ -24,6 +40,14 @@ const ToggleTitle = styled.div`
   cursor: pointer;
   font-size: 14px;
   color: #000;
+
+  @media (max-width: 768px) {
+    font-size: 13px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
 `;
 
 const ToggleIcon = styled.span`
@@ -38,6 +62,14 @@ const ToggleContent = styled.div`
   padding: 10px 0;
   max-height: 200px;
   overflow-y: auto;
+
+  @media (max-width: 768px) {
+    font-size: 13px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
 `;
 
 const Divider = styled.hr`
