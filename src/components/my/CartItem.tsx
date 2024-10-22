@@ -9,6 +9,14 @@ const CheckboxCell = styled.td`
   text-align: center;
   vertical-align: middle;
   width: 50px;
+
+  @media (max-width: 768px) {
+    width: 40px;
+  }
+
+  @media (max-width: 480px) {
+    width: 30px;
+  }
 `;
 
 const ProductCell = styled.td`
@@ -16,6 +24,16 @@ const ProductCell = styled.td`
   align-items: center;
   justify-content: space-between;
   padding: 20px 10px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px 5px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 10px 5px;
+  }
 `;
 
 const ItemImage = styled.img`
@@ -23,10 +41,24 @@ const ItemImage = styled.img`
   height: 120px;
   object-fit: cover;
   margin-right: 3%;
+
+  @media (max-width: 768px) {
+    width: 100px;
+    height: 100px;
+  }
+
+  @media (max-width: 480px) {
+    width: 80px;
+    height: 80px;
+  }
 `;
 
 const ItemDetails = styled.div`
   flex-grow: 1;
+
+  @media (max-width: 768px) {
+    margin-top: 10px;
+  }
 `;
 
 const ItemTitle = styled.h3`
@@ -34,12 +66,28 @@ const ItemTitle = styled.h3`
   font-weight: 600;
   color: #000;
   margin-bottom: 5px;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+  }
 `;
 
 const ItemSubtitle = styled.p`
   font-size: 16px;
   font-weight: 400;
   color: #000;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
 `;
 
 const Description = styled.p`
@@ -47,6 +95,14 @@ const Description = styled.p`
   font-weight: 400;
   color: #555;
   margin-top: 5px;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 11px;
+  }
 `;
 
 const PriceCell = styled.td`
@@ -55,6 +111,14 @@ const PriceCell = styled.td`
   padding: 0px 10px 20px;
   border-left: 1px solid #e0e0e0;
   width: 150px;
+
+  @media (max-width: 768px) {
+    width: 130px;
+  }
+
+  @media (max-width: 480px) {
+    width: 110px;
+  }
 `;
 
 const OriginalPrice = styled.p`
@@ -62,6 +126,18 @@ const OriginalPrice = styled.p`
   color: #888;
   text-decoration: line-through;
   margin-bottom: 5px;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+  }
+  
+  @media (max-width: 320px) {
+    font-size: 12px;
+  }
 `;
 
 const DiscountPrice = styled.p`
@@ -69,6 +145,18 @@ const DiscountPrice = styled.p`
   font-weight: bold;
   color: #007BFF;
   margin-bottom: 10px;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 320px) {
+    font-size: 12px;
+  }
 `;
 
 const BuyButton = styled.button`
@@ -80,6 +168,21 @@ const BuyButton = styled.button`
   border: none;
   border-radius: 20px;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  @media (max-width: 320px) {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
 `;
 
 const DeliveryCell = styled.td`
@@ -93,6 +196,16 @@ const DeliveryCell = styled.td`
   padding: 20px 10px;
   border-left: 1px solid #e0e0e0;
   width: 120px;
+
+  @media (max-width: 768px) {
+    font-size: 13px;
+    padding: 15px 8px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    padding: 10px 5px;
+  }
 `;
 
 const DeleteButton = styled.button`
@@ -105,6 +218,14 @@ const DeleteButton = styled.button`
 
   &:hover {
     color: #ff0000;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 18px;
   }
 `;
 
