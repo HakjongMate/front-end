@@ -6,6 +6,14 @@ const SectionWrapper = styled.div`
   border-radius: 8px;
   padding: 10px 20px 20px;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    padding: 8px 15px 15px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 6px 10px 10px;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -14,16 +22,46 @@ const SectionTitle = styled.h2`
   margin-bottom: 15px;
   padding-bottom: 15px;
   border-bottom: 1px solid #e0e0e0;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+  }
 `;
 
 const InputGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
 `;
 
 const InputWrapper = styled.div`
   margin-bottom: 10px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 8px;
+  }
+
+  @media (max-width: 480px) {
+    margin-bottom: 6px;
+  }
 `;
 
 const Input = styled.input`
@@ -37,12 +75,30 @@ const Input = styled.input`
   &::placeholder {
     color: #999;
   }
+
+  @media (max-width: 768px) {
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 6px;
+    font-size: 12px;
+  }
 `;
 
 const GuideText = styled.p`
   font-size: 12px;
   color: #e74c3c;
   grid-column: 1 / -1;
+
+  @media (max-width: 768px) {
+    font-size: 11px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 10px;
+  }
 `;
 
 function PurchaseInfoSection() {
