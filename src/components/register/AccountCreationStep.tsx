@@ -11,6 +11,7 @@ interface AccountCreationStepProps {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
   checkDuplicate: () => void;
+  usernameStatus: string | null;
 }
 
 const Label = styled.label`
@@ -66,10 +67,18 @@ const CheckDuplicateButton = styled(Button)`
   flex-shrink: 0;
 `;
 
+const StatusMessage = styled.p<{ isError: boolean }>`
+  color: ${(props) => (props.isError ? 'red' : 'green')};
+  font-size: 12px;
+  margin-top: -15px;
+  margin-bottom: 15px;
+`;
+
 const AccountCreationStep: React.FC<AccountCreationStepProps> = ({
   formData,
   handleChange,
   checkDuplicate,
+  usernameStatus,
 }) => {
   return (
     <>
@@ -89,6 +98,13 @@ const AccountCreationStep: React.FC<AccountCreationStepProps> = ({
           중복확인
         </CheckDuplicateButton>
       </UsernameRow>
+
+      {usernameStatus && (
+        <StatusMessage isError={usernameStatus === '이미 사용 중인 아이디입니다.'}>
+          {usernameStatus}
+        </StatusMessage>
+      )}
+
       <Label htmlFor="password">비밀번호</Label>
       <Input
         id="password"

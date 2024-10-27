@@ -111,6 +111,7 @@ const RegisterPage: React.FC = () => {
     career: '',
   });
   const [isUsernameChecked, setIsUsernameChecked] = useState(false);
+  const [usernameStatus, setUsernameStatus] = useState<string | null>(null);
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
 
   const steps: Step[] = [
@@ -160,15 +161,24 @@ const RegisterPage: React.FC = () => {
       alert('아이디를 입력해주세요.');
       return;
     }
-
+  
     try {
-      alert('사용 가능한 아이디입니다.');
-      setIsUsernameChecked(true);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/user/check-username?username=${formData.username}`, {
+        method: 'GET',
+      });
+      const result = await response.json();
+  
+      if (result.data) {
+        setUsernameStatus('이미 사용 중인 아이디입니다.');
+      } else {
+        setUsernameStatus('사용 가능한 아이디입니다.');
+        setIsUsernameChecked(true);
+      }
     } catch (error) {
-      alert('중복 확인 중 오류가 발생했습니다.');
+      setUsernameStatus('중복 확인 중 오류가 발생했습니다.');
       console.error('중복 확인 중 오류 발생:', error);
     }
-  };
+  };  
 
   const renderStepContent = () => {
     switch (step) {
@@ -178,6 +188,7 @@ const RegisterPage: React.FC = () => {
             formData={formData}
             handleChange={handleChange}
             checkDuplicate={checkDuplicate}
+            usernameStatus={usernameStatus}
           />
         );
       case 2:
