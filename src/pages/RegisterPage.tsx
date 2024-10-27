@@ -150,7 +150,7 @@ const RegisterPage: React.FC = () => {
     if (step < 3) {
       setStep(step + 1);
     } else {
-      console.log('Form submitted:', formData);
+      console.log('작성 내용 제출:', formData);
       navigate('/login');
     }
   };
