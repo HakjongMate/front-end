@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 interface AccountCreationStepProps {
@@ -12,6 +12,8 @@ interface AccountCreationStepProps {
   ) => void;
   checkDuplicate: () => void;
   usernameStatus: string | null;
+  onPasswordValidityChange: (isValid: boolean) => void;
+  onPasswordMatchChange: (isMatch: boolean) => void;
 }
 
 const Label = styled.label`
@@ -85,15 +87,24 @@ const AccountCreationStep: React.FC<AccountCreationStepProps> = ({
   formData,
   handleChange,
   checkDuplicate,
-  usernameStatus
+  usernameStatus,
+  onPasswordValidityChange,
+  onPasswordMatchChange,
 }) => {
-  // 유효성 검사 상태 관리
   const [invalidUsernameMessage, setInvalidUsernameMessage] = useState<string | null>(null);
   const [invalidPasswordMessage, setInvalidPasswordMessage] = useState<string | null>(null);
   const [passwordMismatchMessage, setPasswordMismatchMessage] = useState<string | null>(null);
 
+  useEffect(() => {
+    onPasswordValidityChange(!invalidPasswordMessage);
+  }, [invalidPasswordMessage]);
+
+  useEffect(() => {
+    onPasswordMatchChange(!passwordMismatchMessage);
+  }, [passwordMismatchMessage]);
+
   const validateUsername = (username: string) => {
-    const isValid = /^[a-z]+$/.test(username); 
+    const isValid = /^[a-z]+$/.test(username);
     if (!isValid) {
       setInvalidUsernameMessage('아이디는 영어 소문자만 입력 가능합니다.');
     } else {
@@ -153,9 +164,7 @@ const AccountCreationStep: React.FC<AccountCreationStepProps> = ({
         </CheckDuplicateButton>
       </UsernameRow>
 
-      {invalidUsernameMessage && (
-        <ErrorMessage>{invalidUsernameMessage}</ErrorMessage>
-      )}
+      {invalidUsernameMessage && <ErrorMessage>{invalidUsernameMessage}</ErrorMessage>}
 
       {usernameStatus && (
         <StatusMessage isError={usernameStatus === '이미 사용 중인 아이디입니다.'}>
@@ -174,9 +183,7 @@ const AccountCreationStep: React.FC<AccountCreationStepProps> = ({
         required
       />
 
-      {invalidPasswordMessage && (
-        <ErrorMessage>{invalidPasswordMessage}</ErrorMessage>
-      )}
+      {invalidPasswordMessage && <ErrorMessage>{invalidPasswordMessage}</ErrorMessage>}
 
       <Label htmlFor="confirmPassword">비밀번호 확인</Label>
       <Input
@@ -189,9 +196,7 @@ const AccountCreationStep: React.FC<AccountCreationStepProps> = ({
         required
       />
 
-      {passwordMismatchMessage && (
-        <ErrorMessage>{passwordMismatchMessage}</ErrorMessage>
-      )}
+      {passwordMismatchMessage && <ErrorMessage>{passwordMismatchMessage}</ErrorMessage>}
     </>
   );
 };

@@ -113,6 +113,8 @@ const RegisterPage: React.FC = () => {
   const [isUsernameChecked, setIsUsernameChecked] = useState(false);
   const [usernameStatus, setUsernameStatus] = useState<string | null>(null);
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [isPasswordMatch, setIsPasswordMatch] = useState(false);
 
   const steps: Step[] = [
     { label: '계정 생성', isActive: step >= 1 },
@@ -129,6 +131,7 @@ const RegisterPage: React.FC = () => {
     // 아이디 변경 시 중복 확인 상태를 리셋
     if (e.target.name === 'username') {
       setIsUsernameChecked(false);
+      setUsernameStatus(null);
     }
   };
 
@@ -143,9 +146,22 @@ const RegisterPage: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (step === 1 && !isUsernameChecked) {
-      alert('아이디 중복 확인을 해주세요.');
-      return;
+    // 아이디 중복 확인, 비밀번호 유효성 검사, 비밀번호 일치 여부 확인 후 진행
+    if (step === 1) {
+      if (!isUsernameChecked || usernameStatus !== '사용 가능한 아이디입니다.') {
+        alert('아이디 중복 확인을 해주세요.');
+        return;
+      }
+
+      if (!isPasswordValid) {
+        alert('유효한 비밀번호를 입력해주세요.');
+        return;
+      }
+
+      if (!isPasswordMatch) {
+        alert('비밀번호가 일치하지 않습니다.');
+        return;
+      }
     }
 
     if (step < 3) {
@@ -161,13 +177,13 @@ const RegisterPage: React.FC = () => {
       alert('아이디를 입력해주세요.');
       return;
     }
-  
+
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/user/check-username?username=${formData.username}`, {
         method: 'GET',
       });
       const result = await response.json();
-  
+
       if (result.data) {
         setUsernameStatus('이미 사용 중인 아이디입니다.');
       } else {
@@ -178,7 +194,15 @@ const RegisterPage: React.FC = () => {
       setUsernameStatus('중복 확인 중 오류가 발생했습니다.');
       console.error('중복 확인 중 오류 발생:', error);
     }
-  };  
+  };
+
+  const handlePasswordValidity = (isValid: boolean) => {
+    setIsPasswordValid(isValid);
+  };
+
+  const handlePasswordMatch = (isMatch: boolean) => {
+    setIsPasswordMatch(isMatch);
+  };
 
   const renderStepContent = () => {
     switch (step) {
@@ -189,6 +213,8 @@ const RegisterPage: React.FC = () => {
             handleChange={handleChange}
             checkDuplicate={checkDuplicate}
             usernameStatus={usernameStatus}
+            onPasswordValidityChange={handlePasswordValidity}
+            onPasswordMatchChange={handlePasswordMatch}
           />
         );
       case 2:
