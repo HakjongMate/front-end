@@ -220,8 +220,11 @@ const LoginPage: React.FC = () => {
       const result = await response.json();
 
       if (response.ok) {
-        // 로그인 성공
+        // 로그인 성공 시 토큰 저장
         localStorage.setItem('accessToken', result.data.accessToken);
+        localStorage.setItem('refreshToken', result.data.refreshToken);
+        
+        // 로그인 성공
         toast.success('로그인에 성공했습니다!', {
           style: {
             maxWidth: "1000px",
