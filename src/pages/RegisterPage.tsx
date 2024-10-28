@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import toast, { Toaster } from 'react-hot-toast';
 import ColorPickerModal from '../components/common/ColorPickerModal';
 import StepIndicator from '../components/register/StepIndicator';
 import AccountCreationStep from '../components/register/AccountCreationStep';
@@ -147,20 +148,20 @@ const RegisterPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // 아이디 중복 확인, 비밀번호 유효성 검사, 비밀번호 일치 여부 확인 후 진행
+    // 각 스텝별 유효성 검사
     if (step === 1) {
       if (!isUsernameChecked || usernameStatus !== '사용 가능한 아이디입니다.') {
-        alert('아이디 중복 확인을 해주세요.');
+        toast.error('아이디 중복 확인을 해주세요.');
         return;
       }
 
       if (!isPasswordValid) {
-        alert('유효한 비밀번호를 입력해주세요.');
+        toast.error('유효한 비밀번호를 입력해주세요.');
         return;
       }
 
       if (!isPasswordMatch) {
-        alert('비밀번호가 일치하지 않습니다.');
+        toast.error('비밀번호가 일치하지 않습니다.');
         return;
       }
     }
@@ -168,8 +169,6 @@ const RegisterPage: React.FC = () => {
     if (step < 3) {
       setStep(step + 1);
     } else {
-      console.log('회원가입 데이터:', formData);
-
       const score = formData.gpa === 'custom' ? formData.customGpa : formData.gpa;
 
       const requestData = {
@@ -193,22 +192,41 @@ const RegisterPage: React.FC = () => {
           body: JSON.stringify(requestData),
         });
 
-        const result = await response.json();
-
+        // 회원가입 성공 시 로그인 페이지로 이동
         if (response.ok) {
-          console.log('회원가입 성공:', result);
-          navigate('/login');
+          toast.success('회원가입이 성공적으로 완료되었습니다.', {
+            style: {
+              maxWidth: '1000px',
+              width: '300px',
+              fontSize: '20px',
+            },
+          });
+          setTimeout(() => {
+            navigate('/login');
+          }, 2000);
         } else {
-          console.error('회원가입 실패:', result);
-          alert('회원가입 중 오류가 발생했습니다.');
+          const result = await response.json();
+          toast.error(`회원가입 실패: ${result.message}`, {
+            style: {
+              maxWidth: '1000px',
+              width: '300px',
+              fontSize: '20px',
+            },
+          });
         }
       } catch (error) {
-        console.error('회원가입 중 오류 발생:', error);
-        alert('서버와의 통신 중 오류가 발생했습니다.');
+        toast.error('서버와의 통신 중 오류가 발생했습니다.', {
+          style: {
+            maxWidth: '1000px',
+            width: '300px',
+            fontSize: '20px',
+          },
+        });
       }
     }
   };
 
+  // 아이디 중복 확인 요청
   const checkDuplicate = async () => {
     if (!formData.username) {
       alert('아이디를 입력해주세요.');
@@ -284,6 +302,7 @@ const RegisterPage: React.FC = () => {
           {step < 3 ? '다음' : '회원가입 완료'}
         </Button>
       </Form>
+      <Toaster />
       <ColorPickerModal
         visible={isColorPickerVisible}
         onClose={() => setIsColorPickerVisible(false)}
