@@ -353,12 +353,46 @@ function Navbar() {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    setLoggedIn(false);
-    setIsUserMenuOpen(false);
-    navigate("/");
-  };
+  const handleLogout = async () => {
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+    
+    // 토큰이 없을 경우 로그아웃을 처리
+    if (!accessToken || !refreshToken) {
+      setLoggedIn(false);
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      setIsUserMenuOpen(false);
+      navigate('/');
+      return;
+    }
+  
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/user/logout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'access': `Bearer ${accessToken}`,
+          'refresh': refreshToken,
+        },
+      });
+  
+      const result = await response.json();
+  
+      // 로그아웃 성공 처리
+      if (response.ok) {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        setLoggedIn(false);
+        setIsUserMenuOpen(false);
+        navigate('/');
+      } else {
+        console.error('로그아웃 실패:', result.message);
+      }
+    } catch (error) {
+      console.error('로그아웃 중 오류 발생:', error);
+    }
+  };  
 
   return (
     <NavbarContainer>
