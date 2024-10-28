@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import toast from 'react-hot-toast';
 import ColorPickerModal from '../common/ColorPickerModal';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { UserProfile } from '../../types';
@@ -191,19 +192,43 @@ const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
           },
           body: JSON.stringify(profile),
         });
-
+  
         if (response.ok) {
           const updatedProfile = await response.json();
           onSave(updatedProfile.data);
+  
           onClose();
+          setTimeout(() => {
+            toast.success('프로필이 성공적으로 저장되었습니다!', {
+              style: {
+                maxWidth: '1000px',
+                width: '300px',
+                fontSize: '16px',
+              },
+            });
+          }, 100);
         } else {
-          console.error('프로필을 저장하는 데 실패했습니다.');
+          toast.error('프로필 저장에 실패했습니다. 잠시 뒤에 시도해주세요.', {
+            style: {
+              maxWidth: '1000px',
+              width: '300px',
+              fontSize: '16px',
+            },
+          });
         }
       } catch (error) {
+        toast.error('프로필 저장에 실패했습니다. 잠시 뒤에 시도해주세요.', {
+          style: {
+            maxWidth: '1000px',
+            width: '300px',
+            fontSize: '16px',
+          },
+        });
         console.error('API 호출 중 오류 발생:', error);
       }
     }
   };
+  
 
   if (!profile) {
     return null;
