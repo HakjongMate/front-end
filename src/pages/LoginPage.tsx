@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/icons/HakjongMate_Blue.png';
-import users from '../assets/data/users.json';
+import toast, { Toaster } from 'react-hot-toast';
 
 const LoginContainer = styled.div`
   max-width: 500px;
@@ -106,15 +106,15 @@ const Input = styled.input`
     border-color: #202594;
   }
 
-  @media (max-width: 768px) {
-    padding: 12px;
-    font-size: 14px;
-  }
+@media (max-width: 768px) {
+  padding: 12px;
+  font-size: 14px;
+}
 
-  @media (max-width: 480px) {
-    padding: 10px;
-    font-size: 12px;
-  }
+@media (max-width: 480px) {
+  padding: 10px;
+  font-size: 12px;
+}
 `;
 
 const ButtonGroup = styled.div`
@@ -176,6 +176,7 @@ const ErrorMessage = styled.p`
   color: red;
   font-size: 14px;
   margin-bottom: 20px;
+  text-align: center;
 
   @media (max-width: 768px) {
     font-size: 12px;
@@ -201,20 +202,54 @@ const LoginPage: React.FC = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const userData = users.find((user) => user.id === '1');
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/user/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: formData.username,
+          password: formData.password,
+        }),
+      });
 
-    if (userData) {
-      // 유저 데이터를 로컬 스토리지에 저장 임시용
-      localStorage.setItem('user', JSON.stringify(userData));
+      const result = await response.json();
 
-      // 홈 페이지로 이동
-      navigate('/');
-      window.location.reload();
-    } else {
-      setError('유저 정보를 찾을 수 없습니다.');
+      if (response.ok) {
+        // 로그인 성공
+        localStorage.setItem('accessToken', result.data.accessToken);
+        toast.success('로그인에 성공했습니다!', {
+          style: {
+            maxWidth: "1000px",
+            width: "300px",
+            fontSize: "20px",
+          },
+        });
+        navigate('/');
+      } else {
+        // 로그인 실패
+        setError(result.message || '로그인에 실패했습니다.');
+        toast.error('로그인에 실패했습니다. 다시 시도해주세요.', {
+          style: {
+            maxWidth: "1000px",
+            width: "300px",
+            fontSize: "20px",
+          },
+        });
+      }
+    } catch (error) {
+      setError('서버와의 통신 중 오류가 발생했습니다.');
+      toast.error('서버와의 통신 중 오류가 발생했습니다.', {
+        style: {
+          maxWidth: "1000px",
+          width: "300px",
+          fontSize: "20px",
+        },
+      });
     }
   };
 
@@ -230,7 +265,6 @@ const LoginPage: React.FC = () => {
         <Slogan>스스로 준비하는 생활기록부의 시작</Slogan>
       </Header>
       <Form onSubmit={handleSubmit}>
-        {error && <ErrorMessage>{error}</ErrorMessage>}
         <Label htmlFor="username">아이디</Label>
         <Input
           id="username"
@@ -252,6 +286,7 @@ const LoginPage: React.FC = () => {
           placeholder="비밀번호를 입력해주세요"
           required
         />
+        {error && <ErrorMessage>아이디 및 비밀번호를 확인해주세요.</ErrorMessage>}
 
         <SignUpText onClick={handleSignUp}>
           학종메이트와 함께 대학가기 <span>회원가입</span>
@@ -261,6 +296,7 @@ const LoginPage: React.FC = () => {
           <SubmitButton type="submit">로그인</SubmitButton>
         </ButtonGroup>
       </Form>
+      <Toaster />
     </LoginContainer>
   );
 };
