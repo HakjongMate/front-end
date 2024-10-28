@@ -172,7 +172,29 @@ const MyProfileSection: React.FC = () => {
       setUserProfile(parsedUser);
     }
 
-    setCoin(1000);
+    // 탐구력 코인 API 호출
+    const fetchUserPoints = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/profile/me/points`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setCoin(data.data);
+        } else {
+          console.error('탐구력 코인 정보를 가져오는 데 실패했습니다.');
+        }
+      } catch (error) {
+        console.error('탐구력 코인 정보를 가져오는 데 실패했습니다.', error);
+      }
+    };
+
+    fetchUserPoints();
     setExplorationCount(5);
     setDaysTogether(324);
   }, []);
