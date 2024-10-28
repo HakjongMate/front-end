@@ -57,7 +57,7 @@ const ProfileInfo = styled.div`
 
 const UserDetails = styled.div`
   display: flex;
-  align-items: center
+  align-items: center;
 `;
 
 const ProfileCircle = styled.div<{ color: string }>`
@@ -158,11 +158,17 @@ const StatValue = styled.span`
   }
 `;
 
+const MessageContainer = styled.div`
+  margin-top: 20px;
+  font-size: 16px;
+  color: #333;
+  text-align: center;
+`;
+
 const MyProfileSection: React.FC = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [coin, setCoin] = useState<number>(0);
   const [explorationCount, setExplorationCount] = useState<number>(0);
-  const [daysTogether, setDaysTogether] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
@@ -172,7 +178,6 @@ const MyProfileSection: React.FC = () => {
       setUserProfile(parsedUser);
     }
 
-    // 탐구력 코인 API 호출
     const fetchUserPoints = async () => {
       try {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/api/profile/me/points`, {
@@ -194,31 +199,8 @@ const MyProfileSection: React.FC = () => {
       }
     };
 
-    // 탐구 개수 API 호출
-    const fetchExplorationCount = async () => {
-      try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/explore/count`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setExplorationCount(data.data);
-        } else {
-          console.error('탐구 개수 정보를 가져오는 데 실패했습니다.');
-        }
-      } catch (error) {
-        console.error('탐구 개수 정보를 가져오는 데 실패했습니다.', error);
-      }
-    };
-
     fetchUserPoints();
-    fetchExplorationCount();
-    setDaysTogether(324); // 임시 데이터
+    setExplorationCount(5); // 예시 데이터
   }, []);
 
   const handleSave = (updatedProfile: UserProfile) => {
@@ -250,7 +232,7 @@ const MyProfileSection: React.FC = () => {
             </EditButton>
           </ProfileInfo>
         </Card>
-        
+
         <Card>
           <StatItem>
             <span>탐구력 코인</span>
@@ -260,10 +242,11 @@ const MyProfileSection: React.FC = () => {
             <span>학종메이트와 함께 진행한 탐구수</span>
             <StatValue>{explorationCount}개</StatValue>
           </StatItem>
-          <StatItem>
-            <span>학종메이트와 함께 한 날</span>
-            <StatValue>{daysTogether}일</StatValue>
-          </StatItem>
+          <MessageContainer>
+            학종메이트가 <StatValue>{userProfile.realName}</StatValue>님의
+            소중한 꿈인 <StatValue>{userProfile.dream}</StatValue>를(을) 응원합니다!
+          </MessageContainer>
+
         </Card>
       </ProfileContainer>
 
