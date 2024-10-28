@@ -233,6 +233,7 @@ const LoginPage: React.FC = () => {
           },
         });
         navigate('/');
+        window.location.reload();
       } else {
         // 로그인 실패
         setError(result.message || '로그인에 실패했습니다.');

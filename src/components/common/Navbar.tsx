@@ -325,8 +325,8 @@ function Navbar() {
 
   // 로그인을 확인해 로그인 상태를 저장
   useEffect(() => {
-    const userData = localStorage.getItem("user");
-    setLoggedIn(!!userData);
+    const accessToken = localStorage.getItem("accessToken");
+    setLoggedIn(!!accessToken);
   }, []);
 
   // 페이지 이동 시 메뉴를 닫음
