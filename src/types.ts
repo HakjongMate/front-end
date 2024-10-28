@@ -32,3 +32,15 @@ export interface Interest {
   contents: string;
   createDate: string;
 }
+
+export interface Archiving {
+  id: string;
+  uniqueId: string;
+  type: 'explore' | 'interest';
+  subjectId: string;
+  title: string;
+  contents: string;
+  state: 'IN_PROGRESS' | 'NOT_STARTED' | 'COMPLETED';
+  ai: boolean;
+  createDate: string;
+}
