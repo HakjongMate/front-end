@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { UserProfile, Exploration, Interest } from '../../types';
+import { UserProfile, Archiving } from '../../types';
 import ExplorationCard from '../common/ExplorationCard'; 
 import InterestCard from '../common/InterestCard'; 
-import exploresData from '../../assets/data/explores.json';
-import interestsData from '../../assets/data/interest.json';
 import { Link } from 'react-router-dom';
 
 const SectionWrapper = styled.div`
@@ -34,9 +32,6 @@ const CardsGrid = styled.div`
 
   @media (max-width: 1024px) {
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (max-width: 768px) {
   }
 
   @media (max-width: 480px) {
@@ -93,8 +88,7 @@ const ViewMoreButton = styled(Link)`
 const MyExplorationSection: React.FC = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [activeTab, setActiveTab] = useState<'전체' | '관심사' | 'AI 탐구' | '탐구'>('전체');
-  const [explorations, setExplorations] = useState<Exploration[]>([]);
-  const [interests, setInterests] = useState<Interest[]>([]);
+  const [archivingData, setArchivingData] = useState<Archiving[]>([]);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -104,43 +98,82 @@ const MyExplorationSection: React.FC = () => {
     }
   }, []);
 
+  // 전체 데이터를 API로부터 가져오기
+  const fetchArchivingData = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/archiving/all`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setArchivingData(data.data);
+      } else {
+        console.error('데이터를 가져오는 데 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('API 호출 중 오류 발생:', error);
+    }
+  };
+
   useEffect(() => {
-    if (userProfile) {
-      const filteredExplorations = exploresData
-        .filter((explore) => explore.userId === userProfile.id)
-        .map((explore) => ({
-          ...explore,
-          state: explore.state as 'IN_PROGRESS' | 'NOT_STARTED' | 'COMPLETED',
-        }));
-      setExplorations(filteredExplorations);
-
-      const filteredInterests = interestsData.filter((interest) => interest.userId === userProfile.id);
-      setInterests(filteredInterests);
+    if (activeTab === '전체') {
+      fetchArchivingData();
     }
-  }, [userProfile]);
+  }, [activeTab]);
 
+  // 탐구 데이터와 관심사 데이터를 각각 탐구카드, 관심사카드로 매핑
   const filteredItems = () => {
-    let items: (Exploration | Interest)[] = [];
-    switch (activeTab) {
-      case '관심사':
-        items = interests;
-        break;
-      case 'AI 탐구':
-        items = explorations.filter((explore) => explore.ai);
-        break;
-      case '탐구':
-        items = explorations.filter((explore) => explore);
-        break;
-      default:
-        items = [...interests, ...explorations];
-    }
-    return items.slice(0, 6).map((item) => 
-      'state' in item ? (
-        <ExplorationCard key={`explore-${item.id}`} {...item} />
-      ) : (
-        <InterestCard key={`interest-${item.id}`} {...item} />
-      )
-    );
+    return archivingData
+      .filter((item) => {
+        switch (activeTab) {
+          case '관심사':
+            return item.type === 'interest';
+          case 'AI 탐구':
+            return item.type === 'explore' && item.ai;
+          case '탐구':
+            return item.type === 'explore';
+          default:
+            return true;
+        }
+      })
+      .slice(0, 6)
+      .map((item) => {
+        if (item.type === 'explore') {
+          return (
+            <ExplorationCard
+              key={item.id}
+              id={item.id}
+              userId={userProfile?.id || ''}
+              subjectId={item.subjectId}
+              title={item.title}
+              state={item.state}
+              motive=""
+              contents={item.contents}
+              result=""
+              actions=""
+              ai={item.ai}
+              createDate={item.createDate}
+            />
+          );
+        } else {
+          return (
+            <InterestCard
+              key={item.id}
+              id={item.id}
+              userId={userProfile?.id || ''}
+              subjectId={item.subjectId}
+              title={item.title}
+              contents={item.contents}
+              createDate={item.createDate}
+            />
+          );
+        }
+      });
   };
 
   return (
@@ -159,9 +192,7 @@ const MyExplorationSection: React.FC = () => {
         ))}
       </TabContainer>
 
-      <CardsGrid>
-        {filteredItems()}
-      </CardsGrid>
+      <CardsGrid>{filteredItems()}</CardsGrid>
 
       <ViewMoreButton to="/my/exploration">더보기 &gt;</ViewMoreButton>
     </SectionWrapper>
