@@ -192,12 +192,12 @@ const MyProfileSection: React.FC = () => {
         <Card>
           <ProfileInfo>
             <UserDetails>
-              <ProfileCircle color={userProfile.profile_color}>
-                {userProfile.profile_name}
+              <ProfileCircle color={userProfile.profileColor}>
+                {userProfile.profileName}
               </ProfileCircle>
               <TextInfo>
-                <Username>{userProfile.username}님</Username>
-                <UserInfo>{userProfile.high_school} {userProfile.grade}학년 {userProfile.score}등급</UserInfo>
+                <Username>{userProfile.realName}님</Username>
+                <UserInfo>{userProfile.schoolName} {userProfile.grade}학년 {userProfile.score}등급</UserInfo>
                 <UserInfo>{userProfile.dream}</UserInfo>
               </TextInfo>
             </UserDetails>

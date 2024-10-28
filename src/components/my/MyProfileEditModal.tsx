@@ -197,8 +197,8 @@ const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
     <ModalOverlay>
       <ModalContainer>
         <Title>프로필 수정</Title>
-        <ProfileCircle bgColor={profile.profile_color}>
-          <ProfileText>{profile.profile_name}</ProfileText>
+        <ProfileCircle bgColor={profile.profileColor}>
+          <ProfileText>{profile.profileName}</ProfileText>
         </ProfileCircle>
         <ColorChangeButton onClick={() => setIsColorPickerVisible(true)}>
           색상 변경
@@ -207,24 +207,24 @@ const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
           <Label>이름</Label>
           <Input
             type="text"
-            name="username"
-            value={profile.username}
+            name="realName"
+            value={profile.realName}
             onChange={handleInputChange}
           />
 
           <Label>프로필 이름</Label>
           <Input
             type="text"
-            name="profile_name"
-            value={profile.profile_name}
+            name="profileName"
+            value={profile.profileName}
             onChange={handleInputChange}
           />
 
           <Label>학교</Label>
           <Input
             type="text"
-            name="high_school"
-            value={profile.high_school}
+            name="schoolName"
+            value={profile.schoolName}
             onChange={handleInputChange}
           />
 
