@@ -199,8 +199,30 @@ const MyProfileSection: React.FC = () => {
       }
     };
 
+    // 탐구 개수 API 호출
+    const fetchExplorationCount = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/explore/count`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setExplorationCount(data.data);
+        } else {
+          console.error('탐구 개수 정보를 가져오는 데 실패했습니다.');
+        }
+      } catch (error) {
+        console.error('탐구 개수 정보를 가져오는 데 실패했습니다.', error);
+      }
+    };
+
     fetchUserPoints();
-    setExplorationCount(5); // 예시 데이터
+    fetchExplorationCount();
   }, []);
 
   const handleSave = (updatedProfile: UserProfile) => {
