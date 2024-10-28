@@ -38,7 +38,7 @@ const Title = styled.h3`
   }
 `;
 
-const Date = styled.span`
+const StyledDate = styled.span`
   font-size: 14px;
   color: #888;
 
@@ -81,11 +81,17 @@ const InterestCard: React.FC<Interest> = ({ id, title, contents, createDate, sub
     navigate(`/my/interest/detail/${id}`);
   };
 
+  const formattedDate = new Date(createDate).toLocaleDateString('ko-KR', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
+
   return (
     <CardWrapper onClick={handleClick}>
       <TitleContainer>
         <Title>{title}</Title>
-        <Date>{createDate}</Date>
+        <StyledDate>{formattedDate}</StyledDate>
       </TitleContainer>
       <TagContainer>
         <Tag>최근 관심사</Tag>
