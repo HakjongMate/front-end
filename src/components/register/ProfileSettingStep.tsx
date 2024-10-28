@@ -5,7 +5,7 @@ interface ProfileSettingStepProps {
   formData: {
     profileName: string;
     profileColor: string;
-    name: string;
+    realName: string;
   };
   handleChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -161,12 +161,12 @@ const ProfileSettingStep: React.FC<ProfileSettingStepProps> = ({
         placeholder="프로필에 표시될 이름을 입력해주세요"
         required
       />
-      <Label htmlFor="name">성함</Label>
+      <Label htmlFor="realName">성함</Label>
       <Input
-        id="name"
+        id="realName"
         type="text"
-        name="name"
-        value={formData.name}
+        name="realName"
+        value={formData.realName}
         onChange={handleChange}
         placeholder="고객님의 성함을 입력해주세요"
         required

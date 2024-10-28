@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import toast, { Toaster } from 'react-hot-toast';
 import ColorPickerModal from '../components/common/ColorPickerModal';
 import StepIndicator from '../components/register/StepIndicator';
 import AccountCreationStep from '../components/register/AccountCreationStep';
@@ -22,25 +23,25 @@ const RegisterContainer = styled.div`
   flex-direction: column;
   justify-content: center;
 
-  @media (max-width: 1024px) {
-    max-width: 600px;
-    padding: 40px 25px;
-  }
+@media (max-width: 1024px) {
+  max-width: 600px;
+  padding: 40px 25px;
+}
 
-  @media (max-width: 768px) {
-    max-width: 500px;
-    padding: 40px 20px;
-  }
+@media (max-width: 768px) {
+  max-width: 500px;
+  padding: 40px 20px;
+}
 
-  @media (max-width: 480px) {
-    max-width: 300px;
-    padding: 30px 15px;
-  }
+@media (max-width: 480px) {
+  max-width: 300px;
+  padding: 30px 15px;
+}
 
-  @media (max-width: 320px) {
-    max-width: 280px;
-    padding: 20px 10px;
-  }
+@media (max-width: 320px) {
+  max-width: 280px;
+  padding: 20px 10px;
+}
 `;
 
 const Title = styled.h2`
@@ -50,15 +51,15 @@ const Title = styled.h2`
   text-align: center;
   margin-bottom: 30px;
 
-  @media (max-width: 768px) {
-    font-size: 24px;
-    margin-bottom: 25px;
-  }
+@media (max-width: 768px) {
+  font-size: 24px;
+  margin-bottom: 25px;
+}
 
-  @media (max-width: 480px) {
-    font-size: 20px;
-    margin-bottom: 20px;
-  }
+@media (max-width: 480px) {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
 `;
 
 const Form = styled.form`
@@ -83,15 +84,15 @@ const Button = styled.button`
     background-color: #181d75;
   }
 
-  @media (max-width: 768px) {
-    font-size: 14px;
-    padding: 10px 0;
-  }
+@media (max-width: 768px) {
+  font-size: 14px;
+  padding: 10px 0;
+}
 
-  @media (max-width: 480px) {
-    font-size: 12px;
-    padding: 8px 0;
-  }
+@media (max-width: 480px) {
+  font-size: 12px;
+  padding: 8px 0;
+}
 `;
 
 const RegisterPage: React.FC = () => {
@@ -103,15 +104,19 @@ const RegisterPage: React.FC = () => {
     confirmPassword: '',
     profileName: '',
     profileColor: '#202594',
-    name: '',
-    school: '',
+    realName: '',
+    dream: '',
+    schoolName: '',
     grade: '1',
     gpa: '',
     customGpa: '',
-    career: '',
   });
+
   const [isUsernameChecked, setIsUsernameChecked] = useState(false);
+  const [usernameStatus, setUsernameStatus] = useState<string | null>(null);
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [isPasswordMatch, setIsPasswordMatch] = useState(false);
 
   const steps: Step[] = [
     { label: '계정 생성', isActive: step >= 1 },
@@ -128,6 +133,7 @@ const RegisterPage: React.FC = () => {
     // 아이디 변경 시 중복 확인 상태를 리셋
     if (e.target.name === 'username') {
       setIsUsernameChecked(false);
+      setUsernameStatus(null);
     }
   };
 
@@ -139,22 +145,88 @@ const RegisterPage: React.FC = () => {
     setIsColorPickerVisible(false);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (step === 1 && !isUsernameChecked) {
-      alert('아이디 중복 확인을 해주세요.');
-      return;
+    // 각 스텝별 유효성 검사
+    if (step === 1) {
+      if (!isUsernameChecked || usernameStatus !== '사용 가능한 아이디입니다.') {
+        toast.error('아이디 중복 확인을 해주세요.');
+        return;
+      }
+
+      if (!isPasswordValid) {
+        toast.error('유효한 비밀번호를 입력해주세요.');
+        return;
+      }
+
+      if (!isPasswordMatch) {
+        toast.error('비밀번호가 일치하지 않습니다.');
+        return;
+      }
     }
 
     if (step < 3) {
       setStep(step + 1);
     } else {
-      console.log('Form submitted:', formData);
-      navigate('/login');
+      const score = formData.gpa === 'custom' ? formData.customGpa : formData.gpa;
+
+      const requestData = {
+        username: formData.username,
+        password: formData.password,
+        realName: formData.realName,
+        profileName: formData.profileName,
+        profileColor: formData.profileColor,
+        dream: formData.dream,
+        schoolName: formData.schoolName,
+        grade: parseInt(formData.grade, 10),
+        score: parseFloat(score),
+      };
+
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/user/signup`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestData),
+        });
+
+        // 회원가입 성공 시 로그인 페이지로 이동
+        if (response.ok) {
+          toast.success('회원가입이 성공적으로 완료되었습니다.', {
+            style: {
+              maxWidth: '1000px',
+              width: '300px',
+              fontSize: '20px',
+            },
+          });
+          setTimeout(() => {
+            navigate('/login');
+          }, 2000);
+        } else {
+          const result = await response.json();
+          toast.error(`회원가입 실패: ${result.message}`, {
+            style: {
+              maxWidth: '1000px',
+              width: '300px',
+              fontSize: '20px',
+            },
+          });
+        }
+      } catch (error) {
+        toast.error('서버와의 통신 중 오류가 발생했습니다.', {
+          style: {
+            maxWidth: '1000px',
+            width: '300px',
+            fontSize: '20px',
+          },
+        });
+      }
     }
   };
 
+  // 아이디 중복 확인 요청
   const checkDuplicate = async () => {
     if (!formData.username) {
       alert('아이디를 입력해주세요.');
@@ -162,12 +234,29 @@ const RegisterPage: React.FC = () => {
     }
 
     try {
-      alert('사용 가능한 아이디입니다.');
-      setIsUsernameChecked(true);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/user/check-username?username=${formData.username}`, {
+        method: 'GET',
+      });
+      const result = await response.json();
+
+      if (result.data) {
+        setUsernameStatus('이미 사용 중인 아이디입니다.');
+      } else {
+        setUsernameStatus('사용 가능한 아이디입니다.');
+        setIsUsernameChecked(true);
+      }
     } catch (error) {
-      alert('중복 확인 중 오류가 발생했습니다.');
+      setUsernameStatus('중복 확인 중 오류가 발생했습니다.');
       console.error('중복 확인 중 오류 발생:', error);
     }
+  };
+
+  const handlePasswordValidity = (isValid: boolean) => {
+    setIsPasswordValid(isValid);
+  };
+
+  const handlePasswordMatch = (isMatch: boolean) => {
+    setIsPasswordMatch(isMatch);
   };
 
   const renderStepContent = () => {
@@ -178,6 +267,9 @@ const RegisterPage: React.FC = () => {
             formData={formData}
             handleChange={handleChange}
             checkDuplicate={checkDuplicate}
+            usernameStatus={usernameStatus}
+            onPasswordValidityChange={handlePasswordValidity}
+            onPasswordMatchChange={handlePasswordMatch}
           />
         );
       case 2:
@@ -210,6 +302,7 @@ const RegisterPage: React.FC = () => {
           {step < 3 ? '다음' : '회원가입 완료'}
         </Button>
       </Form>
+      <Toaster />
       <ColorPickerModal
         visible={isColorPickerVisible}
         onClose={() => setIsColorPickerVisible(false)}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 interface AccountCreationStepProps {
@@ -11,6 +11,9 @@ interface AccountCreationStepProps {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
   checkDuplicate: () => void;
+  usernameStatus: string | null;
+  onPasswordValidityChange: (isValid: boolean) => void;
+  onPasswordMatchChange: (isMatch: boolean) => void;
 }
 
 const Label = styled.label`
@@ -66,11 +69,82 @@ const CheckDuplicateButton = styled(Button)`
   flex-shrink: 0;
 `;
 
+const StatusMessage = styled.p<{ isError: boolean }>`
+  color: ${(props) => (props.isError ? 'red' : 'green')};
+  font-size: 12px;
+  margin-top: -15px;
+  margin-bottom: 15px;
+`;
+
+const ErrorMessage = styled.p`
+  color: red;
+  font-size: 12px;
+  margin-top: -15px;
+  margin-bottom: 20px;
+`;
+
 const AccountCreationStep: React.FC<AccountCreationStepProps> = ({
   formData,
   handleChange,
   checkDuplicate,
+  usernameStatus,
+  onPasswordValidityChange,
+  onPasswordMatchChange,
 }) => {
+  const [invalidUsernameMessage, setInvalidUsernameMessage] = useState<string | null>(null);
+  const [invalidPasswordMessage, setInvalidPasswordMessage] = useState<string | null>(null);
+  const [passwordMismatchMessage, setPasswordMismatchMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    onPasswordValidityChange(!invalidPasswordMessage);
+  }, [invalidPasswordMessage]);
+
+  useEffect(() => {
+    onPasswordMatchChange(!passwordMismatchMessage);
+  }, [passwordMismatchMessage]);
+
+  const validateUsername = (username: string) => {
+    const isValid = /^[a-z]+$/.test(username);
+    if (!isValid) {
+      setInvalidUsernameMessage('아이디는 영어 소문자만 입력 가능합니다.');
+    } else {
+      setInvalidUsernameMessage(null);
+    }
+  };
+
+  const validatePassword = (password: string) => {
+    const isValid = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/.test(password);
+    if (!isValid) {
+      setInvalidPasswordMessage('비밀번호는 최소 8자 이상, 소문자, 숫자, 특수문자(!@#$%^&*)를 포함해야 합니다.');
+    } else {
+      setInvalidPasswordMessage(null);
+    }
+  };
+
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    handleChange(e);
+    validateUsername(value);
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    handleChange(e);
+    validatePassword(value);
+  };
+
+  const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    handleChange(e);
+
+    // 비밀번호 일치 여부 검사
+    if (value !== formData.password) {
+      setPasswordMismatchMessage('비밀번호가 일치하지 않습니다.');
+    } else {
+      setPasswordMismatchMessage(null);
+    }
+  };
+
   return (
     <>
       <Label htmlFor="username">아이디</Label>
@@ -80,35 +154,49 @@ const AccountCreationStep: React.FC<AccountCreationStepProps> = ({
           type="text"
           name="username"
           value={formData.username}
-          onChange={handleChange}
-          placeholder="아이디를 입력해주세요"
+          onChange={handleUsernameChange}
+          placeholder="아이디를 입력해주세요 (영어 소문자만 사용)"
           required
           style={{ flex: 1, marginBottom: 0 }}
         />
-        <CheckDuplicateButton type="button" onClick={checkDuplicate}>
+        <CheckDuplicateButton type="button" onClick={checkDuplicate} disabled={!!invalidUsernameMessage}>
           중복확인
         </CheckDuplicateButton>
       </UsernameRow>
+
+      {invalidUsernameMessage && <ErrorMessage>{invalidUsernameMessage}</ErrorMessage>}
+
+      {usernameStatus && (
+        <StatusMessage isError={usernameStatus === '이미 사용 중인 아이디입니다.'}>
+          {usernameStatus}
+        </StatusMessage>
+      )}
+
       <Label htmlFor="password">비밀번호</Label>
       <Input
         id="password"
         type="password"
         name="password"
         value={formData.password}
-        onChange={handleChange}
+        onChange={handlePasswordChange}
         placeholder="비밀번호를 입력해주세요"
         required
       />
+
+      {invalidPasswordMessage && <ErrorMessage>{invalidPasswordMessage}</ErrorMessage>}
+
       <Label htmlFor="confirmPassword">비밀번호 확인</Label>
       <Input
         id="confirmPassword"
         type="password"
         name="confirmPassword"
         value={formData.confirmPassword}
-        onChange={handleChange}
+        onChange={handleConfirmPasswordChange}
         placeholder="비밀번호를 다시 입력해주세요"
         required
       />
+
+      {passwordMismatchMessage && <ErrorMessage>{passwordMismatchMessage}</ErrorMessage>}
     </>
   );
 };

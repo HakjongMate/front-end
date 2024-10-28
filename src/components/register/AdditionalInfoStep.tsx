@@ -4,11 +4,11 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 interface AdditionalInfoStepProps {
   formData: {
-    school: string;
+    schoolName: string;
     grade: string;
     gpa: string;
     customGpa: string;
-    career: string;
+    dream: string;
   };
   handleChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -108,12 +108,12 @@ const AdditionalInfoStep: React.FC<AdditionalInfoStepProps> = ({
 }) => {
   return (
     <>
-      <Label htmlFor="school">학교명</Label>
+      <Label htmlFor="schoolName">학교명</Label>
       <Input
-        id="school"
+        id="schoolName"
         type="text"
-        name="school"
-        value={formData.school}
+        name="schoolName"
+        value={formData.schoolName}
         onChange={handleChange}
         placeholder="현재 재학중인 학교명을 입력해주세요"
         required
@@ -165,12 +165,12 @@ const AdditionalInfoStep: React.FC<AdditionalInfoStepProps> = ({
           required
         />
       )}
-      <Label htmlFor="career">희망진로</Label>
+      <Label htmlFor="dream">희망진로</Label>
       <Input
-        id="career"
+        id="dream"
         type="text"
-        name="career"
-        value={formData.career}
+        name="dream"
+        value={formData.dream}
         onChange={handleChange}
         placeholder="희망 진로를 적어주세요 ex) 교사, 경영자 등"
         required

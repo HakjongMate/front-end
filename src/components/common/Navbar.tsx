@@ -5,7 +5,7 @@ import IconBlue from "../../assets/icons/HakjongMate_Blue.png";
 import { User, ShoppingCart, LogIn } from "lucide-react";
 
 interface SideMenuProps {
-  isOpen: boolean;
+  $isOpen: boolean;
 }
 
 const NavbarContainer = styled.div`
@@ -79,10 +79,10 @@ const NavLinks = styled.ul`
   }
 `;
 
-const NavLink = styled.li<{ isActive: boolean }>`
+const NavLink = styled.li<{ $isActive: boolean }>`
   a {
     text-decoration: none;
-    color: ${({ isActive }) => (isActive ? "#202594" : "#333")};
+    color: ${({ $isActive }) => ($isActive ? "#202594" : "#333")};
     font-size: 18px;
     font-weight: 700;
     position: relative;
@@ -101,7 +101,7 @@ const NavLink = styled.li<{ isActive: boolean }>`
       bottom: -5px;
       background-color: #202594;
       transition: all 0.3s ease;
-      transform: scaleX(${({ isActive }) => (isActive ? 1 : 0)});
+      transform: scaleX(${({ $isActive }) => ($isActive ? 1 : 0)});
       transform-origin: left;
     }
 
@@ -153,7 +153,7 @@ const UserMenuButton = styled.button`
   }
 `;
 
-const UserMenuDropdown = styled.div<{ isOpen: boolean }>`
+const UserMenuDropdown = styled.div<{ $isOpen: boolean }>`
   position: absolute;
   top: 100%;
   right: 50%;
@@ -162,7 +162,7 @@ const UserMenuDropdown = styled.div<{ isOpen: boolean }>`
   border: 1px solid #e9eaff;
   border-radius: 4px;
   padding: 5px 0;
-  display: ${({ isOpen }) => (isOpen ? "block" : "none")};
+  display: ${({ $isOpen }) => ($isOpen ? "block" : "none")};
   z-index: 1000;
   min-width: 120px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -193,7 +193,7 @@ const MenuButton = styled.div`
   }
 `;
 
-const Bar = styled.div<{ isOpen: boolean }>`
+const Bar = styled.div<{ $isOpen: boolean }>`
   width: 25px;
   height: 3px;
   background-color: #202594;
@@ -201,17 +201,17 @@ const Bar = styled.div<{ isOpen: boolean }>`
   transition: all 0.3s ease;
 
   &:nth-child(1) {
-    transform: ${({ isOpen }) =>
-      isOpen ? "rotate(45deg) translate(7px, 5px)" : "rotate(0)"};
+    transform: ${({ $isOpen }) =>
+      $isOpen ? "rotate(45deg) translate(7px, 5px)" : "rotate(0)"};
   }
 
   &:nth-child(2) {
-    opacity: ${({ isOpen }) => (isOpen ? "0" : "1")};
+    opacity: ${({ $isOpen }) => ($isOpen ? "0" : "1")};
   }
 
   &:nth-child(3) {
-    transform: ${({ isOpen }) =>
-      isOpen ? "rotate(-45deg) translate(7px, -5px)" : "rotate(0)"};
+    transform: ${({ $isOpen }) =>
+      $isOpen ? "rotate(-45deg) translate(7px, -5px)" : "rotate(0)"};
   }
 
   @media (max-width: 425px) {
@@ -232,7 +232,7 @@ const SideMenu = styled.div<SideMenuProps>`
   background-color: #ffffff;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease-in-out;
-  transform: ${({ isOpen }) => (isOpen ? "translateX(0)" : "translateX(100%)")};
+  transform: ${({ $isOpen }) => ($isOpen ? "translateX(0)" : "translateX(100%)")};
   z-index: 999;
   padding: 60px 20px 20px;
   overflow-y: auto;
@@ -298,7 +298,7 @@ const ServiceLink = styled(NavLink)`
 
   a {
     text-decoration: none;
-    color: ${({ isActive }) => (isActive ? "#202594" : "#333")};
+    color: ${({ $isActive }) => ($isActive ? "#202594" : "#333")};
     font-size: 16px;
     font-weight: 700;
     transition: all 0.3s ease;
@@ -325,8 +325,8 @@ function Navbar() {
 
   // 로그인을 확인해 로그인 상태를 저장
   useEffect(() => {
-    const userData = localStorage.getItem("user");
-    setLoggedIn(!!userData);
+    const accessToken = localStorage.getItem("accessToken");
+    setLoggedIn(!!accessToken);
   }, []);
 
   // 페이지 이동 시 메뉴를 닫음
@@ -353,12 +353,46 @@ function Navbar() {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    setLoggedIn(false);
-    setIsUserMenuOpen(false);
-    navigate("/");
-  };
+  const handleLogout = async () => {
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+    
+    // 토큰이 없을 경우 로그아웃을 처리
+    if (!accessToken || !refreshToken) {
+      setLoggedIn(false);
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      setIsUserMenuOpen(false);
+      navigate('/');
+      return;
+    }
+  
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/user/logout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'access': `Bearer ${accessToken}`,
+          'refresh': refreshToken,
+        },
+      });
+  
+      const result = await response.json();
+  
+      // 로그아웃 성공 처리
+      if (response.ok) {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        setLoggedIn(false);
+        setIsUserMenuOpen(false);
+        navigate('/');
+      } else {
+        console.error('로그아웃 실패:', result.message);
+      }
+    } catch (error) {
+      console.error('로그아웃 중 오류 발생:', error);
+    }
+  };  
 
   return (
     <NavbarContainer>
@@ -369,23 +403,23 @@ function Navbar() {
         </LogoContainer>
 
         <MenuButton onClick={toggleMenu}>
-          <Bar isOpen={isMenuOpen} />
-          <Bar isOpen={isMenuOpen} />
-          <Bar isOpen={isMenuOpen} />
+          <Bar $isOpen={isMenuOpen} />
+          <Bar $isOpen={isMenuOpen} />
+          <Bar $isOpen={isMenuOpen} />
         </MenuButton>
 
         <NavLinksContainer>
           <NavLinks>
-            <NavLink isActive={isActive("/intro")}>
+            <NavLink $isActive={isActive("/intro")}>
               <Link to="/intro">학종메이트 소개</Link>
             </NavLink>
-            <NavLink isActive={isActive("/service")}>
+            <NavLink $isActive={isActive("/service")}>
               <a onClick={toggleService}>서비스</a>
             </NavLink>
-            <NavLink isActive={isActive("/review")}>
+            <NavLink $isActive={isActive("/review")}>
               <Link to="/review">사용 후기</Link>
             </NavLink>
-            <NavLink isActive={isActive("/contact")}>
+            <NavLink $isActive={isActive("/contact")}>
               <Link to="/contact">문의하기</Link>
             </NavLink>
           </NavLinks>
@@ -398,7 +432,7 @@ function Navbar() {
                 <UserMenuButton onClick={toggleUserMenu}>
                   <User size={24} />
                 </UserMenuButton>
-                <UserMenuDropdown isOpen={isUserMenuOpen}>
+                <UserMenuDropdown $isOpen={isUserMenuOpen}>
                   <UserMenuItem as={Link} to="/my">마이페이지</UserMenuItem>
                   <UserMenuItem onClick={handleLogout}>로그아웃</UserMenuItem>
                 </UserMenuDropdown>
@@ -417,25 +451,25 @@ function Navbar() {
 
       {showServiceLinks && (
         <ServiceLinks>
-          <ServiceLink isActive={isActive("/service/book")}>
+          <ServiceLink $isActive={isActive("/service/book")}>
             <Link to="/service/book">학종 가이드북</Link>
           </ServiceLink>
-          <ServiceLink isActive={isActive("/service/analyze")}>
+          <ServiceLink $isActive={isActive("/service/analyze")}>
             <Link to="/service/analyze">생기부 진단 서비스</Link>
           </ServiceLink>
-          <ServiceLink isActive={isActive("/service/ai")}>
+          <ServiceLink $isActive={isActive("/service/ai")}>
             <Link to="/service/ai">AI 주제 추천 서비스</Link>
           </ServiceLink>
         </ServiceLinks>
       )}
 
-      <SideMenu isOpen={isMenuOpen}>
-        <SideMenuLink isActive={isActive("/intro")}>
+      <SideMenu $isOpen={isMenuOpen}>
+        <SideMenuLink $isActive={isActive("/intro")}>
           <Link to="/intro" onClick={toggleMenu}>
             학종메이트 소개
           </Link>
         </SideMenuLink>
-        <SideMenuLink isActive={isActive("/service")}>
+        <SideMenuLink $isActive={isActive("/service")}>
           <a
             onClick={() => {
               toggleService();
@@ -466,19 +500,19 @@ function Navbar() {
           </ServiceSubLinks>
         )}
 
-        <SideMenuLink isActive={isActive("/review")}>
+        <SideMenuLink $isActive={isActive("/review")}>
           <Link to="/review" onClick={toggleMenu}>
             사용 후기
           </Link>
         </SideMenuLink>
-        <SideMenuLink isActive={isActive("/contact")}>
+        <SideMenuLink $isActive={isActive("/contact")}>
           <Link to="/contact" onClick={toggleMenu}>
             문의하기
           </Link>
         </SideMenuLink>
         {loggedIn ? (
           <>
-            <SideMenuLink isActive={false}>
+            <SideMenuLink $isActive={false}>
               <a
                 onClick={() => {
                   handleLogout();
@@ -488,19 +522,19 @@ function Navbar() {
                 로그아웃
               </a>
             </SideMenuLink>
-            <SideMenuLink isActive={isActive("/my")}>
+            <SideMenuLink $isActive={isActive("/my")}>
               <Link to="/my" onClick={toggleMenu}>
                 마이페이지
               </Link>
             </SideMenuLink>
-            <SideMenuLink isActive={isActive("/my/cart")}>
+            <SideMenuLink $isActive={isActive("/my/cart")}>
               <Link to="/my/cart" onClick={toggleMenu}>
                 장바구니
               </Link>
             </SideMenuLink>
           </>
         ) : (
-          <SideMenuLink isActive={false}>
+          <SideMenuLink $isActive={false}>
             <Link to="/login" onClick={toggleMenu}>
               로그인
             </Link>
