@@ -1,12 +1,13 @@
 export interface UserProfile {
   id: string;
-  username: string;
-  high_school: string;
+  realName: string;
+  profileName: string;
+  profileColor: string;
+  dream: string;
+  schoolName: string;
   grade: number;
   score: number;
-  dream: string;
-  profile_color: string;
-  profile_name: string;
+  points: number;
 }
 
 export interface Exploration {
