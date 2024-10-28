@@ -158,15 +158,13 @@ const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
     setProfile((prevProfile) => {
       if (!prevProfile) return null;
 
-      // 학년을 숫자로 변환하여 저장
       if (name === 'grade') {
         return { ...prevProfile, [name]: Number(value) };
       }
 
-      // 성적 입력 처리
       if (name === 'score') {
         if (value === 'custom') {
-          return { ...prevProfile, score: customScore || 0 }; // 커스텀 점수 처리
+          return { ...prevProfile, score: customScore || 0 };
         }
         return { ...prevProfile, score: Number(value) };
       }
@@ -177,15 +175,33 @@ const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
 
   const handleColorChange = (color: string) => {
     setProfile((prevProfile) =>
-      prevProfile ? { ...prevProfile, profile_color: color } : null
+      prevProfile ? { ...prevProfile, profileColor: color } : null
     );
     setIsColorPickerVisible(false);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (profile) {
-      onSave(profile);
-      onClose();
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/profile/me`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+          body: JSON.stringify(profile),
+        });
+
+        if (response.ok) {
+          const updatedProfile = await response.json();
+          onSave(updatedProfile.data);
+          onClose();
+        } else {
+          console.error('프로필을 저장하는 데 실패했습니다.');
+        }
+      } catch (error) {
+        console.error('API 호출 중 오류 발생:', error);
+      }
     }
   };
 
@@ -210,6 +226,7 @@ const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
             name="realName"
             value={profile.realName}
             onChange={handleInputChange}
+            disabled
           />
 
           <Label>프로필 이름</Label>
