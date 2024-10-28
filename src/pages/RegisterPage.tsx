@@ -22,25 +22,25 @@ const RegisterContainer = styled.div`
   flex-direction: column;
   justify-content: center;
 
-  @media (max-width: 1024px) {
-    max-width: 600px;
-    padding: 40px 25px;
-  }
+@media (max-width: 1024px) {
+  max-width: 600px;
+  padding: 40px 25px;
+}
 
-  @media (max-width: 768px) {
-    max-width: 500px;
-    padding: 40px 20px;
-  }
+@media (max-width: 768px) {
+  max-width: 500px;
+  padding: 40px 20px;
+}
 
-  @media (max-width: 480px) {
-    max-width: 300px;
-    padding: 30px 15px;
-  }
+@media (max-width: 480px) {
+  max-width: 300px;
+  padding: 30px 15px;
+}
 
-  @media (max-width: 320px) {
-    max-width: 280px;
-    padding: 20px 10px;
-  }
+@media (max-width: 320px) {
+  max-width: 280px;
+  padding: 20px 10px;
+}
 `;
 
 const Title = styled.h2`
@@ -50,15 +50,15 @@ const Title = styled.h2`
   text-align: center;
   margin-bottom: 30px;
 
-  @media (max-width: 768px) {
-    font-size: 24px;
-    margin-bottom: 25px;
-  }
+@media (max-width: 768px) {
+  font-size: 24px;
+  margin-bottom: 25px;
+}
 
-  @media (max-width: 480px) {
-    font-size: 20px;
-    margin-bottom: 20px;
-  }
+@media (max-width: 480px) {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
 `;
 
 const Form = styled.form`
@@ -83,15 +83,15 @@ const Button = styled.button`
     background-color: #181d75;
   }
 
-  @media (max-width: 768px) {
-    font-size: 14px;
-    padding: 10px 0;
-  }
+@media (max-width: 768px) {
+  font-size: 14px;
+  padding: 10px 0;
+}
 
-  @media (max-width: 480px) {
-    font-size: 12px;
-    padding: 8px 0;
-  }
+@media (max-width: 480px) {
+  font-size: 12px;
+  padding: 8px 0;
+}
 `;
 
 const RegisterPage: React.FC = () => {
@@ -103,13 +103,14 @@ const RegisterPage: React.FC = () => {
     confirmPassword: '',
     profileName: '',
     profileColor: '#202594',
-    name: '',
-    school: '',
+    realName: '',
+    dream: '',
+    schoolName: '',
     grade: '1',
     gpa: '',
     customGpa: '',
-    career: '',
   });
+
   const [isUsernameChecked, setIsUsernameChecked] = useState(false);
   const [usernameStatus, setUsernameStatus] = useState<string | null>(null);
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
@@ -143,7 +144,7 @@ const RegisterPage: React.FC = () => {
     setIsColorPickerVisible(false);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // 아이디 중복 확인, 비밀번호 유효성 검사, 비밀번호 일치 여부 확인 후 진행
@@ -167,8 +168,44 @@ const RegisterPage: React.FC = () => {
     if (step < 3) {
       setStep(step + 1);
     } else {
-      console.log('작성 내용 제출:', formData);
-      navigate('/login');
+      console.log('회원가입 데이터:', formData);
+
+      const score = formData.gpa === 'custom' ? formData.customGpa : formData.gpa;
+
+      const requestData = {
+        username: formData.username,
+        password: formData.password,
+        realName: formData.realName,
+        profileName: formData.profileName,
+        profileColor: formData.profileColor,
+        dream: formData.dream,
+        schoolName: formData.schoolName,
+        grade: parseInt(formData.grade, 10),
+        score: parseFloat(score),
+      };
+
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/user/signup`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestData),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          console.log('회원가입 성공:', result);
+          navigate('/login');
+        } else {
+          console.error('회원가입 실패:', result);
+          alert('회원가입 중 오류가 발생했습니다.');
+        }
+      } catch (error) {
+        console.error('회원가입 중 오류 발생:', error);
+        alert('서버와의 통신 중 오류가 발생했습니다.');
+      }
     }
   };
 
