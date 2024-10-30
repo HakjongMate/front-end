@@ -10,6 +10,11 @@ const ItemWrapper = styled.div`
   align-items: flex-start;
   flex-direction: row;
   justify-content: space-between;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const ItemImage = styled.img`
@@ -18,6 +23,18 @@ const ItemImage = styled.img`
   object-fit: cover;
   margin: 10px 20px;
   border-radius: 10px;
+
+  @media (max-width: 768px) {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 15px;
+  }
+
+  @media (max-width: 480px) {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+  }
 `;
 
 const InfoSection = styled.div`
@@ -26,6 +43,12 @@ const InfoSection = styled.div`
   flex-direction: column;
   justify-content: space-between;
   margin-right: 20px;
+
+  @media (max-width: 480px) {
+    align-items: center;
+    margin-right: 0;
+    text-align: center;
+  }
 `;
 
 const ItemTitle = styled.h3`
@@ -33,6 +56,14 @@ const ItemTitle = styled.h3`
   font-weight: 600;
   color: #000;
   margin-bottom: 5px;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+  }
 `;
 
 const ItemSubtitle = styled.p`
@@ -40,6 +71,14 @@ const ItemSubtitle = styled.p`
   font-weight: 400;
   color: #000;
   margin-bottom: 5px;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
 `;
 
 const Description = styled.p`
@@ -47,11 +86,23 @@ const Description = styled.p`
   font-weight: 400;
   color: #000;
   margin-bottom: 10px;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 10px;
+  }
 `;
 
 const ButtonGroup = styled.div`
   display: flex;
   gap: 10px;
+
+  @media (max-width: 480px) {
+    justify-content: center;
+  }
 `;
 
 const ActionButton = styled.button`
@@ -60,6 +111,16 @@ const ActionButton = styled.button`
   border-radius: 20px;
   background-color: #fff; 
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
 `;
 
 const StatusSection = styled.div`
@@ -70,6 +131,11 @@ const StatusSection = styled.div`
   flex-direction: column;
   gap: 10px;
   margin: 15px 10px 20px 0;
+
+  @media (max-width: 768px) {
+    text-align: center;
+    margin-top: 10px;
+  }
 `;
 
 interface PurchaseItemProps {
