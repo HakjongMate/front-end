@@ -70,7 +70,7 @@ const ItemSubtitle = styled.p`
   font-size: 16px;
   font-weight: 400;
   color: #000;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
 
   @media (max-width: 768px) {
     font-size: 14px;
@@ -78,21 +78,6 @@ const ItemSubtitle = styled.p`
 
   @media (max-width: 480px) {
     font-size: 12px;
-  }
-`;
-
-const Description = styled.p`
-  font-size: 14px;
-  font-weight: 400;
-  color: #000;
-  margin-bottom: 10px;
-
-  @media (max-width: 768px) {
-    font-size: 12px;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 10px;
   }
 `;
 
@@ -109,7 +94,7 @@ const ActionButton = styled.button`
   padding: 8px 16px;
   border: 1px solid #ccc;
   border-radius: 20px;
-  background-color: #fff; 
+  background-color: #fff;
   cursor: pointer;
 
   @media (max-width: 768px) {
@@ -129,7 +114,6 @@ const StatusSection = styled.div`
   color: #888;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   gap: 10px;
   margin: 15px 10px 20px 0;
 
@@ -139,77 +123,54 @@ const StatusSection = styled.div`
   }
 `;
 
-// 타입 정의
-interface Service {
-  title: string;
-  subtitle: string;
-  image: string;
-}
-
 interface PurchaseItemProps {
   item: {
-    service: Service;
-    purchasedDate: string;
+    service?: { title: string; subtitle: string; image: string };
+    pass?: { title: string; description: string };
+    purchaseDate: string;
     status: 'PURCHASED' | 'REFUNDED' | 'CANCELED' | 'WAITING';
-    description?: string[];
   };
 }
 
 const PurchaseItem: React.FC<PurchaseItemProps> = ({ item }) => {
-  const { service, purchasedDate, status, description } = item;
-  const formattedDescription = description ? description.join(' | ') : '';
+  const { service, pass, purchaseDate, status } = item;
+
+  const displayDate = purchaseDate
+    ? new Date(purchaseDate).toLocaleDateString('ko-KR', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      })
+    : '날짜 없음';
 
   const statusInKorean: { [key in PurchaseItemProps['item']['status']]: string } = {
     PURCHASED: "구매 완료",
     REFUNDED: "환불 완료",
     CANCELED: "취소 완료",
-    WAITING: "전송 대기 중"
+    WAITING: "전송 대기 중",
   };
 
-  // 서비스에 따라 버튼을 다르게 렌더링
   const renderActionButton = () => {
-    if (service.title.includes('AI 주제 추천 서비스')) {
+    if (service) {
       return <ActionButton>상세 내용 보기</ActionButton>;
-    }
-    if (service.title.includes('학종 가이드북')) {
-      return (
-        <ActionButton onClick={() => window.location.href = '/service/book'}>
-          서비스 보기
-        </ActionButton>
-      );
-    }
-    if (service.title.includes('생활기록부 분석 서비스')) {
-      return (
-        <ActionButton onClick={() => window.location.href = '/service/analyze'}>
-          서비스 보기
-        </ActionButton>
-      );
-    }
-    return null;
-  };
-
-  // 구매 취소 버튼 렌더링은 status가 'WAITING'일 때만
-  const renderCancelButton = () => {
-    if (status === 'WAITING') {
-      return <ActionButton>구매 취소</ActionButton>;
+    } else if (pass) {
+      return <ActionButton>패스 보기</ActionButton>;
     }
     return null;
   };
 
   return (
     <ItemWrapper>
-      <ItemImage src={service.image} alt={service.title} />
+      {service && <ItemImage src={service.image} alt={service.title} />}
       <InfoSection>
-        <ItemTitle>{service.title}</ItemTitle>
-        <ItemSubtitle>{service.subtitle}</ItemSubtitle>
-        <Description>{formattedDescription}</Description>
+        <ItemTitle>{service ? service.title : pass?.title}</ItemTitle>
+        <ItemSubtitle>{service ? service.subtitle : pass?.description}</ItemSubtitle>
         <ButtonGroup>
           {renderActionButton()}
-          {renderCancelButton()}
         </ButtonGroup>
       </InfoSection>
       <StatusSection>
-        <span>{new Date(purchasedDate).toLocaleDateString()}</span>
+        <span>{displayDate}</span>
         <span>{statusInKorean[status]}</span>
       </StatusSection>
     </ItemWrapper>

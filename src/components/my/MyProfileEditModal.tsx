@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import toast from 'react-hot-toast';
 import ColorPickerModal from '../common/ColorPickerModal';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { UserProfile } from '../../types';
@@ -158,15 +159,13 @@ const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
     setProfile((prevProfile) => {
       if (!prevProfile) return null;
 
-      // 학년을 숫자로 변환하여 저장
       if (name === 'grade') {
         return { ...prevProfile, [name]: Number(value) };
       }
 
-      // 성적 입력 처리
       if (name === 'score') {
         if (value === 'custom') {
-          return { ...prevProfile, score: customScore || 0 }; // 커스텀 점수 처리
+          return { ...prevProfile, score: customScore || 0 };
         }
         return { ...prevProfile, score: Number(value) };
       }
@@ -177,17 +176,59 @@ const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
 
   const handleColorChange = (color: string) => {
     setProfile((prevProfile) =>
-      prevProfile ? { ...prevProfile, profile_color: color } : null
+      prevProfile ? { ...prevProfile, profileColor: color } : null
     );
     setIsColorPickerVisible(false);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (profile) {
-      onSave(profile);
-      onClose();
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/profile/me`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+          body: JSON.stringify(profile),
+        });
+  
+        if (response.ok) {
+          const updatedProfile = await response.json();
+          onSave(updatedProfile.data);
+  
+          onClose();
+          setTimeout(() => {
+            toast.success('프로필이 성공적으로 저장되었습니다!', {
+              style: {
+                maxWidth: '1000px',
+                width: '300px',
+                fontSize: '16px',
+              },
+            });
+          }, 100);
+        } else {
+          toast.error('프로필 저장에 실패했습니다. 잠시 뒤에 시도해주세요.', {
+            style: {
+              maxWidth: '1000px',
+              width: '300px',
+              fontSize: '16px',
+            },
+          });
+        }
+      } catch (error) {
+        toast.error('프로필 저장에 실패했습니다. 잠시 뒤에 시도해주세요.', {
+          style: {
+            maxWidth: '1000px',
+            width: '300px',
+            fontSize: '16px',
+          },
+        });
+        console.error('API 호출 중 오류 발생:', error);
+      }
     }
   };
+  
 
   if (!profile) {
     return null;
@@ -197,8 +238,8 @@ const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
     <ModalOverlay>
       <ModalContainer>
         <Title>프로필 수정</Title>
-        <ProfileCircle bgColor={profile.profile_color}>
-          <ProfileText>{profile.profile_name}</ProfileText>
+        <ProfileCircle bgColor={profile.profileColor}>
+          <ProfileText>{profile.profileName}</ProfileText>
         </ProfileCircle>
         <ColorChangeButton onClick={() => setIsColorPickerVisible(true)}>
           색상 변경
@@ -207,24 +248,25 @@ const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
           <Label>이름</Label>
           <Input
             type="text"
-            name="username"
-            value={profile.username}
+            name="realName"
+            value={profile.realName}
             onChange={handleInputChange}
+            disabled
           />
 
           <Label>프로필 이름</Label>
           <Input
             type="text"
-            name="profile_name"
-            value={profile.profile_name}
+            name="profileName"
+            value={profile.profileName}
             onChange={handleInputChange}
           />
 
           <Label>학교</Label>
           <Input
             type="text"
-            name="high_school"
-            value={profile.high_school}
+            name="schoolName"
+            value={profile.schoolName}
             onChange={handleInputChange}
           />
 

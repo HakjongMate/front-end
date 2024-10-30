@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PurchaseItem from './PurchaseItem';
-import purchasedItemsData from '../../assets/data/purchasedItems.json';
 import serviceData from '../../assets/data/service.json';
+import passData from '../../assets/data/pass.json';
 import { Link } from 'react-router-dom';
 
 const SectionWrapper = styled.div`
@@ -89,16 +89,51 @@ const MyPurchaseSection: React.FC = () => {
   >("전체");
 
   useEffect(() => {
-    const itemsWithDetails = purchasedItemsData.map((purchaseItem) => {
-      const service = serviceData.find(
-        (service) => service.id === purchaseItem.serviceId
-      );
-      return {
-        ...purchaseItem,
-        service,
-      };
-    });
-    setPurchaseItems(itemsWithDetails);
+    const fetchPurchaseItems = async () => {
+      try {
+        const accessToken = localStorage.getItem('accessToken');
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/buy/my`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+          },
+        });
+
+        const result = await response.json();
+
+        const itemsWithDetails = result.data.flatMap((purchase: any) => {
+          return purchase.buyItems.map((buyItem: any) => {
+            const service = buyItem.serviceId
+              ? serviceData.find((service) => service.id === buyItem.serviceId)
+              : buyItem.passId
+              ? {
+                  title: 'AI 주제 추천 서비스',
+                  subtitle: 'AI 기반 맞춤형 탐구 주제 추천',
+                  image: '/images/ai-main.webp',
+                }
+              : null;
+
+            const pass = buyItem.passId
+              ? passData.find((pass) => pass.id === buyItem.passId)
+              : null;
+
+            return {
+              ...buyItem,
+              service,
+              pass,
+              purchaseDate: purchase.purchaseDate,
+            };
+          });
+        });
+
+        setPurchaseItems(itemsWithDetails);
+      } catch (error) {
+        console.error('Error fetching purchase items:', error);
+      }
+    };
+
+    fetchPurchaseItems();
   }, []);
 
   // 필터된 아이템을 2개씩만 표시
@@ -107,8 +142,8 @@ const MyPurchaseSection: React.FC = () => {
       activeTab === "전체"
         ? purchaseItems
         : purchaseItems.filter((item) =>
-            item.service.title.includes(activeTab)
-          );
+          item.service?.title.includes(activeTab) || item.pass?.title.includes(activeTab)
+        );
     return filtered.slice(0, 2);
   };
 

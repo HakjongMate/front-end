@@ -1,12 +1,13 @@
 export interface UserProfile {
   id: string;
-  username: string;
-  high_school: string;
+  realName: string;
+  profileName: string;
+  profileColor: string;
+  dream: string;
+  schoolName: string;
   grade: number;
   score: number;
-  dream: string;
-  profile_color: string;
-  profile_name: string;
+  points: number;
 }
 
 export interface Exploration {
@@ -29,5 +30,17 @@ export interface Interest {
   subjectId: string;
   title: string;
   contents: string;
+  createDate: string;
+}
+
+export interface Archiving {
+  id: string;
+  uniqueId: string;
+  type: 'explore' | 'interest';
+  subjectId: string;
+  title: string;
+  contents: string;
+  state: 'IN_PROGRESS' | 'NOT_STARTED' | 'COMPLETED';
+  ai: boolean;
   createDate: string;
 }
