@@ -70,7 +70,7 @@ const ItemSubtitle = styled.p`
   font-size: 16px;
   font-weight: 400;
   color: #000;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
 
   @media (max-width: 768px) {
     font-size: 14px;
@@ -78,21 +78,6 @@ const ItemSubtitle = styled.p`
 
   @media (max-width: 480px) {
     font-size: 12px;
-  }
-`;
-
-const Description = styled.p`
-  font-size: 14px;
-  font-weight: 400;
-  color: #000;
-  margin-bottom: 10px;
-
-  @media (max-width: 768px) {
-    font-size: 12px;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 10px;
   }
 `;
 
@@ -109,7 +94,7 @@ const ActionButton = styled.button`
   padding: 8px 16px;
   border: 1px solid #ccc;
   border-radius: 20px;
-  background-color: #fff; 
+  background-color: #fff;
   cursor: pointer;
 
   @media (max-width: 768px) {
@@ -142,19 +127,27 @@ interface PurchaseItemProps {
   item: {
     service?: { title: string; subtitle: string; image: string };
     pass?: { title: string; description: string };
-    purchasedDate: string;
+    purchaseDate: string;
     status: 'PURCHASED' | 'REFUNDED' | 'CANCELED' | 'WAITING';
   };
 }
 
 const PurchaseItem: React.FC<PurchaseItemProps> = ({ item }) => {
-  const { service, pass, purchasedDate, status } = item;
-  
+  const { service, pass, purchaseDate, status } = item;
+
+  const displayDate = purchaseDate
+    ? new Date(purchaseDate).toLocaleDateString('ko-KR', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      })
+    : '날짜 없음';
+
   const statusInKorean: { [key in PurchaseItemProps['item']['status']]: string } = {
     PURCHASED: "구매 완료",
     REFUNDED: "환불 완료",
     CANCELED: "취소 완료",
-    WAITING: "전송 대기 중"
+    WAITING: "전송 대기 중",
   };
 
   const renderActionButton = () => {
@@ -177,7 +170,7 @@ const PurchaseItem: React.FC<PurchaseItemProps> = ({ item }) => {
         </ButtonGroup>
       </InfoSection>
       <StatusSection>
-        <span>{new Date(purchasedDate).toLocaleDateString()}</span>
+        <span>{displayDate}</span>
         <span>{statusInKorean[status]}</span>
       </StatusSection>
     </ItemWrapper>
