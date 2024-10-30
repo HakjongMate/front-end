@@ -106,6 +106,12 @@ const MyPurchaseSection: React.FC = () => {
           return purchase.buyItems.map((buyItem: any) => {
             const service = buyItem.serviceId
               ? serviceData.find((service) => service.id === buyItem.serviceId)
+              : buyItem.passId
+              ? {
+                  title: 'AI 주제 추천 서비스',
+                  subtitle: 'AI 기반 맞춤형 탐구 주제 추천',
+                  image: '/images/ai-main.webp',
+                }
               : null;
 
             const pass = buyItem.passId
@@ -136,9 +142,8 @@ const MyPurchaseSection: React.FC = () => {
       activeTab === "전체"
         ? purchaseItems
         : purchaseItems.filter((item) =>
-            item.service?.title.includes(activeTab) ||
-            (item.pass && activeTab === "AI 주제 추천 서비스") // pass가 있을 경우 AI 주제 추천 서비스로 처리
-          );
+          item.service?.title.includes(activeTab) || item.pass?.title.includes(activeTab)
+        );
     return filtered.slice(0, 2);
   };
 
