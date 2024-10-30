@@ -10,11 +10,6 @@ const ItemWrapper = styled.div`
   align-items: flex-start;
   flex-direction: row;
   justify-content: space-between;
-
-  @media (max-width: 480px) {
-    flex-direction: column;
-    align-items: center;
-  }
 `;
 
 const ItemImage = styled.img`
@@ -23,18 +18,6 @@ const ItemImage = styled.img`
   object-fit: cover;
   margin: 10px 20px;
   border-radius: 10px;
-
-  @media (max-width: 768px) {
-    width: 120px;
-    height: 120px;
-    margin-bottom: 15px;
-  }
-
-  @media (max-width: 480px) {
-    width: 100px;
-    height: 100px;
-    margin-bottom: 10px;
-  }
 `;
 
 const InfoSection = styled.div`
@@ -43,12 +26,6 @@ const InfoSection = styled.div`
   flex-direction: column;
   justify-content: space-between;
   margin-right: 20px;
-
-  @media (max-width: 480px) {
-    align-items: center;
-    margin-right: 0;
-    text-align: center;
-  }
 `;
 
 const ItemTitle = styled.h3`
@@ -56,14 +33,6 @@ const ItemTitle = styled.h3`
   font-weight: 600;
   color: #000;
   margin-bottom: 5px;
-
-  @media (max-width: 768px) {
-    font-size: 16px;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 14px;
-  }
 `;
 
 const ItemSubtitle = styled.p`
@@ -71,14 +40,6 @@ const ItemSubtitle = styled.p`
   font-weight: 400;
   color: #000;
   margin-bottom: 5px;
-
-  @media (max-width: 768px) {
-    font-size: 14px;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 12px;
-  }
 `;
 
 const Description = styled.p`
@@ -86,23 +47,11 @@ const Description = styled.p`
   font-weight: 400;
   color: #000;
   margin-bottom: 10px;
-
-  @media (max-width: 768px) {
-    font-size: 12px;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 10px;
-  }
 `;
 
 const ButtonGroup = styled.div`
   display: flex;
   gap: 10px;
-
-  @media (max-width: 480px) {
-    justify-content: center;
-  }
 `;
 
 const ActionButton = styled.button`
@@ -111,16 +60,6 @@ const ActionButton = styled.button`
   border-radius: 20px;
   background-color: #fff; 
   cursor: pointer;
-
-  @media (max-width: 768px) {
-    padding: 6px 12px;
-    font-size: 14px;
-  }
-
-  @media (max-width: 480px) {
-    padding: 5px 10px;
-    font-size: 12px;
-  }
 `;
 
 const StatusSection = styled.div`
@@ -129,36 +68,22 @@ const StatusSection = styled.div`
   color: #888;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   gap: 10px;
   margin: 15px 10px 20px 0;
-
-  @media (max-width: 768px) {
-    text-align: center;
-    margin-top: 10px;
-  }
 `;
-
-// 타입 정의
-interface Service {
-  title: string;
-  subtitle: string;
-  image: string;
-}
 
 interface PurchaseItemProps {
   item: {
-    service: Service;
+    service?: { title: string; subtitle: string; image: string };
+    pass?: { title: string; description: string };
     purchasedDate: string;
     status: 'PURCHASED' | 'REFUNDED' | 'CANCELED' | 'WAITING';
-    description?: string[];
   };
 }
 
 const PurchaseItem: React.FC<PurchaseItemProps> = ({ item }) => {
-  const { service, purchasedDate, status, description } = item;
-  const formattedDescription = description ? description.join(' | ') : '';
-
+  const { service, pass, purchasedDate, status } = item;
+  
   const statusInKorean: { [key in PurchaseItemProps['item']['status']]: string } = {
     PURCHASED: "구매 완료",
     REFUNDED: "환불 완료",
@@ -166,46 +91,23 @@ const PurchaseItem: React.FC<PurchaseItemProps> = ({ item }) => {
     WAITING: "전송 대기 중"
   };
 
-  // 서비스에 따라 버튼을 다르게 렌더링
   const renderActionButton = () => {
-    if (service.title.includes('AI 주제 추천 서비스')) {
+    if (service) {
       return <ActionButton>상세 내용 보기</ActionButton>;
-    }
-    if (service.title.includes('학종 가이드북')) {
-      return (
-        <ActionButton onClick={() => window.location.href = '/service/book'}>
-          서비스 보기
-        </ActionButton>
-      );
-    }
-    if (service.title.includes('생활기록부 분석 서비스')) {
-      return (
-        <ActionButton onClick={() => window.location.href = '/service/analyze'}>
-          서비스 보기
-        </ActionButton>
-      );
-    }
-    return null;
-  };
-
-  // 구매 취소 버튼 렌더링은 status가 'WAITING'일 때만
-  const renderCancelButton = () => {
-    if (status === 'WAITING') {
-      return <ActionButton>구매 취소</ActionButton>;
+    } else if (pass) {
+      return <ActionButton>패스 보기</ActionButton>;
     }
     return null;
   };
 
   return (
     <ItemWrapper>
-      <ItemImage src={service.image} alt={service.title} />
+      {service && <ItemImage src={service.image} alt={service.title} />}
       <InfoSection>
-        <ItemTitle>{service.title}</ItemTitle>
-        <ItemSubtitle>{service.subtitle}</ItemSubtitle>
-        <Description>{formattedDescription}</Description>
+        <ItemTitle>{service ? service.title : pass?.title}</ItemTitle>
+        <ItemSubtitle>{service ? service.subtitle : pass?.description}</ItemSubtitle>
         <ButtonGroup>
           {renderActionButton()}
-          {renderCancelButton()}
         </ButtonGroup>
       </InfoSection>
       <StatusSection>
