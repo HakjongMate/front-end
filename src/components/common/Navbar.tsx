@@ -353,10 +353,48 @@ function Navbar() {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // 토근 유효성 검사
+  const checkTokenValidity = async () => {
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+  
+    if (!accessToken || !refreshToken) {
+      setLoggedIn(false);
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      return;
+    }
+  
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/user/test`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+        },
+      });
+  
+      if (response.status === 401) {
+        console.log('토큰이 만료되었습니다. 바로 로그아웃 처리합니다.');
+        // 바로 토큰 제거
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        setLoggedIn(false);
+        navigate('/');
+      }
+    } catch (error) {
+      console.error('토큰 유효성 검사 중 오류 발생:', error);
+    }
+  };
+  
+
+  useEffect(() => {
+    checkTokenValidity();
+  }, []);
+
   const handleLogout = async () => {
     const accessToken = localStorage.getItem('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
-    
+
     // 토큰이 없을 경우 로그아웃을 처리
     if (!accessToken || !refreshToken) {
       setLoggedIn(false);
@@ -366,7 +404,7 @@ function Navbar() {
       navigate('/');
       return;
     }
-  
+
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/user/logout`, {
         method: 'POST',
@@ -376,9 +414,9 @@ function Navbar() {
           'refresh': refreshToken,
         },
       });
-  
+
       const result = await response.json();
-  
+
       // 로그아웃 성공 처리
       if (response.ok) {
         localStorage.removeItem('accessToken');
