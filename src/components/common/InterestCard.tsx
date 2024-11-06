@@ -7,7 +7,7 @@ const CardWrapper = styled.div`
   width: calc(100% - 40px);
   background-color: #FFFFFF;
   border-radius: 20px;
-  padding: 20px;
+  padding: 0px 20px 10px;
   margin: 10px auto;
   border: 1px solid #CECECE;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
@@ -20,18 +20,17 @@ const CardWrapper = styled.div`
   }
 `;
 
-const TitleContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-`;
-
 const Title = styled.h3`
   font-size: 18px;
   font-weight: 600;
   color: #000;
-  margin: 0;
+  max-height: 45px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  margin-bottom: 5px;
 
   @media (max-width: 480px) {
     font-size: 14px;
@@ -41,6 +40,8 @@ const Title = styled.h3`
 const StyledDate = styled.span`
   font-size: 14px;
   color: #888;
+  margin-bottom: 10px;
+  display: block;
 
   @media (max-width: 480px) {
     font-size: 12px;
@@ -49,7 +50,8 @@ const StyledDate = styled.span`
 
 const TagContainer = styled.div`
   display: flex;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
+  margin-left: -5px;
 `;
 
 const Tag = styled.span`
@@ -67,11 +69,11 @@ const Description = styled.p`
   color: #000;
   line-height: 1.4;
   margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
 `;
 
 const InterestCard: React.FC<Interest> = ({ id, title, contents, createDate, subjectId }) => {
@@ -89,10 +91,8 @@ const InterestCard: React.FC<Interest> = ({ id, title, contents, createDate, sub
 
   return (
     <CardWrapper onClick={handleClick}>
-      <TitleContainer>
-        <Title>{title}</Title>
-        <StyledDate>{formattedDate}</StyledDate>
-      </TitleContainer>
+      <Title>{title}</Title>
+      <StyledDate>{formattedDate}</StyledDate>
       <TagContainer>
         <Tag>최근 관심사</Tag>
       </TagContainer>
