@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { Exploration } from "../../types";
+import subjectData from "../../assets/data/subject.json";
 
 const PageWrapper = styled.div`
   max-width: 1080px;
@@ -30,6 +31,20 @@ const PageType = styled.h2`
 
   @media (max-width: 480px) {
     font-size: 20px;
+  }
+`;
+
+const SubjectInfo = styled.p`
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 5px;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
   }
 `;
 
@@ -164,6 +179,7 @@ const SaveButton = styled.button`
 const MyExplorationDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [exploration, setExploration] = useState<Exploration | null>(null);
+  const [subjectInfo, setSubjectInfo] = useState({ area: "", detail: "" });
   const [insight, setInsight] = useState("");
 
   useEffect(() => {
@@ -181,6 +197,14 @@ const MyExplorationDetailPage: React.FC = () => {
         if (response.ok) {
           const data = await response.json();
           setExploration(data.data);
+
+          const subject = subjectData.find((subject) =>
+            subject.details.some((detail) => detail.id === data.data.subjectId)
+          );
+          if (subject) {
+            const detail = subject.details.find((d) => d.id === data.data.subjectId);
+            setSubjectInfo({ area: subject.area, detail: detail?.detail || "" });
+          }
         } else {
           console.error("Failed to fetch exploration details.");
         }
@@ -242,6 +266,7 @@ const MyExplorationDetailPage: React.FC = () => {
   return (
     <PageWrapper>
       <PageType>{exploration.ai ? "AI 주제 추천" : "탐구"}</PageType>
+      <SubjectInfo>{subjectInfo.area} - {subjectInfo.detail}</SubjectInfo>
       <Divider />
       <Title>{exploration.title}</Title>
       <TagContainer>
