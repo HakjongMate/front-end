@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
+import toast, {Toaster} from "react-hot-toast";
 import { Exploration } from "../../types";
 import subjectData from "../../assets/data/subject.json";
 
@@ -256,17 +257,37 @@ const MyExplorationDetailPage: React.FC = () => {
       });
 
       if (response.ok) {
-        console.log("성공적으로 인사이트를 저장했습니다.");
+        toast.success("탐구 내용이 성공적으로 저장되었습니다!", {
+          style: {
+            maxWidth: '1000px',
+            width: '300px',
+            fontSize: '16px',
+          },
+        });
       } else {
-        console.error("인사이트 저장에 실패했습니다.");
+        toast.error("탐구 내용 저장에 실패했습니다. 잠시 뒤에 시도해주세요.", {
+          style: {
+            maxWidth: '1000px',
+            width: '300px',
+            fontSize: '16px',
+          },
+        });
       }
     } catch (error) {
+      toast.error("탐구 내용 저장에 실패했습니다. 잠시 뒤에 시도해주세요.", {
+        style: {
+          maxWidth: '1000px',
+          width: '300px',
+          fontSize: '16px',
+        },
+      });
       console.error("API 호출 중 오류 발생:", error);
     }
   };
 
   return (
     <PageWrapper>
+      <Toaster position="top-center" reverseOrder={false} />
       <PageType>{exploration.ai ? "AI 주제 추천" : "탐구"}</PageType>
       <SubjectInfo>{subjectInfo.area} - {subjectInfo.detail}</SubjectInfo>
       <Divider />
