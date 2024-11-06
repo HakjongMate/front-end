@@ -152,7 +152,12 @@ const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
 }) => {
   const [profile, setProfile] = useState<UserProfile | null>(userProfile);
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
-  const [customScore, setCustomScore] = useState<number | undefined>(undefined);
+  const [customScore, setCustomScore] = useState<number | undefined>(
+    profile?.score && ![1.0, 2.0, 3.0].includes(profile.score) ? profile.score : undefined
+  );
+  const [scoreOption, setScoreOption] = useState(
+    [1.0, 2.0, 3.0].includes(profile?.score ?? 0) ? profile?.score.toString() : 'custom'
+  );
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -164,14 +169,24 @@ const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
       }
 
       if (name === 'score') {
+        setScoreOption(value);
         if (value === 'custom') {
-          return { ...prevProfile, score: customScore || 0 };
+          setCustomScore(undefined); // 초기화
+          return { ...prevProfile, score: 0 };
         }
         return { ...prevProfile, score: Number(value) };
       }
 
       return { ...prevProfile, [name]: value };
     });
+  };
+
+  const handleCustomScoreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseFloat(e.target.value);
+    if (value >= 1.0 && value <= 9.0) {
+      setCustomScore(value);
+      setProfile((prevProfile) => prevProfile ? { ...prevProfile, score: value } : prevProfile);
+    }
   };
 
   const handleColorChange = (color: string) => {
@@ -196,7 +211,6 @@ const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
         if (response.ok) {
           const updatedProfile = await response.json();
           onSave(updatedProfile.data);
-  
           onClose();
           setTimeout(() => {
             toast.success('프로필이 성공적으로 저장되었습니다!', {
@@ -228,7 +242,6 @@ const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
       }
     }
   };
-  
 
   if (!profile) {
     return null;
@@ -290,7 +303,7 @@ const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
             <Select
               id="score"
               name="score"
-              value={profile.score.toString()}
+              value={scoreOption}
               onChange={handleInputChange}
             >
               <option value="1.0">1.0</option>
@@ -301,12 +314,12 @@ const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
             <SelectIcon />
           </SelectWrapper>
 
-          {profile.score === 0 && (
+          {scoreOption === 'custom' && (
             <Input
               type="number"
               name="customScore"
               value={customScore || ''}
-              onChange={(e) => setCustomScore(parseFloat(e.target.value))}
+              onChange={handleCustomScoreChange}
               placeholder="내신을 입력해주세요. ex) 1.4와 같이 대략적인 숫자로 적어주세요."
               min="1.0"
               max="9.0"
