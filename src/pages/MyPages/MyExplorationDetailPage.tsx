@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
-import ExplorationsData from "../../assets/data/explores.json";
 import { Exploration } from "../../types";
 
 const PageWrapper = styled.div`
@@ -168,10 +167,29 @@ const MyExplorationDetailPage: React.FC = () => {
   const [insight, setInsight] = useState("");
 
   useEffect(() => {
-    const foundExploration = ExplorationsData.find((exp) => exp.id === id);
-    if (foundExploration) {
-      setExploration(foundExploration as Exploration);
-    }
+    const fetchExploration = async () => {
+      try {
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/explore/${id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setExploration(data.data);
+        } else {
+          console.error("Failed to fetch exploration details.");
+        }
+      } catch (error) {
+        console.error("Error fetching exploration:", error);
+      }
+    };
+
+    fetchExploration();
   }, [id]);
 
   if (!exploration) {
@@ -191,8 +209,34 @@ const MyExplorationDetailPage: React.FC = () => {
     }
   };
 
-  const handleSave = () => {
-    console.log("Saving insight:", insight);
+  const handleSave = async () => {
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/explore/${id}/update`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          title: exploration.title,
+          state: exploration.state,
+          motive: exploration.motive,
+          contents: exploration.contents,
+          result: exploration.result,
+          actions: exploration.actions,
+          insight: insight,
+        }),
+      });
+
+      if (response.ok) {
+        console.log("Insight saved successfully.");
+      } else {
+        console.error("Failed to save insight.");
+      }
+    } catch (error) {
+      console.error("Error saving insight:", error);
+    }
   };
 
   return (
