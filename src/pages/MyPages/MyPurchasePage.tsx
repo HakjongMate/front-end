@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import PurchaseItem from "../../components/my/PurchaseItem";
-import purchasedItemsData from "../../assets/data/purchasedItems.json";
 import serviceData from "../../assets/data/service.json";
+import passData from "../../assets/data/pass.json";
 
 const SectionWrapper = styled.div`
   padding: 40px 20px;
@@ -96,23 +96,62 @@ const MyPurchasePage: React.FC = () => {
   >("전체");
 
   useEffect(() => {
-    const itemsWithDetails = purchasedItemsData.map((purchaseItem) => {
-      const service = serviceData.find(
-        (service) => service.id === purchaseItem.serviceId
-      );
-      return {
-        ...purchaseItem,
-        service,
-      };
-    });
-    setPurchaseItems(itemsWithDetails);
+    const fetchPurchaseItems = async () => {
+      try {
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/buy/my`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+
+          const itemsWithDetails = result.data.flatMap((purchase: any) => {
+            return purchase.buyItems.map((buyItem: any) => {
+              const service = buyItem.serviceId
+                ? serviceData.find((service) => service.id === buyItem.serviceId)
+                : buyItem.passId
+                ? {
+                    title: "AI 주제 추천 서비스",
+                    subtitle: "AI 기반 맞춤형 탐구 주제 추천",
+                    image: "/images/ai-main.webp",
+                  }
+                : null;
+
+              const pass = buyItem.passId
+                ? passData.find((pass) => pass.id === buyItem.passId)
+                : null;
+
+              return {
+                ...buyItem,
+                service,
+                pass,
+                purchaseDate: purchase.purchaseDate,
+              };
+            });
+          });
+
+          setPurchaseItems(itemsWithDetails);
+        } else {
+          console.error("데이터를 가져오는 데 실패했습니다.");
+        }
+      } catch (error) {
+        console.error("Error fetching purchase items:", error);
+      }
+    };
+
+    fetchPurchaseItems();
   }, []);
 
   const filteredItems = () => {
     return activeTab === "전체"
       ? purchaseItems
       : purchaseItems.filter((item) =>
-          item.service.title.includes(activeTab)
+          item.service?.title.includes(activeTab) || item.pass?.title.includes(activeTab)
         );
   };
 
@@ -121,20 +160,17 @@ const MyPurchasePage: React.FC = () => {
       <Title>구매 내역</Title>
 
       <TabContainer>
-        {[
-          "전체",
-          "AI 주제 추천 서비스",
-          "학종 가이드북",
-          "생활기록부 분석 서비스",
-        ].map((tab) => (
-          <TabButton
-            key={tab}
-            active={activeTab === tab}
-            onClick={() => setActiveTab(tab as typeof activeTab)}
-          >
-            {tab}
-          </TabButton>
-        ))}
+        {["전체", "AI 주제 추천 서비스", "학종 가이드북", "생활기록부 분석 서비스"].map(
+          (tab) => (
+            <TabButton
+              key={tab}
+              active={activeTab === tab}
+              onClick={() => setActiveTab(tab as typeof activeTab)}
+            >
+              {tab}
+            </TabButton>
+          )
+        )}
       </TabContainer>
 
       <PurchaseList>
