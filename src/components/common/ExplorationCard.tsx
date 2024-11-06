@@ -7,7 +7,7 @@ const CardWrapper = styled.div`
   width: calc(100% - 40px);
   background-color: #FFFFFF;
   border-radius: 20px;
-  padding: 20px;
+  padding: 0px 20px 10px;
   margin: 10px auto;
   border: 1px solid #CECECE;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
@@ -16,21 +16,21 @@ const CardWrapper = styled.div`
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
   }
-`;
-
-const TitleContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
 `;
 
 const Title = styled.h3`
   font-size: 18px;
   font-weight: 600;
   color: #000;
-  margin: 0;
+  max-height: 45px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  margin-bottom: 10px;
 
   @media (max-width: 480px) {
     font-size: 16px;
@@ -40,6 +40,8 @@ const Title = styled.h3`
 const StyledDate = styled.span`
   font-size: 14px;
   color: #888;
+  margin-bottom: 10px;
+  display: block;
 
   @media (max-width: 480px) {
     font-size: 12px;
@@ -48,7 +50,8 @@ const StyledDate = styled.span`
 
 const TagContainer = styled.div`
   display: flex;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
+  margin-left: -5px;
 `;
 
 const Tag = styled.span<{ $bgColor: string; $textColor: string }>`
@@ -72,12 +75,11 @@ const Description = styled.p`
   color: #000;
   line-height: 1.4;
   margin: 0;
-  padding: 0 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
 
   @media (max-width: 480px) {
     font-size: 14px;
@@ -113,15 +115,11 @@ const ExplorationCard: React.FC<Exploration> = ({
 
   return (
     <CardWrapper onClick={handleClick}>
-      <TitleContainer>
-        <Title>{title}</Title>
-        <StyledDate>{new Date(createDate).toLocaleDateString()}</StyledDate>
-      </TitleContainer>
+      <Title>{title}</Title>
+      <StyledDate>{new Date(createDate).toLocaleDateString()}</StyledDate>
       <TagContainer>
         {ai && <Tag $bgColor="#FFC107" $textColor="#000">AI 추천</Tag>}
-        <Tag $bgColor="#28A745" $textColor="#000">
-          {getStateText(state)}
-        </Tag>
+        <Tag $bgColor="#28A745" $textColor="#000">{getStateText(state)}</Tag>
       </TagContainer>
       <Description>{contents}</Description>
     </CardWrapper>

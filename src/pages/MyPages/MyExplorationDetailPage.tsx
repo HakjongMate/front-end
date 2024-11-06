@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
-import ExplorationsData from "../../assets/data/explores.json";
+import toast, {Toaster} from "react-hot-toast";
 import { Exploration } from "../../types";
+import subjectData from "../../assets/data/subject.json";
 
 const PageWrapper = styled.div`
   max-width: 1080px;
@@ -31,6 +32,20 @@ const PageType = styled.h2`
 
   @media (max-width: 480px) {
     font-size: 20px;
+  }
+`;
+
+const SubjectInfo = styled.p`
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 5px;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
   }
 `;
 
@@ -165,13 +180,42 @@ const SaveButton = styled.button`
 const MyExplorationDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [exploration, setExploration] = useState<Exploration | null>(null);
+  const [subjectInfo, setSubjectInfo] = useState({ area: "", detail: "" });
   const [insight, setInsight] = useState("");
 
   useEffect(() => {
-    const foundExploration = ExplorationsData.find((exp) => exp.id === id);
-    if (foundExploration) {
-      setExploration(foundExploration as Exploration);
-    }
+    const fetchExploration = async () => {
+      try {
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/explore/${id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setExploration(data.data);
+          setInsight(data.data.insight || "");
+
+          const subject = subjectData.find((subject) =>
+            subject.details.some((detail) => detail.id === data.data.subjectId)
+          );
+          if (subject) {
+            const detail = subject.details.find((d) => d.id === data.data.subjectId);
+            setSubjectInfo({ area: subject.area, detail: detail?.detail || "" });
+          }
+        } else {
+          console.error("탐구 정보를 불러오는 데 실패했습니다.");
+        }
+      } catch (error) {
+        console.error("API 호출 중 오류 발생:", error);
+      }
+    };
+
+    fetchExploration();
   }, [id]);
 
   if (!exploration) {
@@ -191,13 +235,61 @@ const MyExplorationDetailPage: React.FC = () => {
     }
   };
 
-  const handleSave = () => {
-    console.log("Saving insight:", insight);
+  const handleSave = async () => {
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/explore/${id}/update`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          subjectId: exploration.subjectId,
+          title: exploration.title,
+          state: exploration.state,
+          motive: exploration.motive,
+          contents: exploration.contents,
+          result: exploration.result,
+          actions: exploration.actions,
+          insight: insight,
+        }),
+      });
+
+      if (response.ok) {
+        toast.success("탐구 내용이 성공적으로 저장되었습니다!", {
+          style: {
+            maxWidth: '1000px',
+            width: '300px',
+            fontSize: '16px',
+          },
+        });
+      } else {
+        toast.error("탐구 내용 저장에 실패했습니다. 잠시 뒤에 시도해주세요.", {
+          style: {
+            maxWidth: '1000px',
+            width: '300px',
+            fontSize: '16px',
+          },
+        });
+      }
+    } catch (error) {
+      toast.error("탐구 내용 저장에 실패했습니다. 잠시 뒤에 시도해주세요.", {
+        style: {
+          maxWidth: '1000px',
+          width: '300px',
+          fontSize: '16px',
+        },
+      });
+      console.error("API 호출 중 오류 발생:", error);
+    }
   };
 
   return (
     <PageWrapper>
+      <Toaster position="top-center" reverseOrder={false} />
       <PageType>{exploration.ai ? "AI 주제 추천" : "탐구"}</PageType>
+      <SubjectInfo>{subjectInfo.area} - {subjectInfo.detail}</SubjectInfo>
       <Divider />
       <Title>{exploration.title}</Title>
       <TagContainer>

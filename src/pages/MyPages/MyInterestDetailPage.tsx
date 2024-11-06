@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import InterestsData from '../../assets/data/interest.json';
+import subjectData from '../../assets/data/subject.json';
 import { Interest } from '../../types';
 
 const PageWrapper = styled.div`
@@ -31,6 +31,20 @@ const PageType = styled.h2`
 
   @media (max-width: 480px) {
     font-size: 20px;
+  }
+`;
+
+const SubjectInfo = styled.p`
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 5px;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
   }
 `;
 
@@ -113,78 +127,53 @@ const Content = styled.p`
   }
 `;
 
-const InsightInput = styled.textarea`
-  width: 100%;
-  height: 150px;
-  padding: 15px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  font-size: 16px;
-  resize: none;
-  margin-bottom: 20px;
-  background-color: #fff;
-  box-sizing: border-box;
-
-  @media (max-width: 768px) {
-    font-size: 14px;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 13px;
-  }
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
-
-const SaveButton = styled.button`
-  background-color: #202594;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: #0009bd;
-  }
-
-  @media (max-width: 768px) {
-    font-size: 14px;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 13px;
-  }
-`;
-
 const MyInterestDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [interest, setInterest] = useState<Interest | null>(null);
-  const [insight, setInsight] = useState('');
+  const [subjectInfo, setSubjectInfo] = useState({ area: '', detail: '' });
 
   useEffect(() => {
-    const foundInterest = InterestsData.find((int) => int.id === id);
-    if (foundInterest) {
-      setInterest(foundInterest as Interest);
-    }
+    const fetchInterest = async () => {
+      try {
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/interest/${id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setInterest(data.data);
+
+          const subject = subjectData.find((subject) =>
+            subject.details.some((detail) => detail.id === data.data.subjectId)
+          );
+          if (subject) {
+            const detail = subject.details.find((d) => d.id === data.data.subjectId);
+            setSubjectInfo({ area: subject.area, detail: detail?.detail || '' });
+          }
+        } else {
+          console.error("관심사 정보를 불러오는 데 실패했습니다.");
+        }
+      } catch (error) {
+        console.error("API 호출 중 오류 발생:", error);
+      }
+    };
+
+    fetchInterest();
   }, [id]);
 
   if (!interest) {
     return <div>Loading...</div>;
   }
 
-  const handleSave = () => {
-    console.log('Saving insight:', insight);
-  };
-
   return (
     <PageWrapper>
       <PageType>관심사</PageType>
+      <SubjectInfo>{subjectInfo.area} - {subjectInfo.detail}</SubjectInfo>
       <Divider />
       <Title>{interest.title}</Title>
       <TagContainer>
@@ -194,20 +183,6 @@ const MyInterestDetailPage: React.FC = () => {
       <ContentSection>
         <SectionTitle>관심사 설명</SectionTitle>
         <Content>{interest.contents}</Content>
-      </ContentSection>
-
-      <Divider />
-
-      <ContentSection>
-        <SectionTitle>추가 인사이트 정리</SectionTitle>
-        <InsightInput
-          value={insight}
-          onChange={(e) => setInsight(e.target.value)}
-          placeholder="추가적인 인사이트들을 정리해서 기록하세요."
-        />
-        <ButtonContainer>
-          <SaveButton onClick={handleSave}>저장하기</SaveButton>
-        </ButtonContainer>
       </ContentSection>
     </PageWrapper>
   );
