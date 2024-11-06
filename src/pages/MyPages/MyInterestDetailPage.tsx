@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import subjectData from '../../assets/data/subject.json';
 import { Interest } from '../../types';
 
 const PageWrapper = styled.div`
@@ -31,6 +32,20 @@ const PageType = styled.h2`
 
   @media (max-width: 480px) {
     font-size: 20px;
+  }
+`;
+
+const SubjectInfo = styled.p`
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 5px;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
   }
 `;
 
@@ -166,6 +181,7 @@ const MyInterestDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [interest, setInterest] = useState<Interest | null>(null);
   const [insight, setInsight] = useState('');
+  const [subjectInfo, setSubjectInfo] = useState({ area: '', detail: '' });
 
   useEffect(() => {
     const fetchInterest = async () => {
@@ -182,21 +198,25 @@ const MyInterestDetailPage: React.FC = () => {
         if (response.ok) {
           const data = await response.json();
           setInterest(data.data);
-          setInsight(data.data.contents || "");
+          setInsight(data.data.contents || '');
+
+          const subject = subjectData.find((subject) =>
+            subject.details.some((detail) => detail.id === data.data.subjectId)
+          );
+          if (subject) {
+            const detail = subject.details.find((d) => d.id === data.data.subjectId);
+            setSubjectInfo({ area: subject.area, detail: detail?.detail || '' });
+          }
         } else {
-          console.error("Failed to fetch interest details.");
+          console.error("관심사 정보를 불러오는 데 실패했습니다.");
         }
       } catch (error) {
-        console.error("Error fetching interest:", error);
+        console.error("API 호출 중 오류 발생:", error);
       }
     };
 
     fetchInterest();
   }, [id]);
-
-  if (!interest) {
-    return <div>Loading...</div>;
-  }
 
   const handleSave = async () => {
     try {
@@ -208,8 +228,8 @@ const MyInterestDetailPage: React.FC = () => {
           Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
-          subjectId: interest.subjectId,
-          title: interest.title,
+          subjectId: interest?.subjectId,
+          title: interest?.title,
           contents: insight,
         }),
       });
@@ -221,13 +241,18 @@ const MyInterestDetailPage: React.FC = () => {
       }
     } catch (error) {
       toast.error("API 호출 중 오류가 발생했습니다.");
-      console.error("Error saving interest:", error);
+      console.error("API 호출 중 오류 발생:", error);
     }
   };
+
+  if (!interest) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <PageWrapper>
       <PageType>관심사</PageType>
+      <SubjectInfo>{subjectInfo.area} - {subjectInfo.detail}</SubjectInfo>
       <Divider />
       <Title>{interest.title}</Title>
       <TagContainer>
