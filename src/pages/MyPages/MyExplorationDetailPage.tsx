@@ -197,6 +197,7 @@ const MyExplorationDetailPage: React.FC = () => {
         if (response.ok) {
           const data = await response.json();
           setExploration(data.data);
+          setInsight(data.data.insight || "");
 
           const subject = subjectData.find((subject) =>
             subject.details.some((detail) => detail.id === data.data.subjectId)
@@ -206,10 +207,10 @@ const MyExplorationDetailPage: React.FC = () => {
             setSubjectInfo({ area: subject.area, detail: detail?.detail || "" });
           }
         } else {
-          console.error("Failed to fetch exploration details.");
+          console.error("탐구 정보를 불러오는 데 실패했습니다.");
         }
       } catch (error) {
-        console.error("Error fetching exploration:", error);
+        console.error("API 호출 중 오류 발생:", error);
       }
     };
 
@@ -243,6 +244,7 @@ const MyExplorationDetailPage: React.FC = () => {
           Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
+          subjectId: exploration.subjectId,
           title: exploration.title,
           state: exploration.state,
           motive: exploration.motive,
@@ -254,12 +256,12 @@ const MyExplorationDetailPage: React.FC = () => {
       });
 
       if (response.ok) {
-        console.log("Insight saved successfully.");
+        console.log("성공적으로 인사이트를 저장했습니다.");
       } else {
-        console.error("Failed to save insight.");
+        console.error("인사이트 저장에 실패했습니다.");
       }
     } catch (error) {
-      console.error("Error saving insight:", error);
+      console.error("API 호출 중 오류 발생:", error);
     }
   };
 
