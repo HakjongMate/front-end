@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const ItemWrapper = styled.div`
   display: flex;
@@ -134,6 +135,7 @@ interface PurchaseItemProps {
 
 const PurchaseItem: React.FC<PurchaseItemProps> = ({ item }) => {
   const { service, pass, purchaseDate, status } = item;
+  const navigate = useNavigate();
 
   const displayDate = purchaseDate
     ? new Date(purchaseDate).toLocaleDateString('ko-KR', {
@@ -150,11 +152,23 @@ const PurchaseItem: React.FC<PurchaseItemProps> = ({ item }) => {
     WAITING: "전송 대기 중",
   };
 
+  const handleDetailClick = () => {
+    if (service?.title === "AI 주제 추천 서비스") {
+      navigate("/service/ai/detail");
+    } else if (service?.title === "한 권으로 끝내는 학종 가이드북") {
+      navigate("/service/book/detail");
+    } else if (service?.title === "학종메이트 생활기록부 분석 서비스") {
+      navigate("/service/analyze/detail");
+    } else {
+      navigate("/service/book");
+    }
+  };
+
   const renderActionButton = () => {
     if (service) {
-      return <ActionButton>상세 내용 보기</ActionButton>;
+      return <ActionButton onClick={handleDetailClick}>상세 내용 보기</ActionButton>;
     } else if (pass) {
-      return <ActionButton>패스 보기</ActionButton>;
+      return <ActionButton onClick={() => navigate("/service/book")}>패스 보기</ActionButton>;
     }
     return null;
   };
