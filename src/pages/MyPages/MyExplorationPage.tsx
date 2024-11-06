@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { UserProfile, Exploration, Interest } from '../../types';
+import { UserProfile, Archiving } from '../../types';
 import ExplorationCard from '../../components/common/ExplorationCard';
 import InterestCard from '../../components/common/InterestCard';
-import exploresData from '../../assets/data/explores.json';
-import interestsData from '../../assets/data/interest.json';
 
 const PageWrapper = styled.div`
   background-color: #f5f5f5;
@@ -64,7 +62,7 @@ const HeaderSubtitle = styled.p`
 const ContentSection = styled.div`
   max-width: 1080px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 40px 20px 100px;
 
   @media (max-width: 768px) {
     padding: 30px 15px;
@@ -164,8 +162,7 @@ const EmptyStateText = styled.p`
 const MyExplorationPage: React.FC = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [activeTab, setActiveTab] = useState<'전체' | '관심사' | 'AI 탐구' | '탐구'>('전체');
-  const [explorations, setExplorations] = useState<Exploration[]>([]);
-  const [interests, setInterests] = useState<Interest[]>([]);
+  const [archivingData, setArchivingData] = useState<Archiving[]>([]);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -175,43 +172,79 @@ const MyExplorationPage: React.FC = () => {
     }
   }, []);
 
+  // 백엔드에서 아카이빙 데이터를 가져오는 함수
+  const fetchArchivingData = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/archiving/all`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setArchivingData(data.data);
+      } else {
+        console.error('데이터를 가져오는 데 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('API 호출 중 오류 발생:', error);
+    }
+  };
+
   useEffect(() => {
-    if (userProfile) {
-      const filteredExplorations = exploresData
-        .filter((explore) => explore.userId === userProfile.id)
-        .map((explore) => ({
-          ...explore,
-          state: explore.state as 'IN_PROGRESS' | 'NOT_STARTED' | 'COMPLETED',
-        }));
-      setExplorations(filteredExplorations);
+    fetchArchivingData();
+  }, []);
 
-      const filteredInterests = interestsData.filter((interest) => interest.userId === userProfile.id);
-      setInterests(filteredInterests);
-    }
-  }, [userProfile]);
-
+  // 각 탭에 따라 필터링된 아이템을 반환하는 함수
   const filteredItems = () => {
-    let items: (Exploration | Interest)[] = [];
-    switch (activeTab) {
-      case '관심사':
-        items = interests;
-        break;
-      case 'AI 탐구':
-        items = explorations.filter((explore) => explore.ai);
-        break;
-      case '탐구':
-        items = explorations.filter((explore) => explore);
-        break;
-      default:
-        items = [...interests, ...explorations];
-    }
-    return items.map((item) =>
-      'state' in item ? (
-        <ExplorationCard key={`explore-${item.id}`} {...item} />
-      ) : (
-        <InterestCard key={`interest-${item.id}`} {...item} />
-      )
-    );
+    return archivingData
+      .filter((item) => {
+        switch (activeTab) {
+          case '관심사':
+            return item.type === 'interest';
+          case 'AI 탐구':
+            return item.type === 'explore' && item.ai;
+          case '탐구':
+            return item.type === 'explore';
+          default:
+            return true;
+        }
+      })
+      .map((item) => {
+        if (item.type === 'explore') {
+          return (
+            <ExplorationCard
+              key={item.id}
+              id={item.id}
+              userId={userProfile?.id || ''}
+              subjectId={item.subjectId}
+              title={item.title}
+              state={item.state}
+              motive=""
+              contents={item.contents}
+              result=""
+              actions=""
+              ai={item.ai}
+              createDate={item.createDate}
+            />
+          );
+        } else {
+          return (
+            <InterestCard
+              key={item.id}
+              id={item.id}
+              userId={userProfile?.id || ''}
+              subjectId={item.subjectId}
+              title={item.title}
+              contents={item.contents}
+              createDate={item.createDate}
+            />
+          );
+        }
+      });
   };
 
   const renderContent = () => {
@@ -230,14 +263,9 @@ const MyExplorationPage: React.FC = () => {
       <HeaderSection>
         <HeaderTitle>탐구 및 관심사의 추가는 {'\n'} 앱을 통해 가능합니다.</HeaderTitle>
         <HeaderSubtitle>
-          아래 QR코드를 통해 앱을 설치하시면
+          아래 QR코드를 통해 앱을 설치하시면 학생부 종합 전형 준비를 위한 {'\n'} 다양한 기능을 이용하실 수 있습니다.
         </HeaderSubtitle>
-        <HeaderSubtitle>
-          학생부 종합 전형 준비를 위한 {'\n'} 다양한 기능을 이용하실 수 있습니다.
-        </HeaderSubtitle>
-        <HeaderSubtitle>
-          현재 본 서비스는 준비중입니다.
-        </HeaderSubtitle>
+        <HeaderSubtitle>현재 본 서비스는 준비중입니다.</HeaderSubtitle>
       </HeaderSection>
 
       <ContentSection>
