@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import InterestsData from '../../assets/data/interest.json';
+import toast from 'react-hot-toast';
 import { Interest } from '../../types';
 
 const PageWrapper = styled.div`
@@ -168,18 +168,61 @@ const MyInterestDetailPage: React.FC = () => {
   const [insight, setInsight] = useState('');
 
   useEffect(() => {
-    const foundInterest = InterestsData.find((int) => int.id === id);
-    if (foundInterest) {
-      setInterest(foundInterest as Interest);
-    }
+    const fetchInterest = async () => {
+      try {
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/interest/${id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setInterest(data.data);
+          setInsight(data.data.contents || "");
+        } else {
+          console.error("Failed to fetch interest details.");
+        }
+      } catch (error) {
+        console.error("Error fetching interest:", error);
+      }
+    };
+
+    fetchInterest();
   }, [id]);
 
   if (!interest) {
     return <div>Loading...</div>;
   }
 
-  const handleSave = () => {
-    console.log('Saving insight:', insight);
+  const handleSave = async () => {
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/interest/${id}/update`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          subjectId: interest.subjectId,
+          title: interest.title,
+          contents: insight,
+        }),
+      });
+
+      if (response.ok) {
+        toast.success("관심사 정보가 성공적으로 저장되었습니다!");
+      } else {
+        toast.error("관심사 정보 저장에 실패했습니다. 다시 시도해주세요.");
+      }
+    } catch (error) {
+      toast.error("API 호출 중 오류가 발생했습니다.");
+      console.error("Error saving interest:", error);
+    }
   };
 
   return (
