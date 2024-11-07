@@ -3,9 +3,7 @@ import styled from 'styled-components';
 import ExplorationCard from '../../components/common/ExplorationCard';
 import InterestCard from '../../components/common/InterestCard';
 import InterAddCard from '../../components/common/InterAddCard';
-import exploresData from '../../assets/data/explores.json';
-import interestsData from '../../assets/data/interest.json';
-import { UserProfile, Exploration, Interest } from '../../types';
+import { UserProfile, Archiving } from '../../types';
 import { useNavigate } from 'react-router-dom';
 import StepIndicator from '../../components/ai/StepIndicator';
 import ButtonContainer from '../../components/ai/ButtonContainer';
@@ -41,7 +39,6 @@ const Title = styled.h1`
     margin-bottom: 10px;
     line-height: 1.5;
     white-space: pre-wrap;
-    line-height: 1.5;
   }
 `;
 
@@ -60,7 +57,6 @@ const Subtitle = styled.h2`
     font-size: 14px;
     line-height: 1.4;
     white-space: pre-wrap;
-    line-height: 1.5;
   }
 `;
 
@@ -110,8 +106,7 @@ const CardsGrid = styled.div`
 
 const AIExplorationPage: React.FC = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [explorations, setExplorations] = useState<Exploration[]>([]);
-  const [interests, setInterests] = useState<Interest[]>([]);
+  const [archivingData, setArchivingData] = useState<Archiving[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -124,22 +119,32 @@ const AIExplorationPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // userProfile이 설정된 경우 탐구 및 관심사 데이터를 필터링
+    // 백엔드에서 탐구 및 관심사 데이터를 가져오는 함수
+    const fetchArchivingData = async () => {
+      try {
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/archiving/all`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setArchivingData(data.data); // 백엔드에서 받아온 데이터를 archivingData에 저장
+        } else {
+          console.error('데이터를 가져오는 데 실패했습니다.');
+        }
+      } catch (error) {
+        console.error('API 호출 중 오류 발생:', error);
+      }
+    };
+
+    // 사용자 정보가 있을 때 데이터 가져오기
     if (userProfile) {
-      const userId = userProfile.id;
-
-      // 탐구 데이터 필터링
-      const filteredExplorations = exploresData
-        .filter((explore) => explore.userId === userId)
-        .map((explore) => ({
-          ...explore,
-          state: explore.state as 'IN_PROGRESS' | 'NOT_STARTED' | 'COMPLETED',
-        }));
-      setExplorations(filteredExplorations);
-
-      // 관심사 데이터 필터링
-      const filteredInterests = interestsData.filter((interest) => interest.userId === userId);
-      setInterests(filteredInterests);
+      fetchArchivingData();
     }
   }, [userProfile]);
 
@@ -152,19 +157,40 @@ const AIExplorationPage: React.FC = () => {
   };
 
   const renderCards = () => {
-    const cards = [];
-
-    // 탐구 카드 추가
-    explorations.forEach((explore) => {
-      cards.push(<ExplorationCard key={explore.id} {...explore} />);
+    const cards = archivingData.map((item) => {
+      if (item.type === 'explore') {
+        return (
+          <ExplorationCard
+            key={item.id}
+            id={item.id}
+            userId={userProfile?.id || ''}
+            subjectId={item.subjectId}
+            title={item.title}
+            state={item.state}
+            motive=""
+            contents={item.contents}
+            result=""
+            actions=""
+            ai={item.ai}
+            createDate={item.createDate}
+          />
+        );
+      } else {
+        return (
+          <InterestCard
+            key={item.id}
+            id={item.id}
+            userId={userProfile?.id || ''}
+            subjectId={item.subjectId}
+            title={item.title}
+            contents={item.contents}
+            createDate={item.createDate}
+          />
+        );
+      }
     });
 
-    // 관심사 카드 추가
-    interests.forEach((interest) => {
-      cards.push(<InterestCard key={interest.id} {...interest} />);
-    });
-
-    // 데이터가 없는 경우에만 InterAddCard 추가 (최대 2개까지)
+    // 데이터가 없는 경우 InterAddCard 추가 (최대 2개까지)
     if (cards.length === 0) {
       cards.push(<InterAddCard key="add-1" />);
       cards.push(<InterAddCard key="add-2" />);
