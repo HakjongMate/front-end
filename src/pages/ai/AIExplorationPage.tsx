@@ -115,12 +115,16 @@ const AIExplorationPage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // 로컬 스토리지에서 사용자 정보를 가져와 설정
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
       setUserProfile(parsedUser);
     }
+  }, []);
 
+  useEffect(() => {
+    // userProfile이 설정된 경우 탐구 및 관심사 데이터를 필터링
     if (userProfile) {
       const userId = userProfile.id;
 
