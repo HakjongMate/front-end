@@ -147,9 +147,18 @@ const AIExplorationPage: React.FC = () => {
   }, [userProfile]);
 
   const handleSelect = (id: string) => {
-    setSelectedIds((prevSelected) => 
-      prevSelected.includes(id) ? prevSelected.filter((selectedId) => selectedId !== id) : [...prevSelected, id]
-    );
+    if (selectedIds.includes(id)) {
+      // 이미 선택된 항목인 경우 선택 해제
+      setSelectedIds((prevSelected) => prevSelected.filter((selectedId) => selectedId !== id));
+    } else {
+      if (selectedIds.length >= 2) {
+        // 최대 2개 선택 제한 안내
+        alert('최대 2개만 선택할 수 있습니다.');
+      } else {
+        // 선택 항목 추가
+        setSelectedIds((prevSelected) => [...prevSelected, id]);
+      }
+    }
   };
 
   const handleNext = () => {
@@ -162,7 +171,7 @@ const AIExplorationPage: React.FC = () => {
 
   const renderCards = () => {
     const cards = archivingData.map((item) => {
-      const isSelected = selectedIds.includes(item.uniqueId); // uniqueId로 선택 상태 확인
+      const isSelected = selectedIds.includes(item.uniqueId);
 
       if (item.type === 'explore') {
         return (
