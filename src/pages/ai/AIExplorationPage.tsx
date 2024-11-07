@@ -148,7 +148,7 @@ const AIExplorationPage: React.FC = () => {
 
   const handleSelect = (id: string) => {
     setSelectedIds((prevSelected) => 
-      prevSelected.includes(id) ? prevSelected.filter((itemId) => itemId !== id) : [...prevSelected, id]
+      prevSelected.includes(id) ? prevSelected.filter((selectedId) => selectedId !== id) : [...prevSelected, id]
     );
   };
 
@@ -162,29 +162,31 @@ const AIExplorationPage: React.FC = () => {
 
   const renderCards = () => {
     const cards = archivingData.map((item) => {
+      const isSelected = selectedIds.includes(item.uniqueId); // uniqueId로 선택 상태 확인
+
       if (item.type === 'explore') {
         return (
           <ExplorationSelectCard
-            key={item.id}
-            id={item.id}
+            key={item.uniqueId}
+            id={item.uniqueId}
             title={item.title}
             contents={item.contents}
             state={item.state}
             ai={item.ai}
-            selected={selectedIds.includes(item.id)}
-            onSelect={() => handleSelect(item.id)}
+            selected={isSelected}
+            onSelect={() => handleSelect(item.uniqueId)}
           />
         );
       } else {
         return (
           <InterestSelectCard
-            key={item.id}
-            id={item.id}
+            key={item.uniqueId}
+            id={item.uniqueId}
             title={item.title}
             contents={item.contents}
             createDate={item.createDate}
-            selected={selectedIds.includes(item.id)}
-            onSelect={() => handleSelect(item.id)}
+            selected={isSelected}
+            onSelect={() => handleSelect(item.uniqueId)}
           />
         );
       }
