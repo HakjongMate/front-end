@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import ExplorationCard from '../../components/common/ExplorationCard';
-import InterestCard from '../../components/common/InterestCard';
+import ExplorationSelectCard from '../../components/common/ExplorationSelectCard';
+import InterestSelectCard from '../../components/common/InterestSelectCard';
 import InterAddCard from '../../components/common/InterAddCard';
-import exploresData from '../../assets/data/explores.json';
-import interestsData from '../../assets/data/interest.json';
-import { UserProfile, Exploration, Interest } from '../../types';
+import { UserProfile, Archiving } from '../../types';
 import { useNavigate } from 'react-router-dom';
 import StepIndicator from '../../components/ai/StepIndicator';
 import ButtonContainer from '../../components/ai/ButtonContainer';
@@ -41,7 +39,6 @@ const Title = styled.h1`
     margin-bottom: 10px;
     line-height: 1.5;
     white-space: pre-wrap;
-    line-height: 1.5;
   }
 `;
 
@@ -60,7 +57,6 @@ const Subtitle = styled.h2`
     font-size: 14px;
     line-height: 1.4;
     white-space: pre-wrap;
-    line-height: 1.5;
   }
 `;
 
@@ -94,7 +90,7 @@ const CardsGrid = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   margin-bottom: 50px;
-  
+
   @media (max-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
@@ -110,8 +106,8 @@ const CardsGrid = styled.div`
 
 const AIExplorationPage: React.FC = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [explorations, setExplorations] = useState<Exploration[]>([]);
-  const [interests, setInterests] = useState<Interest[]>([]);
+  const [archivingData, setArchivingData] = useState<Archiving[]>([]);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -120,24 +116,50 @@ const AIExplorationPage: React.FC = () => {
       const parsedUser = JSON.parse(storedUser);
       setUserProfile(parsedUser);
     }
+  }, []);
+
+  useEffect(() => {
+    const fetchArchivingData = async () => {
+      try {
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/archiving/all`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setArchivingData(data.data);
+        } else {
+          console.error('데이터를 가져오는 데 실패했습니다.');
+        }
+      } catch (error) {
+        console.error('API 호출 중 오류 발생:', error);
+      }
+    };
 
     if (userProfile) {
-      const userId = userProfile.id;
-
-      // 탐구 데이터 필터링
-      const filteredExplorations = exploresData
-        .filter((explore) => explore.userId === userId)
-        .map((explore) => ({
-          ...explore,
-          state: explore.state as 'IN_PROGRESS' | 'NOT_STARTED' | 'COMPLETED',
-        }));
-      setExplorations(filteredExplorations);
-
-      // 관심사 데이터 필터링
-      const filteredInterests = interestsData.filter((interest) => interest.userId === userId);
-      setInterests(filteredInterests);
+      fetchArchivingData();
     }
   }, [userProfile]);
+
+  const handleSelect = (id: string) => {
+    if (selectedIds.includes(id)) {
+      // 이미 선택된 항목인 경우 선택 해제
+      setSelectedIds((prevSelected) => prevSelected.filter((selectedId) => selectedId !== id));
+    } else {
+      if (selectedIds.length >= 2) {
+        // 최대 2개 선택 제한 안내
+        alert('최대 2개만 선택할 수 있습니다.');
+      } else {
+        // 선택 항목 추가
+        setSelectedIds((prevSelected) => [...prevSelected, id]);
+      }
+    }
+  };
 
   const handleNext = () => {
     navigate('/ai/pass');
@@ -148,19 +170,37 @@ const AIExplorationPage: React.FC = () => {
   };
 
   const renderCards = () => {
-    const cards = [];
+    const cards = archivingData.map((item) => {
+      const isSelected = selectedIds.includes(item.uniqueId);
 
-    // 탐구 카드 추가
-    explorations.forEach((explore) => {
-      cards.push(<ExplorationCard key={explore.id} {...explore} />);
+      if (item.type === 'explore') {
+        return (
+          <ExplorationSelectCard
+            key={item.uniqueId}
+            id={item.uniqueId}
+            title={item.title}
+            contents={item.contents}
+            state={item.state}
+            ai={item.ai}
+            selected={isSelected}
+            onSelect={() => handleSelect(item.uniqueId)}
+          />
+        );
+      } else {
+        return (
+          <InterestSelectCard
+            key={item.uniqueId}
+            id={item.uniqueId}
+            title={item.title}
+            contents={item.contents}
+            createDate={item.createDate}
+            selected={isSelected}
+            onSelect={() => handleSelect(item.uniqueId)}
+          />
+        );
+      }
     });
 
-    // 관심사 카드 추가
-    interests.forEach((interest) => {
-      cards.push(<InterestCard key={interest.id} {...interest} />);
-    });
-
-    // 데이터가 없는 경우에만 InterAddCard 추가 (최대 2개까지)
     if (cards.length === 0) {
       cards.push(<InterAddCard key="add-1" />);
       cards.push(<InterAddCard key="add-2" />);

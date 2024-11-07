@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import SubjectSelectModal from '../../components/ai/SubjectSelectModal';
+import subjectData from '../../assets/data/subject.json';
 
 const PageWrapper = styled.div`
   max-width: 1080px;
@@ -169,11 +170,46 @@ const ExplorationAddPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ subject, title, description });
 
-    navigate(-1);
+    const accessToken = localStorage.getItem("accessToken");
+
+    // 선택한 과목과 일치하는 subjectId 찾기
+    const selectedSubject = subjectData
+      .flatMap((category) => category.details)
+      .find((sub) => sub.detail === subject);
+    const subjectId = selectedSubject ? selectedSubject.id : null;
+
+    if (!subjectId) {
+      console.error("선택된 과목의 ID를 찾을 수 없습니다.");
+      return;
+    }
+
+    const data = {
+      subjectId,
+      title,
+      contents: description,
+    };
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/interest/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("관심사 생성에 실패했습니다.");
+      }
+
+      navigate(-1);
+    } catch (error) {
+      console.error("에러:", error);
+    }
   };
 
   const openModal = () => setIsModalOpen(true);

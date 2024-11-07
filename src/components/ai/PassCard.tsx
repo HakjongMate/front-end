@@ -100,6 +100,8 @@ const BenefitItem = styled.li`
   margin-bottom: 5px;
   display: flex;
   align-items: center;
+  white-space: pre-wrap;
+  text-align: left;
 
   @media (max-width: 768px) {
     font-size: 13px;
