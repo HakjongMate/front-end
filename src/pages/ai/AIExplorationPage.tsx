@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import ExplorationCard from '../../components/common/ExplorationCard';
-import InterestCard from '../../components/common/InterestCard';
+import ExplorationSelectCard from '../../components/common/ExplorationSelectCard';
+import InterestSelectCard from '../../components/common/InterestSelectCard';
 import InterAddCard from '../../components/common/InterAddCard';
 import { UserProfile, Archiving } from '../../types';
 import { useNavigate } from 'react-router-dom';
@@ -90,7 +90,7 @@ const CardsGrid = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   margin-bottom: 50px;
-  
+
   @media (max-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
@@ -107,10 +107,10 @@ const CardsGrid = styled.div`
 const AIExplorationPage: React.FC = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [archivingData, setArchivingData] = useState<Archiving[]>([]);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 로컬 스토리지에서 사용자 정보를 가져와 설정
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
@@ -119,7 +119,6 @@ const AIExplorationPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // 백엔드에서 탐구 및 관심사 데이터를 가져오는 함수
     const fetchArchivingData = async () => {
       try {
         const accessToken = localStorage.getItem("accessToken");
@@ -133,7 +132,7 @@ const AIExplorationPage: React.FC = () => {
 
         if (response.ok) {
           const data = await response.json();
-          setArchivingData(data.data); // 백엔드에서 받아온 데이터를 archivingData에 저장
+          setArchivingData(data.data);
         } else {
           console.error('데이터를 가져오는 데 실패했습니다.');
         }
@@ -142,11 +141,16 @@ const AIExplorationPage: React.FC = () => {
       }
     };
 
-    // 사용자 정보가 있을 때 데이터 가져오기
     if (userProfile) {
       fetchArchivingData();
     }
   }, [userProfile]);
+
+  const handleSelect = (id: string) => {
+    setSelectedIds((prevSelected) => 
+      prevSelected.includes(id) ? prevSelected.filter((itemId) => itemId !== id) : [...prevSelected, id]
+    );
+  };
 
   const handleNext = () => {
     navigate('/ai/pass');
@@ -160,37 +164,32 @@ const AIExplorationPage: React.FC = () => {
     const cards = archivingData.map((item) => {
       if (item.type === 'explore') {
         return (
-          <ExplorationCard
+          <ExplorationSelectCard
             key={item.id}
             id={item.id}
-            userId={userProfile?.id || ''}
-            subjectId={item.subjectId}
             title={item.title}
-            state={item.state}
-            motive=""
             contents={item.contents}
-            result=""
-            actions=""
+            state={item.state}
             ai={item.ai}
-            createDate={item.createDate}
+            selected={selectedIds.includes(item.id)}
+            onSelect={() => handleSelect(item.id)}
           />
         );
       } else {
         return (
-          <InterestCard
+          <InterestSelectCard
             key={item.id}
             id={item.id}
-            userId={userProfile?.id || ''}
-            subjectId={item.subjectId}
             title={item.title}
             contents={item.contents}
             createDate={item.createDate}
+            selected={selectedIds.includes(item.id)}
+            onSelect={() => handleSelect(item.id)}
           />
         );
       }
     });
 
-    // 데이터가 없는 경우 InterAddCard 추가 (최대 2개까지)
     if (cards.length === 0) {
       cards.push(<InterAddCard key="add-1" />);
       cards.push(<InterAddCard key="add-2" />);
