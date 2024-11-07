@@ -206,8 +206,6 @@ const ExplorationAddPage: React.FC = () => {
         throw new Error("관심사 생성에 실패했습니다.");
       }
 
-      const result = await response.json();
-      console.log("성공:", result);
       navigate(-1);
     } catch (error) {
       console.error("에러:", error);
