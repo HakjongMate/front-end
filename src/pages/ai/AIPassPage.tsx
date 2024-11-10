@@ -29,7 +29,7 @@ const Title = styled.h1`
   font-size: 24px;
   font-weight: bold;
   margin-top: 40px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   text-align: center;
 
   @media (max-width: 768px) {
@@ -38,6 +38,32 @@ const Title = styled.h1`
 
   @media (max-width: 480px) {
     font-size: 20px;
+  }
+`;
+
+const Divider = styled.hr`
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 20px 0;
+`;
+
+const Description = styled.p`
+  font-size: 16px;
+  font-weight: 400;
+  color: #000;
+  text-align: left;
+  margin-bottom: 30px;
+  white-space: pre-wrap;
+  line-height: 1.6;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    margin-bottom: 20px;
+    line-height: 1.5;
   }
 `;
 
@@ -144,6 +170,10 @@ const AIPassPage: React.FC = () => {
     <PageWrapper>
       <StepIndicator currentStep={4} />
       <Title>주제 추천시 사용할 이용권을 선택해주세요</Title>
+      <Divider />
+      <Description>
+        "premium 패스"의 경우 연구실 정보가 있는 "자연, 이공계열"만 구매가 가능합니다.
+      </Description>
       <CardsContainer>
         {passData.map((pass) => (
           <PassCard
