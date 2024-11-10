@@ -155,7 +155,7 @@ const AISubjectPage: React.FC = () => {
   return (
     <PageWrapper>
       <StepIndicator currentStep={1} />
-      <PageTitle>세특 주제이 필요한 과목을 선택해주세요</PageTitle>
+      <PageTitle>AI 맞춤형 세특 주제가 필요한 과목을 선택해주세요</PageTitle>
       <SubjectsTable>
         <thead>
           <tr>
