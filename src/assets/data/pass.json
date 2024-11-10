@@ -6,10 +6,10 @@
     "benefits": [
       "탐구 과목, 희망 학과, 학과 연구실 정보, \n관심사 반영",
       "연구소 정보 연계로 진로 역량 심화",
-      "생활기록부 유기적 연계",
-      "입시 서류 품질 향상"
+      "생활기록부 유기적 연계"
     ],
-    "price": "₩39,900",
+    "price": 50000,
+    "discountRate": 0.2,
     "isBest": true,  
     "icon": "blueIcon"
   },
@@ -22,7 +22,8 @@
       "진로 역량 강화",
       "나의 관심사를 반영한 탐구 주제"
     ],
-    "price": "₩29,900",
+    "price": 40000,
+    "discountRate": 0.2,
     "isBest": false,  
     "icon": "greenIcon"
   },
@@ -35,7 +36,8 @@
       "관심 분야 심층 탐구",
       "목표 학과에 최적화된 탐구 주제 제안"
     ],
-    "price": "₩19,900",
+    "price": 30000,
+    "discountRate": 0.2,
     "isBest": false,  
     "icon": "yellowIcon"
   }
