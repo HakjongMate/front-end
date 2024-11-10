@@ -181,6 +181,8 @@ const AIPassPage: React.FC = () => {
             title={pass.title}
             description={pass.description}
             benefits={pass.benefits}
+            price={pass.price}
+            discountRate={pass.discountRate}
             isBest={pass.isBest}
             isSelected={selectedPass === pass.id}
             iconSrc={getIcon(pass.icon)}
