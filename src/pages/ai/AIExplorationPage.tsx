@@ -72,6 +72,8 @@ const Description = styled.p`
   color: #666;
   text-align: left;
   margin-bottom: 30px;
+  white-space: pre-wrap;
+  line-height: 1.6;
 
   @media (max-width: 768px) {
     font-size: 14px;
@@ -80,7 +82,6 @@ const Description = styled.p`
   @media (max-width: 480px) {
     font-size: 12px;
     margin-bottom: 20px;
-    white-space: pre-wrap;
     line-height: 1.5;
   }
 `;
@@ -217,7 +218,10 @@ const AIExplorationPage: React.FC = () => {
       <Title>주제 생성 시 반영할 관심사와 {'\n'}탐구를 확인해주세요</Title>
       <Subtitle>평소 관심사나 지난 탐구 이력에 맞춰 {'\n'}주제를 추천받을 수 있습니다.</Subtitle>
       <Divider />
-      <Description>더 구체적인 탐구 및 관심사는 앱을 통해 추가하실 수 있습니다.</Description>
+      <Description>
+        * 더 많은 탐구 및 관심사는 "학종메이트" 앱을 통해 추가하실 수 있습니다. {'\n'}
+        * 최대 2개까지 선택 가능하며, 관심사가 없을 경우 선택하지 않으셔도 됩니다.
+      </Description>
 
       <CardsGrid>
         {renderCards()}
