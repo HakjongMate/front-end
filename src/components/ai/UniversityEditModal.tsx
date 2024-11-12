@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Search } from "lucide-react";
 import departmentData from "../../assets/data/department.json";
+import { filterKoreanItems } from "../../utils/koreanSearch";
 
 interface UniversityEditModalProps {
   modalVisible: boolean;
@@ -283,15 +284,16 @@ const UniversityEditModal: React.FC<UniversityEditModalProps> = ({
     setModalVisible(false);
   };
 
-  const filteredUniversities = universities.filter(uni =>
-    uni.name.toLowerCase().includes(universitySearch.toLowerCase())
+  // filterKoreanItems 유틸리티를 사용하여 검색
+  const filteredUniversities = filterKoreanItems(
+    universities,
+    universitySearch,
+    'name'
   );
 
   const currentUniversity = universities.find((uni) => uni.name === universityName);
   const majorOptions = currentUniversity?.majors || [];
-  const filteredMajors = majorOptions.filter(major =>
-    major.toLowerCase().includes(majorSearch.toLowerCase())
-  );
+  const filteredMajors = filterKoreanItems(majorOptions, majorSearch);
 
   return modalVisible ? (
     <ModalOverlay>
@@ -310,7 +312,7 @@ const UniversityEditModal: React.FC<UniversityEditModalProps> = ({
                   setUniversitySearch(e.target.value);
                   setShowUniversityDropdown(true);
                 }}
-                placeholder="대학교를 검색하세요"
+                placeholder="대학교를 검색하세요 (초성 검색 가능)"
                 onFocus={() => setShowUniversityDropdown(true)}
               />
               <DropdownList show={showUniversityDropdown}>
@@ -344,7 +346,7 @@ const UniversityEditModal: React.FC<UniversityEditModalProps> = ({
                   setMajorSearch(e.target.value);
                   setShowMajorDropdown(true);
                 }}
-                placeholder="학과를 검색하세요"
+                placeholder="학과를 검색하세요 (초성 검색 가능)"
                 onFocus={() => setShowMajorDropdown(true)}
                 disabled={!universityName}
               />
