@@ -135,7 +135,8 @@ const AIPassPage: React.FC = () => {
         const descriptionArray = [
           `${selectedSubject || "선택된 과목 없음"}`,
           `${dream || "선택된 꿈 없음"}`,
-          `${targetUniversities.map((uni) => uni.name && uni.major ? `${uni.name} - ${uni.major}` : "").filter(Boolean).join(", ") || "선택된 대학 없음"}`,
+          `${targetUniversities.map((uni) => uni.name && uni.major ? 
+            `${uni.name} - ${uni.major}` : "").filter(Boolean).join(", ") || "선택된 대학 없음"}`,
         ];
 
         // 선택한 서비스와 함께 purchase 페이지로 이동
@@ -149,7 +150,7 @@ const AIPassPage: React.FC = () => {
 
         // 3번 스탠다드 패스 선택은 바로 결제로 이동
         if (selectedPass === 3) {
-        navigate("/purchase", { state: { selectedCartItems } });
+          navigate("/purchase", { state: { selectedCartItems } });
         } else {
           navigate("/ai/exploration");
         }
