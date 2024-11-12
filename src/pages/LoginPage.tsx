@@ -211,6 +211,7 @@ const LoginPage: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({
           username: formData.username,
           password: formData.password,
@@ -234,6 +235,7 @@ const LoginPage: React.FC = () => {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${accessToken}`,
             },
+            credentials: 'include',
           });
   
           if (profileResponse.ok) {

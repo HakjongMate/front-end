@@ -98,6 +98,7 @@ const MyPurchaseSection: React.FC = () => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${accessToken}`,
           },
+          credentials: 'include',
         });
 
         const result = await response.json();
