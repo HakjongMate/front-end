@@ -110,13 +110,13 @@ const AIPassPage: React.FC = () => {
     setDream(storedUser.dream || "");
   }, []);
 
-  // 서비스 ID가 3인 서비스의 정보를 가져오고, 선택한 패스 정보 조회
+  // 패스 정보와 연결된 서비스 정보 조회
   const getServiceWithPass = (passId: number) => {
     const service = serviceData.find((service) => service.id === 3);
     if (!service) return null;
 
     const selectedPassInfo = service.passes.find((pass) => pass.id === passId);
-    return selectedPassInfo ? { ...service, selectedPass: selectedPassInfo } : null;
+    return selectedPassInfo ? { service, selectedPass: selectedPassInfo } : null;
   };
 
   const handleNext = () => {
@@ -127,20 +127,23 @@ const AIPassPage: React.FC = () => {
         const descriptionArray = [
           `${selectedSubject || "선택된 과목 없음"}`,
           `${dream || "선택된 꿈 없음"}`,
-          `${targetUniversities.map((uni) => uni.name && uni.major ? 
-            `${uni.name} - ${uni.major}` : "").filter(Boolean).join(", ") || "선택된 대학 없음"}`,
+          `${targetUniversities
+            .map((uni) => (uni.name && uni.major ? `${uni.name} - ${uni.major}` : ""))
+            .filter(Boolean)
+            .join(", ") || "선택된 대학 없음"}`,
         ];
 
-        // 선택한 서비스와 함께 purchase 페이지로 이동
+        // 서비스 정보와 선택된 패스 정보를 포함한 CartItem 생성
         const selectedCartItems = [
           {
-            id: selectedService.id,
-            service: selectedService,
+            id: selectedService.service.id,
+            service: selectedService.service,
+            pass: selectedService.selectedPass,
             description: descriptionArray,
           },
         ];
 
-        // 3번 스탠다드 패스 선택은 바로 결제로 이동
+        // 스탠다드 패스는 결제 페이지로 바로 이동
         if (selectedPass === 3) {
           navigate("/purchase", { state: { selectedCartItems } });
         } else {

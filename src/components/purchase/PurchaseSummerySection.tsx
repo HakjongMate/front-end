@@ -108,6 +108,7 @@ const PurchaseSummarySection: React.FC<PurchaseSummarySectionProps> = ({ pointUs
   const { selectedSubject, setSelectedSubject, dream, setDream, targetUniversities, setTargetUniversities } =
     useContext(AIContext);
 
+  // 장바구니에서 선택된 항목을 받아옴
   const { selectedCartItems }: { selectedCartItems: CartItem[] } =
     location.state || { selectedCartItems: [] };
 
@@ -121,10 +122,13 @@ const PurchaseSummarySection: React.FC<PurchaseSummarySectionProps> = ({ pointUs
       let priceSum = 0;
       let discountSum = 0;
   
+      // 각 항목의 금액과 할인율을 계산하여 합산
       selectedCartItems.forEach((item) => {
-        const price = item.service.price;
-        const discount = item.service.discount;
-        const discountedPrice = Math.round(price * (1 - discount));
+        const { price, discountRate } = item.pass
+          ? { price: item.pass.price, discountRate: item.pass.discountRate }
+          : { price: item.service.price, discountRate: item.service.discount };
+          
+        const discountedPrice = Math.round(price * (1 - discountRate));
   
         priceSum += price;
         discountSum += price - discountedPrice;
@@ -170,6 +174,7 @@ const PurchaseSummarySection: React.FC<PurchaseSummarySectionProps> = ({ pointUs
     }
   };
 
+  // 선택된 상품이 없을 경우 메시지 표시
   if (selectedCartItems.length === 0) {
     return <p>선택된 상품이 없습니다.</p>;
   }

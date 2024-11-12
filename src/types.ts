@@ -71,5 +71,6 @@ export interface Service {
 export interface CartItem {
   id: number;
   service: Service;
+  pass?: Pass; 
   description?: string[];
 }
