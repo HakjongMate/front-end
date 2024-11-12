@@ -146,7 +146,7 @@
   },
   {
     "id": 30,
-    "name": "한양대학교 에리카",
+    "name": "한양대학교 ERICA",
     "icon": "/icons/university/hanyang.jpg"
   },
   {
@@ -223,5 +223,75 @@
     "id": 45,
     "name": "서울여자대학교",
     "icon": "/icons/university/swuk.jpg"
+  },
+  {
+      "id": 46,
+      "name": "경상국립대학교",
+      "icon": "/icons/university/gsnu.svg"
+  },
+  {
+      "id": 47,
+      "name": "강원대학교",
+      "icon": "/icons/university/kwu.png"
+  },
+  {
+      "id": 48,
+      "name": "제주대학교",
+      "icon": "/icons/university/jeju.svg"
+  },
+  {
+      "id": 49,
+      "name": "서경대학교",
+      "icon": "/icons/university/suky.png"
+  },
+  {
+      "id": 50,
+      "name": "GIST",
+      "icon": "/icons/university/gist.png"
+  },
+  {
+      "id": 51,
+      "name": "한성대학교",
+      "icon": "/icons/university/hansung.png"
+  },
+  {
+      "id": 52,
+      "name": "POSTECH",
+      "icon": "/icons/university/postech.jpeg"
+  },
+  {
+      "id": 53,
+      "name": "충북대학교",
+      "icon": "/icons/university/chungbuk.png"
+  },
+  {
+      "id": 54,
+      "name": "UNIST",
+      "icon": "/icons/university/unist.jpg"
+  },
+  {
+      "id": 55,
+      "name": "DGIST",
+      "icon": "/icons/university/dgist.png"
+  },
+  {
+      "id": 56,
+      "name": "KENTECH",
+      "icon": "/icons/university/kentech.png"
+  },
+  {
+      "id": 57,
+      "name": "전북대학교",
+      "icon": "/icons/university/jeonbuk.jpg"
+  },
+  {
+      "id": 58,
+      "name": "KAIST",
+      "icon": "/icons/university/kaist.png"
+  },
+  {
+      "id": 59,
+      "name": "삼육대학교",
+      "icon": "/icons/university/sahmyook.png"
   }
 ]
