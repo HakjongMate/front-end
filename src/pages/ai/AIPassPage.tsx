@@ -100,8 +100,8 @@ const getIcon = (iconName: string) => {
 
 const AIPassPage: React.FC = () => {
   const navigate = useNavigate();
-  const { selectedSubject, targetUniversities, isNaturalSciences } = useContext(AIContext);
-  const [selectedPass, setSelectedPass] = useState<number | null>(null);
+  const { selectedSubject, targetUniversities, isNaturalSciences, setSelectedPass } = useContext(AIContext);
+  const [selectedPassLocal, setSelectedPassLocal] = useState<number | null>(null);
   const [dream, setDream] = useState<string>("");
 
   // LocalStorage에서 dream 값을 가져옴
@@ -120,10 +120,9 @@ const AIPassPage: React.FC = () => {
   };
 
   const handleNext = () => {
-    if (selectedPass !== null) {
-      const selectedService = getServiceWithPass(selectedPass);
+    if (selectedPassLocal !== null) {
+      const selectedService = getServiceWithPass(selectedPassLocal);
       if (selectedService) {
-        // 선택된 과목, 꿈, 대학 리스트를 description 배열로 생성
         const descriptionArray = [
           `${selectedSubject || "선택된 과목 없음"}`,
           `${dream || "선택된 꿈 없음"}`,
@@ -133,7 +132,9 @@ const AIPassPage: React.FC = () => {
             .join(", ") || "선택된 대학 없음"}`,
         ];
 
-        // 서비스 정보와 선택된 패스 정보를 포함한 CartItem 생성
+        // 선택된 패스 정보를 context에 저장
+        setSelectedPass(selectedPassLocal);
+
         const selectedCartItems = [
           {
             id: selectedService.service.id,
@@ -144,7 +145,7 @@ const AIPassPage: React.FC = () => {
         ];
 
         // 스탠다드 패스는 결제 페이지로 바로 이동
-        if (selectedPass === 3) {
+        if (selectedPassLocal === 3) {
           navigate("/purchase", { state: { selectedCartItems } });
         } else {
           navigate("/ai/exploration");
@@ -179,13 +180,13 @@ const AIPassPage: React.FC = () => {
             price={pass.price}
             discountRate={pass.discountRate}
             isBest={pass.isBest}
-            isSelected={selectedPass === pass.id}
+            isSelected={selectedPassLocal === pass.id}
             iconSrc={getIcon(pass.icon)}
             onClick={() => {
               if (pass.id === 1 && !isNaturalSciences) {
                 alert("Premium 패스는 자연과학 계열 학과에서만 선택 가능합니다.");
               } else {
-                setSelectedPass(pass.id);
+                setSelectedPassLocal(pass.id);
               }
             }}
             disabled={pass.id === 1 && !isNaturalSciences}
