@@ -205,6 +205,7 @@ const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
           },
+          credentials: 'include',
           body: JSON.stringify(profile),
         });
   

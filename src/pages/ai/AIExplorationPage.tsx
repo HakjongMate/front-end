@@ -132,6 +132,7 @@ const AIExplorationPage: React.FC = () => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${accessToken}`,
           },
+          credentials: 'include',
         });
 
         if (response.ok) {

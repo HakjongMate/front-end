@@ -189,6 +189,7 @@ const RegisterPage: React.FC = () => {
           headers: {
             'Content-Type': 'application/json',
           },
+          credentials: 'include',
           body: JSON.stringify(requestData),
         });
 
@@ -236,6 +237,7 @@ const RegisterPage: React.FC = () => {
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/user/check-username?username=${formData.username}`, {
         method: 'GET',
+        credentials: 'include',
       });
       const result = await response.json();
 

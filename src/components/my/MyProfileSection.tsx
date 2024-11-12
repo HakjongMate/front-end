@@ -186,6 +186,7 @@ const MyProfileSection: React.FC = () => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
           },
+          credentials: 'include',
         });
 
         if (response.ok) {
@@ -208,6 +209,7 @@ const MyProfileSection: React.FC = () => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
           },
+          credentials: 'include',
         });
 
         if (response.ok) {
