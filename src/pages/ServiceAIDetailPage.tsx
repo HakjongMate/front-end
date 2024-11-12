@@ -19,8 +19,7 @@ const ServiceAIDetailPage: React.FC = () => {
   // AI 서비스는 세 번째 상품으로 선택
   const product = serviceData[2];
   // 할인된 가격 계산
-  const price = Number(product.price.replace(/,/g, ""));
-  const discountedPrice = (price * (1 - product.discout)).toLocaleString();
+  const discountedPrice = (product.price * (1 - product.discount)).toLocaleString();
 
   const productInfo = {
     ...product,
