@@ -2,19 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 import PurchaseItem from "./PurchaseItem";
-
-interface CartItem {
-  id: number;
-  service: {
-    id: number;
-    title: string;
-    subtitle: string;
-    image: string;
-    price: number;
-    discout: number;
-  };
-  description?: string[];
-}
+import { CartItem } from "../../types";
 
 const SectionWrapper = styled.div`
   border: 1px solid #e0e0e0;
@@ -53,8 +41,7 @@ const SectionTitle = styled.h2`
 
 function PurchaseItemSection() {
   const location = useLocation();
-  const { selectedCartItems }: { selectedCartItems: CartItem[] } =
-    location.state || { selectedCartItems: [] };
+  const { selectedCartItems }: { selectedCartItems: CartItem[] } = location.state || { selectedCartItems: [] };
 
   if (selectedCartItems.length === 0) {
     return <p>선택된 상품이 없습니다.</p>;
@@ -63,7 +50,7 @@ function PurchaseItemSection() {
   return (
     <SectionWrapper>
       <SectionTitle>주문상품 {selectedCartItems.length}개</SectionTitle>
-      {selectedCartItems.map((selectedItem: CartItem) => (
+      {selectedCartItems.map((selectedItem) => (
         <PurchaseItem key={selectedItem.id} item={selectedItem} />
       ))}
     </SectionWrapper>

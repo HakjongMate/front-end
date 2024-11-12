@@ -1,10 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import AIContext from "../../contexts/AIContext";
 import StepIndicator from "../../components/ai/StepIndicator";
 import subjectData from "../../assets/data/subject.json";
 import ButtonContainer from "../../components/ai/ButtonContainer";
+import WarningModal from "../../components/ai/WarningModal";
 
 const PageWrapper = styled.div`
   max-width: 1200px;
@@ -139,6 +140,7 @@ const SubjectButton = styled.button<{ isSelected: boolean }>`
 const AISubjectPage: React.FC = () => {
   const { selectedSubject, setSelectedSubject } = useContext(AIContext);
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(true);
 
   const handleSubjectClick = (subject: string) => {
     setSelectedSubject(subject);
@@ -154,8 +156,12 @@ const AISubjectPage: React.FC = () => {
 
   return (
     <PageWrapper>
+      <WarningModal 
+        isOpen={showModal} 
+        onClose={() => setShowModal(false)}
+      />
       <StepIndicator currentStep={1} />
-      <PageTitle>세특 주제이 필요한 과목을 선택해주세요</PageTitle>
+      <PageTitle>AI 맞춤형 세특 주제가 필요한 과목을 선택해주세요</PageTitle>
       <SubjectsTable>
         <thead>
           <tr>

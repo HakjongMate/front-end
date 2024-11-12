@@ -203,7 +203,7 @@ interface ProductInfoProps {
     id: number;
     title: string;
     subtitle: string;
-    price: string;
+    price: number;
     discountedPrice: string;
     image: string;
     rating: number;

@@ -29,7 +29,7 @@ const Title = styled.h1`
   font-size: 24px;
   font-weight: bold;
   margin-top: 40px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   text-align: center;
 
   @media (max-width: 768px) {
@@ -38,6 +38,32 @@ const Title = styled.h1`
 
   @media (max-width: 480px) {
     font-size: 20px;
+  }
+`;
+
+const Divider = styled.hr`
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 20px 0;
+`;
+
+const Description = styled.p`
+  font-size: 16px;
+  font-weight: 400;
+  color: #000;
+  text-align: left;
+  margin-bottom: 30px;
+  white-space: pre-wrap;
+  line-height: 1.6;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    margin-bottom: 20px;
+    line-height: 1.5;
   }
 `;
 
@@ -74,60 +100,56 @@ const getIcon = (iconName: string) => {
 
 const AIPassPage: React.FC = () => {
   const navigate = useNavigate();
-  const { selectedSubject, targetUniversities } = useContext(AIContext);
-  const [selectedPass, setSelectedPass] = useState<number | null>(null);
+  const { selectedSubject, targetUniversities, isNaturalSciences, setSelectedPass } = useContext(AIContext);
+  const [selectedPassLocal, setSelectedPassLocal] = useState<number | null>(null);
   const [dream, setDream] = useState<string>("");
 
   // LocalStorage에서 dream 값을 가져옴
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
-    setDream(storedUser.dream || ""); // dream 값이 없으면 빈 문자열
+    setDream(storedUser.dream || "");
   }, []);
 
-  // 선택한 패스에 맞는 서비스 ID 매핑
-  const getServiceByPassId = (passId: number) => {
-    switch (passId) {
-      // 종합 성장 패스에 맞는 서비스
-      case 1:
-        return serviceData.find((service) => service.id === 4);
-      // 진로 성장 패스에 맞는 서비스
-      case 2:
-        return serviceData.find((service) => service.id === 5);
-      // 학업 탐구 패스에 맞는 서비스
-      case 3:
-        return serviceData.find((service) => service.id === 6);
-      default:
-        return null;
-    }
+  // 패스 정보와 연결된 서비스 정보 조회
+  const getServiceWithPass = (passId: number) => {
+    const service = serviceData.find((service) => service.id === 3);
+    if (!service) return null;
+
+    const selectedPassInfo = service.passes.find((pass) => pass.id === passId);
+    return selectedPassInfo ? { service, selectedPass: selectedPassInfo } : null;
   };
 
   const handleNext = () => {
-    if (selectedPass !== null) {
-      const selectedService = getServiceByPassId(selectedPass);
+    if (selectedPassLocal !== null) {
+      const selectedService = getServiceWithPass(selectedPassLocal);
       if (selectedService) {
-        // 선택된 과목, 꿈, 대학 리스트를 description 배열로 생성
         const descriptionArray = [
           `${selectedSubject || "선택된 과목 없음"}`,
           `${dream || "선택된 꿈 없음"}`,
-          `${
-            targetUniversities
-              .map((uni) =>
-                uni.name && uni.major ? `${uni.name} - ${uni.major}` : ""
-              )
-              .filter(Boolean)
-              .join(", ") || "선택된 대학 없음"
-          }`, // 대학 또는 학과가 없으면 빈칸
+          `${targetUniversities
+            .map((uni) => (uni.name && uni.major ? `${uni.name} - ${uni.major}` : ""))
+            .filter(Boolean)
+            .join(", ") || "선택된 대학 없음"}`,
         ];
 
-        // 선택한 서비스와 함께 purchase 페이지로 이동
+        // 선택된 패스 정보를 context에 저장
+        setSelectedPass(selectedPassLocal);
+
         const selectedCartItems = [
           {
-            id: selectedService.id,
-            service: selectedService,
+            id: selectedService.service.id,
+            service: selectedService.service,
+            pass: selectedService.selectedPass,
             description: descriptionArray,
           },
         ];
-        navigate("/purchase", { state: { selectedCartItems } });
+
+        // 스탠다드 패스는 결제 페이지로 바로 이동
+        if (selectedPassLocal === 3) {
+          navigate("/purchase", { state: { selectedCartItems } });
+        } else {
+          navigate("/ai/exploration");
+        }
       } else {
         alert("해당 패스에 맞는 서비스를 찾을 수 없습니다.");
       }
@@ -137,13 +159,17 @@ const AIPassPage: React.FC = () => {
   };
 
   const handleBack = () => {
-    navigate("/ai/exploration");
+    navigate("/ai/university");
   };
 
   return (
     <PageWrapper>
-      <StepIndicator currentStep={4} />
+      <StepIndicator currentStep={3} />
       <Title>주제 추천시 사용할 이용권을 선택해주세요</Title>
+      <Divider />
+      <Description>
+        "premium 패스"의 경우 연구실 정보가 있는 "자연, 이공계열"만 구매가 가능합니다.
+      </Description>
       <CardsContainer>
         {passData.map((pass) => (
           <PassCard
@@ -151,10 +177,19 @@ const AIPassPage: React.FC = () => {
             title={pass.title}
             description={pass.description}
             benefits={pass.benefits}
+            price={pass.price}
+            discountRate={pass.discountRate}
             isBest={pass.isBest}
-            isSelected={selectedPass === pass.id}
+            isSelected={selectedPassLocal === pass.id}
             iconSrc={getIcon(pass.icon)}
-            onClick={() => setSelectedPass(pass.id)}
+            onClick={() => {
+              if (pass.id === 1 && !isNaturalSciences) {
+                alert("Premium 패스는 자연과학 계열 학과에서만 선택 가능합니다.");
+              } else {
+                setSelectedPassLocal(pass.id);
+              }
+            }}
+            disabled={pass.id === 1 && !isNaturalSciences}
           />
         ))}
       </CardsContainer>

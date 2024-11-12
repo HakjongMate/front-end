@@ -2,21 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 import AIContext from "../../contexts/AIContext";
-
-interface Service {
-  id: number;
-  title: string;
-  subtitle: string;
-  image: string;
-  price: string;
-  discout: number;
-}
-
-interface CartItem {
-  id: number;
-  service: Service;
-  description?: string[];
-}
+import { CartItem } from "../../types";
 
 interface PurchaseSummarySectionProps {
   pointUsed: number;
@@ -122,6 +108,7 @@ const PurchaseSummarySection: React.FC<PurchaseSummarySectionProps> = ({ pointUs
   const { selectedSubject, setSelectedSubject, dream, setDream, targetUniversities, setTargetUniversities } =
     useContext(AIContext);
 
+  // 장바구니에서 선택된 항목을 받아옴
   const { selectedCartItems }: { selectedCartItems: CartItem[] } =
     location.state || { selectedCartItems: [] };
 
@@ -130,33 +117,32 @@ const PurchaseSummarySection: React.FC<PurchaseSummarySectionProps> = ({ pointUs
   const [finalPrice, setFinalPrice] = useState(0);
   const [pointsToBeEarned, setPointsToBeEarned] = useState(0);
 
-  const parsePrice = (price: string) => {
-    return parseInt(price.replace(/,/g, ""), 10) || 0;
-  };
-
   useEffect(() => {
     const calculateTotalPriceAndDiscount = () => {
       let priceSum = 0;
       let discountSum = 0;
-
+  
+      // 각 항목의 금액과 할인율을 계산하여 합산
       selectedCartItems.forEach((item) => {
-        const price = parsePrice(item.service.price);
-        const discount = item.service.discout;
-        const discountedPrice = Math.round(price * (1 - discount));
-
+        const { price, discountRate } = item.pass
+          ? { price: item.pass.price, discountRate: item.pass.discountRate }
+          : { price: item.service.price, discountRate: item.service.discount };
+          
+        const discountedPrice = Math.round(price * (1 - discountRate));
+  
         priceSum += price;
         discountSum += price - discountedPrice;
       });
-
+  
       setTotalPrice(priceSum);
       setTotalDiscount(discountSum);
       const calculatedFinalPrice = priceSum - discountSum - pointUsed;
       setFinalPrice(calculatedFinalPrice >= 0 ? calculatedFinalPrice : 0);
       setPointsToBeEarned(Math.floor((priceSum - discountSum) * 0.01));
     };
-
+  
     calculateTotalPriceAndDiscount();
-  }, [selectedCartItems, pointUsed]);
+  }, [selectedCartItems, pointUsed]);  
 
   const handlePurchase = () => {
     const currentCartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
@@ -188,6 +174,7 @@ const PurchaseSummarySection: React.FC<PurchaseSummarySectionProps> = ({ pointUs
     }
   };
 
+  // 선택된 상품이 없을 경우 메시지 표시
   if (selectedCartItems.length === 0) {
     return <p>선택된 상품이 없습니다.</p>;
   }

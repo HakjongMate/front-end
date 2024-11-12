@@ -1,20 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-
-interface Service {
-  id: number;
-  title: string;
-  subtitle: string;
-  image: string;
-  price: number;
-  discout: number;
-}
-
-interface CartItem {
-  id: number;
-  service: Service;
-  description?: string[];
-}
+import { CartItem } from "../../types";
 
 interface PurchaseItemProps {
   item: CartItem;
@@ -86,19 +72,22 @@ const DiscountPrice = styled.p`
 `;
 
 const PurchaseItem: React.FC<PurchaseItemProps> = ({ item }) => {
-  // 가격 콤마 찍기
-  const formatPrice = (price: string | number) => {
-    const numericPrice =
-      typeof price === "string" ? parseInt(price.replace(/,/g, ""), 10) : price;
-    return isNaN(numericPrice) ? "0" : numericPrice.toLocaleString();
+  // 숫자를 3자리마다 콤마를 찍어주는 함수
+  const formatPrice = (price: number) => {
+    return price.toLocaleString();
   };
 
-  // 할인된 가격 계산
-  const calculateDiscountedPrice = (price: string | number, discount: number) => {
-    const numericPrice =
-      typeof price === "string" ? parseInt(price.replace(/,/g, ""), 10) : price;
-    return isNaN(numericPrice) ? 0 : Math.round(numericPrice * (1 - discount));
+  // 할인된 가격 계산 함수
+  const calculateDiscountedPrice = (price: number, discountRate: number) => {
+    return Math.round(price * (1 - discountRate));
   };
+
+  // 아이템의 가격과 할인을 결정
+  const { price, discountRate } = item.pass
+    ? { price: item.pass.price, discountRate: item.pass.discountRate }
+    : { price: item.service.price, discountRate: item.service.discount };
+
+  const finalPrice = calculateDiscountedPrice(price, discountRate);
 
   return (
     <ItemContent>
@@ -109,10 +98,8 @@ const PurchaseItem: React.FC<PurchaseItemProps> = ({ item }) => {
         {item.description && <Description>{item.description.join(" | ")}</Description>}
       </ItemDetails>
       <PriceDetails>
-        <OriginalPrice>{formatPrice(item.service.price)}원</OriginalPrice>
-        <DiscountPrice>
-          {formatPrice(calculateDiscountedPrice(item.service.price, item.service.discout))}원
-        </DiscountPrice>
+        <OriginalPrice>{formatPrice(price)}원</OriginalPrice>
+        <DiscountPrice>{formatPrice(finalPrice)}원</DiscountPrice>
       </PriceDetails>
     </ItemContent>
   );

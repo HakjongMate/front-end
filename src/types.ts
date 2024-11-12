@@ -44,3 +44,33 @@ export interface Archiving {
   ai: boolean;
   createDate: string;
 }
+
+export interface Pass {
+  id: number;
+  serviceId: number;
+  title: string;
+  description: string;
+  benefits: string[];
+  price: number;
+  discountRate: number;
+}
+
+export interface Service {
+  id: number;
+  title: string;
+  subtitle: string;
+  image: string;
+  price: number;
+  discount: number;
+  rating: number;
+  detailImage: string[];
+  deliveryInfo: string;
+  passes: Pass[];
+}
+
+export interface CartItem {
+  id: number;
+  service: Service;
+  pass?: Pass; 
+  description?: string[];
+}

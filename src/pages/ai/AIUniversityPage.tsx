@@ -6,6 +6,7 @@ import UniversityEditCard from '../../components/ai/UniversityEditCard';
 import UniversityEditModal from '../../components/ai/UniversityEditModal';
 import StepIndicator from '../../components/ai/StepIndicator';
 import ButtonContainer from '../../components/ai/ButtonContainer';
+import departmentData from '../../assets/data/department.json';
 
 const PageWrapper = styled.div`
   max-width: 1080px;
@@ -28,6 +29,7 @@ const PageWrapper = styled.div`
 const Title = styled.h1`
   font-size: 30px;
   font-weight: bold;
+  margin-top: 0px;
   margin-bottom: 10px;
   text-align: center;
 
@@ -48,7 +50,6 @@ const Subtitle = styled.h2`
   font-weight: 400;
   color: #000;
   text-align: center;
-  margin-bottom: 50px;
 
   @media (max-width: 768px) {
     font-size: 16px;
@@ -56,6 +57,31 @@ const Subtitle = styled.h2`
 
   @media (max-width: 480px) {
     font-size: 14px;
+    white-space: pre-wrap;
+    line-height: 1.5;
+  }
+`;
+
+const Divider = styled.hr`
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 10px 0;
+`;
+
+const Description = styled.p`
+  font-size: 16px;
+  font-weight: 400;
+  color: #666;
+  text-align: left;
+  margin-bottom: 40px;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    margin-bottom: 20px;
     white-space: pre-wrap;
     line-height: 1.5;
   }
@@ -77,19 +103,29 @@ const CardContainer = styled.div`
 `;
 
 const AIUniversityPage: React.FC = () => {
-  const { targetUniversities, setTargetUniversities } = useContext(AIContext);
+  const { targetUniversities, setTargetUniversities, setIsNaturalSciences } = useContext(AIContext);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  
+
   const navigate = useNavigate();
-  
+
   const openModal = (index: number) => {
     setSelectedIndex(index);
     setModalVisible(true);
   };
 
   const handleNext = () => {
-    navigate('/ai/exploration');
+    // 1순위 대학과 학과 정보의 자연과학 여부를 확인하여 Context에 저장
+    const firstChoice = targetUniversities[0];
+    if (firstChoice.name && firstChoice.major) {
+      const selectedSchool = departmentData.find((school) => school.school === firstChoice.name);
+      const selectedDept = selectedSchool?.departments.find((dept) => dept.department === firstChoice.major);
+
+      // 자연과학 여부를 AIContext에 저장
+      setIsNaturalSciences(!!selectedDept?.is_natural_sciences);
+    }
+    
+    navigate('/ai/pass');
   };
 
   const handleBack = () => {
@@ -109,7 +145,9 @@ const AIUniversityPage: React.FC = () => {
     <PageWrapper>
       <StepIndicator currentStep={2} />
       <Title>목표하는 대학과 학과를 {'\n'} 입력해주세요</Title>
-      <Subtitle>희망하는 대학과 학과에 맞는 {'\n'} 맞춤형 주제를 생성할 수 있습니다.</Subtitle>
+      <Subtitle>희망하는 대학과 학과에 맞는 {'\n'} 맞춤형 세특 주제를 생성할 수 있습니다.</Subtitle>
+      <Divider />
+      <Description>주제 추천시 1지망 대학과 학과가 반영됩니다.</Description>
 
       <CardContainer>
         {targetUniversities.map((choice, index) => (
