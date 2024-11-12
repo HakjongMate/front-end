@@ -6,6 +6,7 @@ import UniversityEditCard from '../../components/ai/UniversityEditCard';
 import UniversityEditModal from '../../components/ai/UniversityEditModal';
 import StepIndicator from '../../components/ai/StepIndicator';
 import ButtonContainer from '../../components/ai/ButtonContainer';
+import departmentData from '../../assets/data/department.json';
 
 const PageWrapper = styled.div`
   max-width: 1080px;
@@ -102,18 +103,28 @@ const CardContainer = styled.div`
 `;
 
 const AIUniversityPage: React.FC = () => {
-  const { targetUniversities, setTargetUniversities } = useContext(AIContext);
+  const { targetUniversities, setTargetUniversities, setIsNaturalSciences } = useContext(AIContext);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  
+
   const navigate = useNavigate();
-  
+
   const openModal = (index: number) => {
     setSelectedIndex(index);
     setModalVisible(true);
   };
 
   const handleNext = () => {
+    // 1순위 대학과 학과 정보의 자연과학 여부를 확인하여 Context에 저장
+    const firstChoice = targetUniversities[0];
+    if (firstChoice.name && firstChoice.major) {
+      const selectedSchool = departmentData.find((school) => school.school === firstChoice.name);
+      const selectedDept = selectedSchool?.departments.find((dept) => dept.department === firstChoice.major);
+
+      // 자연과학 여부를 AIContext에 저장
+      setIsNaturalSciences(!!selectedDept?.is_natural_sciences);
+    }
+    
     navigate('/ai/pass');
   };
 

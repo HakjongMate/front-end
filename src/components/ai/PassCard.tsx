@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import StarIcon from '@mui/icons-material/Star';
 
-const CardWrapper = styled.div<{ isBest?: boolean; isSelected?: boolean }>`
+const CardWrapper = styled.div<{ isBest?: boolean; isSelected?: boolean; disabled?: boolean }>`
   background-color: ${({ isSelected }) => (isSelected ? '#f7f7fd' : '#fff')};
   border: ${({ isBest, isSelected }) =>
     isSelected
@@ -16,14 +16,15 @@ const CardWrapper = styled.div<{ isBest?: boolean; isSelected?: boolean }>`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.3s;
   position: relative;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   display: flex;
   flex-direction: column;
   text-align: center;
   justify-content: flex-start;
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
 
   &:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: ${({ disabled }) => (disabled ? 'none' : '0 6px 12px rgba(0, 0, 0, 0.15)')};
   }
 
   @media (max-width: 1024px) {
@@ -218,6 +219,7 @@ interface PassCardProps {
   isSelected: boolean;
   iconSrc: string;
   onClick: () => void;
+  disabled?: boolean;
 }
 
 const PassCard: React.FC<PassCardProps> = ({
@@ -230,12 +232,18 @@ const PassCard: React.FC<PassCardProps> = ({
   isSelected,
   iconSrc,
   onClick,
+  disabled = false,
 }) => {
   const discountedPrice = price - price * discountRate;
   const discountPercent = Math.round(discountRate * 100);
 
   return (
-    <CardWrapper isBest={isBest} isSelected={isSelected} onClick={onClick}>
+    <CardWrapper
+      isBest={isBest}
+      isSelected={isSelected}
+      onClick={() => !disabled && onClick()}
+      disabled={disabled}
+    >
       {isBest && <BestLabel>Best</BestLabel>}
       <PassTitle>{title}</PassTitle>
       <PassIcon src={iconSrc} alt={`${title} icon`} />
