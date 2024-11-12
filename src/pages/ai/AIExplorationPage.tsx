@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
 import ExplorationSelectCard from '../../components/common/ExplorationSelectCard';
 import InterestSelectCard from '../../components/common/InterestSelectCard';
 import InterAddCard from '../../components/common/InterAddCard';
-import { UserProfile, Archiving } from '../../types';
+import { UserProfile, Archiving, CartItem } from '../../types';
 import { useNavigate } from 'react-router-dom';
 import StepIndicator from '../../components/ai/StepIndicator';
 import ButtonContainer from '../../components/ai/ButtonContainer';
+import AIContext from '../../contexts/AIContext';
+import serviceData from "../../assets/data/service.json";
 
 const PageWrapper = styled.div`
   max-width: 1080px;
@@ -109,6 +111,7 @@ const AIExplorationPage: React.FC = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [archivingData, setArchivingData] = useState<Archiving[]>([]);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const { selectedSubject, dream, targetUniversities, selectedPass } = useContext(AIContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -147,6 +150,7 @@ const AIExplorationPage: React.FC = () => {
     }
   }, [userProfile]);
 
+  // 관심사 및 탐구 선택하기  
   const handleSelect = (id: string) => {
     if (selectedIds.includes(id)) {
       // 이미 선택된 항목인 경우 선택 해제
@@ -162,8 +166,47 @@ const AIExplorationPage: React.FC = () => {
     }
   };
 
+  // 선택한 패스 정보와 연결된 서비스 정보 가져오기
+  const getServiceWithPass = (passId: number) => {
+    const service = serviceData.find((service) => service.id === 3);
+    if (!service) return null;
+
+    const selectedPassInfo = service.passes.find((pass) => pass.id === passId);
+    return selectedPassInfo ? { service, selectedPass: selectedPassInfo } : null;
+  };
+
   const handleNext = () => {
-    navigate("/purchase");
+    if (selectedPass !== null) {
+      const selectedService = getServiceWithPass(selectedPass);
+      if (selectedService) {
+        // 선택된 정보를 기반으로 description 배열 생성
+        const descriptionArray = [
+          `${selectedSubject || "선택된 과목 없음"}`,
+          `${dream || "선택된 꿈 없음"}`,
+          `${targetUniversities
+            .map((uni) => (uni.name && uni.major ? `${uni.name} - ${uni.major}` : ""))
+            .filter(Boolean)
+            .join(", ") || "선택된 대학 없음"}`,
+        ];
+
+        // 선택된 서비스와 패스 정보를 포함한 CartItem 생성
+        const selectedCartItems: CartItem[] = [
+          {
+            id: selectedService.service.id,
+            service: selectedService.service,
+            pass: selectedService.selectedPass,
+            description: descriptionArray,
+          },
+        ];
+
+        // 선택된 CartItem을 구매 페이지로 이동
+        navigate("/purchase", { state: { selectedCartItems } });
+      } else {
+        alert("해당 패스에 맞는 서비스를 찾을 수 없습니다.");
+      }
+    } else {
+      alert("패스를 선택해주세요.");
+    }
   };
 
   const handleBack = () => {
