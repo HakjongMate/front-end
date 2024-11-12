@@ -199,8 +199,13 @@ const AIExplorationPage: React.FC = () => {
           },
         ];
 
+        // 선택된 아이템의 제목만 추출
+        const selectedTitles = archivingData
+          .filter((item) => selectedIds.includes(item.uniqueId))
+          .map((item) => item.title);
+
         // 선택된 CartItem을 구매 페이지로 이동
-        navigate("/purchase", { state: { selectedCartItems } });
+        navigate("/purchase", { state: { selectedCartItems, selectedTitles } });
       } else {
         alert("해당 패스에 맞는 서비스를 찾을 수 없습니다.");
       }

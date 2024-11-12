@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import PurchaseItemSection from "../components/purchase/PurchaseItemSection";
 import PurchaseInfoSection from "../components/purchase/PurchaseInfoSection";
@@ -96,6 +97,14 @@ const PurchaseAgreeSectionStyled = styled(PurchaseAgreeSection)`
 
 function PurchasePage() {
   const [pointUsed, setPointUsed] = useState<number>(0);
+  // const location = useLocation();
+  
+  // // 전달된 상태 정보에서 selectedCartItems와 selectedTitles 추출
+  // const { selectedCartItems = [], selectedTitles = [] } = location.state || {};
+
+  // // 콘솔에 전달된 데이터 출력
+  // console.log("Selected Cart Items:", selectedCartItems);
+  // console.log("Selected Titles:", selectedTitles);
 
   return (
     <PageContainer>
