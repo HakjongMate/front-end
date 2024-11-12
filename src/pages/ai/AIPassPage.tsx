@@ -110,26 +110,18 @@ const AIPassPage: React.FC = () => {
     setDream(storedUser.dream || "");
   }, []);
 
-  // 선택한 패스에 맞는 서비스 ID 매핑
-  const getServiceByPassId = (passId: number) => {
-    switch (passId) {
-      // 종합 성장 패스에 맞는 서비스
-      case 1:
-        return serviceData.find((service) => service.id === 4);
-      // 진로 성장 패스에 맞는 서비스
-      case 2:
-        return serviceData.find((service) => service.id === 5);
-      // 학업 탐구 패스에 맞는 서비스
-      case 3:
-        return serviceData.find((service) => service.id === 6);
-      default:
-        return null;
-    }
+  // 서비스 ID가 3인 서비스의 정보를 가져오고, 선택한 패스 정보 조회
+  const getServiceWithPass = (passId: number) => {
+    const service = serviceData.find((service) => service.id === 3);
+    if (!service) return null;
+
+    const selectedPassInfo = service.passes.find((pass) => pass.id === passId);
+    return selectedPassInfo ? { ...service, selectedPass: selectedPassInfo } : null;
   };
 
   const handleNext = () => {
     if (selectedPass !== null) {
-      const selectedService = getServiceByPassId(selectedPass);
+      const selectedService = getServiceWithPass(selectedPass);
       if (selectedService) {
         // 선택된 과목, 꿈, 대학 리스트를 description 배열로 생성
         const descriptionArray = [
