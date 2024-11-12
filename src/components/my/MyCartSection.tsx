@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import CartItem from "./CartItem";
+import { Service, CartItem as CartItemType } from "../../types";
 import serviceData from "../../assets/data/service.json";
 
 const SectionWrapper = styled.div`
@@ -197,13 +198,12 @@ const MyCartSection: React.FC = () => {
     const cart = JSON.parse(localStorage.getItem("cartItems") || "[]");
 
     // cartItems와 serviceData를 매칭하여 아이템 상세 정보 포함
-    const itemsWithDetails = cart.map((cartItem: any) => {
-      const service = serviceData.find(
-        (service) => service.id === cartItem.serviceId
-      );
+    const itemsWithDetails = cart.map((cartItem: { serviceId: number; description: string[] }) => {
+      const service = serviceData.find((service: Service) => service.id === cartItem.serviceId);
       return {
-        ...cartItem,
+        id: cartItem.serviceId,
         service,
+        description: cartItem.description,
       };
     });
 
@@ -240,10 +240,7 @@ const MyCartSection: React.FC = () => {
   const calculateTotal = () => {
     return cartItems
       .filter((item) => selectedItems.includes(item.id))
-      .reduce((total, item) => {
-        const price = parseInt(item.service.price.replace(",", ""));
-        return total + price;
-      }, 0);
+      .reduce((total, item) => total + item.service.price, 0);
   };
 
   // 선택된 아이템의 할인 적용 금액 계산
@@ -251,8 +248,7 @@ const MyCartSection: React.FC = () => {
     return cartItems
       .filter((item) => selectedItems.includes(item.id))
       .reduce((total, item) => {
-        const price = parseInt(item.service.price.replace(",", ""));
-        const discountPrice = Math.round(price * (1 - item.service.discout));
+        const discountPrice = Math.round(item.service.price * (1 - item.service.discount));
         return total + discountPrice;
       }, 0);
   };

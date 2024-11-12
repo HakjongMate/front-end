@@ -2,21 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 import AIContext from "../../contexts/AIContext";
-
-interface Service {
-  id: number;
-  title: string;
-  subtitle: string;
-  image: string;
-  price: string;
-  discout: number;
-}
-
-interface CartItem {
-  id: number;
-  service: Service;
-  description?: string[];
-}
+import { CartItem } from "../../types";
 
 interface PurchaseSummarySectionProps {
   pointUsed: number;
@@ -130,33 +116,29 @@ const PurchaseSummarySection: React.FC<PurchaseSummarySectionProps> = ({ pointUs
   const [finalPrice, setFinalPrice] = useState(0);
   const [pointsToBeEarned, setPointsToBeEarned] = useState(0);
 
-  const parsePrice = (price: string) => {
-    return parseInt(price.replace(/,/g, ""), 10) || 0;
-  };
-
   useEffect(() => {
     const calculateTotalPriceAndDiscount = () => {
       let priceSum = 0;
       let discountSum = 0;
-
+  
       selectedCartItems.forEach((item) => {
-        const price = parsePrice(item.service.price);
-        const discount = item.service.discout;
+        const price = item.service.price;
+        const discount = item.service.discount;
         const discountedPrice = Math.round(price * (1 - discount));
-
+  
         priceSum += price;
         discountSum += price - discountedPrice;
       });
-
+  
       setTotalPrice(priceSum);
       setTotalDiscount(discountSum);
       const calculatedFinalPrice = priceSum - discountSum - pointUsed;
       setFinalPrice(calculatedFinalPrice >= 0 ? calculatedFinalPrice : 0);
       setPointsToBeEarned(Math.floor((priceSum - discountSum) * 0.01));
     };
-
+  
     calculateTotalPriceAndDiscount();
-  }, [selectedCartItems, pointUsed]);
+  }, [selectedCartItems, pointUsed]);  
 
   const handlePurchase = () => {
     const currentCartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");

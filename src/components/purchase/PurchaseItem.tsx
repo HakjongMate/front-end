@@ -1,20 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-
-interface Service {
-  id: number;
-  title: string;
-  subtitle: string;
-  image: string;
-  price: number;
-  discout: number;
-}
-
-interface CartItem {
-  id: number;
-  service: Service;
-  description?: string[];
-}
+import { CartItem } from "../../types";
 
 interface PurchaseItemProps {
   item: CartItem;
@@ -87,17 +73,13 @@ const DiscountPrice = styled.p`
 
 const PurchaseItem: React.FC<PurchaseItemProps> = ({ item }) => {
   // 가격 콤마 찍기
-  const formatPrice = (price: string | number) => {
-    const numericPrice =
-      typeof price === "string" ? parseInt(price.replace(/,/g, ""), 10) : price;
-    return isNaN(numericPrice) ? "0" : numericPrice.toLocaleString();
+  const formatPrice = (price: number) => {
+    return price.toLocaleString();
   };
 
   // 할인된 가격 계산
-  const calculateDiscountedPrice = (price: string | number, discount: number) => {
-    const numericPrice =
-      typeof price === "string" ? parseInt(price.replace(/,/g, ""), 10) : price;
-    return isNaN(numericPrice) ? 0 : Math.round(numericPrice * (1 - discount));
+  const calculateDiscountedPrice = (price: number, discount: number) => {
+    return Math.round(price * (1 - discount));
   };
 
   return (
@@ -111,7 +93,7 @@ const PurchaseItem: React.FC<PurchaseItemProps> = ({ item }) => {
       <PriceDetails>
         <OriginalPrice>{formatPrice(item.service.price)}원</OriginalPrice>
         <DiscountPrice>
-          {formatPrice(calculateDiscountedPrice(item.service.price, item.service.discout))}원
+          {formatPrice(calculateDiscountedPrice(item.service.price, item.service.discount))}원
         </DiscountPrice>
       </PriceDetails>
     </ItemContent>
