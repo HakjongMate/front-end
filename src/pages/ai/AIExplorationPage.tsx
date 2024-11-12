@@ -163,11 +163,11 @@ const AIExplorationPage: React.FC = () => {
   };
 
   const handleNext = () => {
-    navigate('/ai/pass');
+    navigate("/purchase");
   };
 
   const handleBack = () => {
-    navigate('/ai/university');
+    navigate("/ai/university");
   };
 
   const renderCards = () => {

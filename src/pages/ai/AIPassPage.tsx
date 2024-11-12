@@ -107,7 +107,7 @@ const AIPassPage: React.FC = () => {
   // LocalStorage에서 dream 값을 가져옴
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
-    setDream(storedUser.dream || ""); // dream 값이 없으면 빈 문자열
+    setDream(storedUser.dream || "");
   }, []);
 
   // 선택한 패스에 맞는 서비스 ID 매핑
@@ -153,7 +153,13 @@ const AIPassPage: React.FC = () => {
             description: descriptionArray,
           },
         ];
-        navigate("/purchase", { state: { selectedCartItems } });
+        
+        // 3번 스탠다드 패스 선택은 바로 결제로 이동
+        if (selectedPass === 3) {
+          navigate("/purchase", { state: { selectedCartItems } });
+        } else {
+          navigate("/ai/exploration");
+        }
       } else {
         alert("해당 패스에 맞는 서비스를 찾을 수 없습니다.");
       }
@@ -163,7 +169,7 @@ const AIPassPage: React.FC = () => {
   };
 
   const handleBack = () => {
-    navigate("/ai/exploration");
+    navigate("/ai/university");
   };
 
   return (

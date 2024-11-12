@@ -114,7 +114,7 @@ const AIUniversityPage: React.FC = () => {
   };
 
   const handleNext = () => {
-    navigate('/ai/exploration');
+    navigate('/ai/pass');
   };
 
   const handleBack = () => {

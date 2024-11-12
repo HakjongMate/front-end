@@ -13,8 +13,8 @@ interface StepIndicatorProps {
 const steps: Step[] = [
   { label: "과목 선택", isActive: false },
   { label: "목표 대학 및 학과 선택", isActive: false },
-  { label: "관심사 선택", isActive: false },
   { label: "이용권 선택", isActive: false },
+  { label: "관심사 선택", isActive: false },
   { label: "결과확인", isActive: false },
 ];
 
