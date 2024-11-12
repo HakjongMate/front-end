@@ -214,7 +214,7 @@ const AIExplorationPage: React.FC = () => {
 
   return (
     <PageWrapper>
-      <StepIndicator currentStep={3} />
+      <StepIndicator currentStep={4} />
       <Title>주제 생성 시 반영할 관심사와 {'\n'}탐구를 확인해주세요</Title>
       <Subtitle>평소 관심사나 지난 탐구 이력에 맞춰 {'\n'}주제를 추천받을 수 있습니다.</Subtitle>
       <Divider />

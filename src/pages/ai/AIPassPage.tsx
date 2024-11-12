@@ -167,7 +167,7 @@ const AIPassPage: React.FC = () => {
 
   return (
     <PageWrapper>
-      <StepIndicator currentStep={4} />
+      <StepIndicator currentStep={3} />
       <Title>주제 추천시 사용할 이용권을 선택해주세요</Title>
       <Divider />
       <Description>
