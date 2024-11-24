@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { Share } from "@mui/icons-material";
 import toast, { Toaster } from 'react-hot-toast';
+import { Service, CartItem } from "../../types";
 
 const ProductInfoWrapper = styled.div`
   display: flex;
@@ -198,15 +199,10 @@ const CartButton = styled(Button)`
   }
 `;
 
+
 interface ProductInfoProps {
-  product: {
-    id: number;
-    title: string;
-    subtitle: string;
-    price: number;
+  product: Service & {
     discountedPrice: string;
-    image: string;
-    rating: number;
   };
 }
 
@@ -214,31 +210,69 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const navigate = useNavigate();
 
   const handleBuyClick = () => {
-    // AI 서비스라면 '/ai/subject'로 이동
     if (product.title.includes("AI")) {
       navigate('/ai/subject', { state: { product } });
     } else {
-      // AI가 아닌 서비스는 기존 구매 로직 유지
-      const selectedCartItems = [
-        {
-          id: 1,
-          service: product,
+      const cartItem: CartItem = {
+        id: Date.now(),
+        service: {
+          id: product.id,
+          title: product.title,
+          subtitle: product.subtitle,
+          image: product.image,
+          price: product.price,
+          discount: product.discount,
+          rating: product.rating,
+          detailImage: product.detailImage,
+          deliveryInfo: product.deliveryInfo,
+          passes: product.passes
         }
-      ];
-      navigate('/purchase', { state: { selectedCartItems } });
+      };
+
+      navigate('/purchase', { 
+        state: { 
+          selectedCartItems: [cartItem]
+        } 
+      });
     }
   };
 
   const handleCartClick = () => {
-    const cart = JSON.parse(localStorage.getItem("cartItems") || "[]");
-
-    const newItem = {
-      id: cart.length + 1,
-      serviceId: product.id,
-      service: product,
+    const cartItem: CartItem = {
+      id: Date.now(),
+      service: {
+        id: product.id,
+        title: product.title,
+        subtitle: product.subtitle,
+        image: product.image,
+        price: product.price,
+        discount: product.discount,
+        rating: product.rating,
+        detailImage: product.detailImage,
+        deliveryInfo: product.deliveryInfo,
+        passes: product.passes
+      }
     };
 
-    cart.push(newItem);
+    const cart: CartItem[] = JSON.parse(localStorage.getItem("cartItems") || "[]");
+    
+    // 이미 장바구니에 있는 상품인지 확인
+    const existingItemIndex = cart.findIndex(
+      item => item.service.id === product.id
+    );
+
+    if (existingItemIndex !== -1) {
+      toast.error("이미 장바구니에 있는 상품입니다.", {
+        style: {
+          maxWidth: "1000px",
+          width: "400px",
+          fontSize: "20px",
+        },
+      });
+      return;
+    }
+
+    cart.push(cartItem);
     localStorage.setItem("cartItems", JSON.stringify(cart));
 
     toast.success("상품이 장바구니에 추가되었습니다!", {
@@ -285,7 +319,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
         <Divider />
         <PriceWrapper>
           <ProductPrice>{product.discountedPrice}원</ProductPrice>
-          <OriginalPrice>{product.price}원</OriginalPrice>
+          <OriginalPrice>{product.price.toLocaleString()}원</OriginalPrice>
         </PriceWrapper>
         <Rating>★★★★★ {product.rating}점</Rating>
         <Divider />
