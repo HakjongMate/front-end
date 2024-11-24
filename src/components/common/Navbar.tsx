@@ -382,6 +382,10 @@ function Navbar() {
         navigate('/');
       }
     } catch (error) {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      setLoggedIn(false);
+      navigate('/');
       console.error('토큰 유효성 검사 중 오류 발생:', error);
     }
   };
