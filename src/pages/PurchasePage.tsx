@@ -199,21 +199,26 @@ function PurchasePage() {
 
   // 구매 API 호출
   const purchaseItems = async (requestData: PurchaseRequest): Promise<PurchaseResponse> => {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/buy`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-      },
-      body: JSON.stringify(requestData)
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || '결제 처리 중 오류가 발생했습니다.');
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/buy`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+        },
+        body: JSON.stringify(requestData)
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || '결제 처리 중 오류가 발생했습니다.');
+      }
+  
+      return response.json();
+    } catch (error) {
+      console.error('Purchase API Error:', error);
+      throw error;
     }
-
-    return response.json();
   };
 
   // 구매 완료 후 처리
