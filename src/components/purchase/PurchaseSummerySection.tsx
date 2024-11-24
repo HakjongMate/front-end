@@ -99,22 +99,29 @@ const PointInfo = styled.div`
   }
 `;
 
-const PurchaseSummarySection: React.FC = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+const ErrorMessage = styled.div`
+  color: #ff0000;
+  font-size: 14px;
+  margin-top: 10px;
+  text-align: center;
+`;
+
+interface PurchaseSummarySectionProps {
+  onPaymentSubmit: () => Promise<void>;
+  isSubmitting: boolean;
+  error: string | null;
+}
+
+const PurchaseSummarySection: React.FC<PurchaseSummarySectionProps> = ({
+  onPaymentSubmit,
+  isSubmitting,
+  error
+}) => {
   const { 
     pointUsed,
+    selectedCartItems
   } = usePurchase();
-  
-  const { 
-    setSelectedSubject, 
-    setDream, 
-    setTargetUniversities 
-  } = useContext(AIContext);
 
-  // 장바구니에서 선택된 항목을 받아옴
-  const { selectedCartItems }: { selectedCartItems: CartItem[] } =
-    location.state || { selectedCartItems: [] };
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalDiscount, setTotalDiscount] = useState(0);
   const [finalPrice, setFinalPrice] = useState(0);
@@ -125,7 +132,6 @@ const PurchaseSummarySection: React.FC = () => {
       let priceSum = 0;
       let discountSum = 0;
   
-      // 각 항목의 금액과 할인율을 계산하여 합산
       selectedCartItems.forEach((item) => {
         const { price, discountRate } = item.pass
           ? { price: item.pass.price, discountRate: item.pass.discountRate }
@@ -145,39 +151,8 @@ const PurchaseSummarySection: React.FC = () => {
     };
   
     calculateTotalPriceAndDiscount();
-  }, [selectedCartItems, pointUsed]);  
+  }, [selectedCartItems, pointUsed]);
 
-  const handlePurchase = () => {
-    const currentCartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
-
-    const updatedCartItems = currentCartItems.filter(
-      (cartItem: any) => !selectedCartItems.some(
-        (selectedItem) => selectedItem.id === cartItem.id
-      )
-    );
-
-    localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
-
-    setSelectedSubject("");
-    setDream("");
-    setTargetUniversities([
-      { name: "", major: "" },
-      { name: "", major: "" },
-      { name: "", major: "" },
-    ]);
-
-    const containsAIService = selectedCartItems.some(item =>
-      item.service.title.includes("패스")
-    );
-
-    if (containsAIService) {
-      navigate('/ai/waiting');
-    } else {
-      navigate('/my/purchase');
-    }
-  };
-
-  // 선택된 상품이 없을 경우 메시지 표시
   if (selectedCartItems.length === 0) {
     return <p>선택된 상품이 없습니다.</p>;
   }
@@ -203,8 +178,17 @@ const PurchaseSummarySection: React.FC = () => {
         <div>최종 결제 금액</div>
         <FinalPrice>{finalPrice.toLocaleString()} 원</FinalPrice>
       </SummaryItem>
+      
       <ButtonWrapper>
-        <PurchaseButton onClick={handlePurchase}>결제하기</PurchaseButton>
+        <PurchaseButton 
+          onClick={onPaymentSubmit}
+          disabled={isSubmitting || selectedCartItems.length === 0}
+        >
+          {isSubmitting ? "결제 처리중..." : "결제하기"}
+        </PurchaseButton>
+        {error && (
+          <ErrorMessage>{error}</ErrorMessage>
+        )}
       </ButtonWrapper>
       <PointInfo>{pointsToBeEarned.toLocaleString()} 포인트 적립 예정</PointInfo>
     </SummaryWrapper>
