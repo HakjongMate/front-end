@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 interface PurchasePointSectionProps {
@@ -68,7 +68,7 @@ const PointInput = styled.input`
 
   @media (max-width: 480px) {
     width: 100%;
-    box-sizing: border-box; 
+    box-sizing: border-box;
     padding: 8px;
     margin-bottom: 10px;
     font-size: 12px;
@@ -144,13 +144,53 @@ const PurchasePointSection: React.FC<PurchasePointSectionProps> = ({
   pointUsed,
   setPointUsed,
 }) => {
-  const totalAvailablePoints = 1000;
+  const [totalAvailablePoints, setTotalAvailablePoints] = useState<number>(0);
   const [error, setError] = useState<string>("");
 
-  // 포인트 입력 핸들러
+  // 최대 포인트 설정
+  useEffect(() => {
+    const fetchUserPoints = async () => {
+      try {
+        const accessToken = localStorage.getItem("accessToken");
+        if (!accessToken) {
+          setError("로그인이 필요합니다.");
+          return;
+        }
+
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/profile/me/points`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setTotalAvailablePoints(data.data);
+        } else {
+          const errorText = await response.text();
+          console.error("API 응답 오류:", errorText);
+          setError("포인트 정보를 불러오는데 실패했습니다.");
+        }
+      } catch (error) {
+        console.error("API 호출 중 오류 발생:", error);
+        setError("네트워크 오류가 발생했습니다.");
+      }
+    };
+
+    fetchUserPoints();
+  }, []);
+
   const handlePointChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.replace(/[^0-9]/g, "");
     const numericValue = parseInt(value, 10);
+
+    if (isNaN(numericValue)) {
+      setPointUsed(0);
+      setError("");
+      return;
+    }
 
     // 보유 포인트를 초과하면 에러 메시지와 최대 포인트로 변경
     if (numericValue > totalAvailablePoints) {
@@ -158,11 +198,10 @@ const PurchasePointSection: React.FC<PurchasePointSectionProps> = ({
       setPointUsed(totalAvailablePoints);
     } else {
       setError("");
-      setPointUsed(numericValue || 0);
+      setPointUsed(numericValue);
     }
   };
 
-  // 전액 사용 버튼 핸들러
   const handleApplyPoints = () => {
     setPointUsed(totalAvailablePoints);
     setError("");
