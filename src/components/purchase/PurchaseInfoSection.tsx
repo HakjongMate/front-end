@@ -102,13 +102,14 @@ const GuideText = styled.p`
 `;
 
 function PurchaseInfoSection() {
-  const [userProfile, setUserProfile] = useState<{ username: string } | null>(null);
+  const [userProfile, setUserProfile] = useState<{ realName: string } | null>(null);
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [email, setEmail] = useState<string>("");
 
   // 유저 이름을 로컬스토리지에서 가져와서 userProfile 상태에 저장
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
+    console.log(storedUser);
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
       setUserProfile(parsedUser);
@@ -146,12 +147,12 @@ function PurchaseInfoSection() {
       <SectionTitle>주문자 정보</SectionTitle>
       <InputGrid>
         <InputWrapper>
-          <Input type="text" value={userProfile?.username || ""} placeholder="김도현" readOnly />
+          <Input type="text" value={userProfile?.realName || ""} readOnly />
         </InputWrapper>
         <InputWrapper>
           <Input
             type="tel"
-            placeholder="연락처"
+            placeholder="연락처 (숫자만 입력)"
             value={phoneNumber}
             onChange={handlePhoneNumberChange}
             maxLength={13}
