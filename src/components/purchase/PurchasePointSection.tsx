@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-
-interface PurchasePointSectionProps {
-  pointUsed: number;
-  setPointUsed: (points: number) => void;
-}
+import { usePurchase } from "../../contexts/PurchaseContext";
 
 const SectionWrapper = styled.div`
   border: 1px solid #e0e0e0;
@@ -140,71 +136,73 @@ const ErrorMessage = styled.p`
   }
 `;
 
-const PurchasePointSection: React.FC<PurchasePointSectionProps> = ({
-  pointUsed,
-  setPointUsed,
-}) => {
-  const [totalAvailablePoints, setTotalAvailablePoints] = useState<number>(0);
+
+const PurchasePointSection: React.FC = () => {
+  const {
+    availablePoints,
+    pointUsed,
+    setPointUsed,
+    fetchPoints,
+    applyPoints
+  } = usePurchase();
   const [error, setError] = useState<string>("");
+  const [inputValue, setInputValue] = useState<string>("");
+
 
   // 최대 포인트 설정
   useEffect(() => {
-    const fetchUserPoints = async () => {
+    const loadPoints = async () => {
       try {
-        const accessToken = localStorage.getItem("accessToken");
-        if (!accessToken) {
-          setError("로그인이 필요합니다.");
-          return;
-        }
-
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/profile/me/points`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setTotalAvailablePoints(data.data);
-        } else {
-          const errorText = await response.text();
-          console.error("API 응답 오류:", errorText);
-          setError("포인트 정보를 불러오는데 실패했습니다.");
-        }
+        await fetchPoints();
       } catch (error) {
-        console.error("API 호출 중 오류 발생:", error);
-        setError("네트워크 오류가 발생했습니다.");
+        setError("포인트 정보를 불러오는데 실패했습니다.");
       }
     };
 
-    fetchUserPoints();
-  }, []);
+    loadPoints();
+  }, [fetchPoints]);
+
+  useEffect(() => {
+    // pointUsed가 변경될 때 inputValue도 동기화
+    setInputValue(pointUsed.toString());
+  }, [pointUsed]);
 
   const handlePointChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.replace(/[^0-9]/g, "");
-    const numericValue = parseInt(value, 10);
-
+    const value = e.target.value.replace(/[^0-9]/g, "");
+    let numericValue = parseInt(value, 10);
+    
     if (isNaN(numericValue)) {
-      setPointUsed(0);
-      setError("");
-      return;
+      numericValue = 0;
     }
 
     // 보유 포인트를 초과하면 에러 메시지와 최대 포인트로 변경
-    if (numericValue > totalAvailablePoints) {
+    if (numericValue > availablePoints) {
       setError("보유 포인트를 초과하여 사용할 수 없습니다.");
-      setPointUsed(totalAvailablePoints);
-    } else {
-      setError("");
-      setPointUsed(numericValue);
+      setInputValue(availablePoints.toString());
+      setPointUsed(availablePoints);
+      return;
+    }
+
+    setError("");
+    setInputValue(value);
+    setPointUsed(numericValue);
+  };
+
+  const handleInputBlur = () => {
+    if (inputValue === "") {
+      setInputValue("0");
+      setPointUsed(0);
     }
   };
 
   const handleApplyPoints = () => {
-    setPointUsed(totalAvailablePoints);
-    setError("");
+    try {
+      applyPoints(availablePoints);
+      setInputValue(availablePoints.toString());
+      setError("");
+    } catch (error) {
+      setError("포인트 전액 사용에 실패했습니다.");
+    }
   };
 
   return (
@@ -213,8 +211,9 @@ const PurchasePointSection: React.FC<PurchasePointSectionProps> = ({
       <PointInputWrapper>
         <PointInput
           type="text"
-          value={pointUsed.toString()}
+          value={inputValue}
           onChange={handlePointChange}
+          onBlur={handleInputBlur}
           placeholder="0"
         />
         <ApplyButton onClick={handleApplyPoints}>전액사용</ApplyButton>
@@ -224,7 +223,7 @@ const PurchasePointSection: React.FC<PurchasePointSectionProps> = ({
 
       <TotalPointWrapper>
         <span>보유 포인트</span>
-        <TotalPoint>{totalAvailablePoints.toLocaleString()}원</TotalPoint>
+        <TotalPoint>{availablePoints.toLocaleString()}원</TotalPoint>
       </TotalPointWrapper>
     </SectionWrapper>
   );

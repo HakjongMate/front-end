@@ -2,11 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 import AIContext from "../../contexts/AIContext";
+import { usePurchase } from "../../contexts/PurchaseContext";
 import { CartItem } from "../../types";
-
-interface PurchaseSummarySectionProps {
-  pointUsed: number;
-}
 
 const SummaryWrapper = styled.div`
   border: 1px solid #e0e0e0;
@@ -102,16 +99,22 @@ const PointInfo = styled.div`
   }
 `;
 
-const PurchaseSummarySection: React.FC<PurchaseSummarySectionProps> = ({ pointUsed }) => {
+const PurchaseSummarySection: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { selectedSubject, setSelectedSubject, dream, setDream, targetUniversities, setTargetUniversities } =
-    useContext(AIContext);
+  const { 
+    pointUsed,
+  } = usePurchase();
+  
+  const { 
+    setSelectedSubject, 
+    setDream, 
+    setTargetUniversities 
+  } = useContext(AIContext);
 
   // 장바구니에서 선택된 항목을 받아옴
   const { selectedCartItems }: { selectedCartItems: CartItem[] } =
     location.state || { selectedCartItems: [] };
-
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalDiscount, setTotalDiscount] = useState(0);
   const [finalPrice, setFinalPrice] = useState(0);

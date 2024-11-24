@@ -96,7 +96,6 @@ const PurchaseAgreeSectionStyled = styled(PurchaseAgreeSection)`
 `;
 
 function PurchasePage() {
-  const [pointUsed, setPointUsed] = useState<number>(0);
   // const location = useLocation();
   
   // // 전달된 상태 정보에서 selectedCartItems와 selectedTitles 추출
@@ -111,11 +110,11 @@ function PurchasePage() {
       <LeftSection>
         <PurchaseItemSectionStyled />
         <PurchaseInfoSectionStyled />
-        <PurchasePointSectionStyled pointUsed={pointUsed} setPointUsed={setPointUsed} />
+        <PurchasePointSectionStyled />
         <PurchasePaymentSectionStyled />
       </LeftSection>
       <RightSection>
-        <PurchaseSummarySectionStyled pointUsed={pointUsed} />
+        <PurchaseSummarySectionStyled />
         <PurchaseAgreeSectionStyled />
       </RightSection>
     </PageContainer>
