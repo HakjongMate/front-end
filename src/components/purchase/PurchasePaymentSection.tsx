@@ -125,8 +125,8 @@ const Input = styled.input`
 `;
 
 const PurchasePaymentSection: React.FC = () => {
-  const { 
-    paymentMethod, 
+  const {
+    paymentMethod,
     setPaymentMethod,
     depositor,
     setDepositor,
@@ -137,27 +137,47 @@ const PurchasePaymentSection: React.FC = () => {
   } = usePurchase();
 
   // const handlePaymentMethodChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const value = e.target.value === '무통장입금' ? 'BANK_TRANSFER' : 'REAL_TIME_ACCOUNT_TRANSFER';
+  //   const value = e.target.value === '계좌 이체' ? 'ACCOUNT_TRANSFER' : '';
   //   setPaymentMethod(value);
   //   setDepositor('');
   //   setDepositBank('');
   //   setDepositBankAccount('');
   // };
 
-  const handleDepositorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDepositor(e.target.value);
+  const [errors, setErrors] = useState({
+    depositor: '',
+    depositBank: '',
+    depositBankAccount: '',
+  });
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: 'depositor' | 'depositBank' | 'depositBankAccount'
+  ) => {
+    const { value } = e.target;
+    if (field === 'depositor') setDepositor(value);
+    if (field === 'depositBank') setDepositBank(value);
+    if (field === 'depositBankAccount') setDepositBankAccount(value);
+
+    // 입력값 변경 시 에러 초기화
+    setErrors((prev) => ({ ...prev, [field]: '' }));
   };
 
-  const handleDepositBankChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDepositBank(e.target.value);
-  };
+  const validateInputs = () => {
+    const newErrors = {
+      depositor: depositor ? '' : '입금자명을 입력하세요.',
+      depositBank: depositBank ? '' : '입금한 은행을 입력하세요.',
+      depositBankAccount: depositBankAccount ? '' : '입금한 계좌번호를 입력하세요.',
+    };
 
-  const handleDepositBankAccountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDepositBankAccount(e.target.value);
-  }
+    setErrors(newErrors);
+
+    // 에러가 있으면 false 반환
+    return Object.values(newErrors).every((error) => !error);
+  };
 
   const getDisplayPaymentMethod = (method: string) => {
-    return method === 'BANK_TRANSFER' ? '계좌 이체' : '실시간 계좌이체';
+    return method === 'ACCOUNT_TRANSFER' ? '계좌 이체' : '';
   };
 
   return (
@@ -175,35 +195,36 @@ const PurchasePaymentSection: React.FC = () => {
           <RadioButton
             type="radio"
             value="계좌 이체"
-            checked={paymentMethod === 'BANK_TRANSFER'}
-            // onChange={handlePaymentMethodChange}
+            checked={true}
+          // disabled={true}
           />
-          {getDisplayPaymentMethod('BANK_TRANSFER')}
+          {getDisplayPaymentMethod('ACCOUNT_TRANSFER')}
         </RadioButtonLabel>
-        {paymentMethod === 'BANK_TRANSFER' && (
-          <BankTransferInfo>
-            신한투자증권 27078562827 이건우
-          </BankTransferInfo>
-        )}
+        {/* {paymentMethod === 'ACCOUNT_TRANSFER' && ( */}
+        <BankTransferInfo>
+          신한투자증권 27078562827 이건우
+        </BankTransferInfo>
+        {/* )} */}
         <PaymentInfoWrapper>
+
           <InputWrapper>
-            <Input 
-              type="text" 
-              placeholder="입금자명을 입력하세요" 
+            <Input
+              type="text"
+              placeholder="입금자명을 입력하세요"
               value={depositor}
-              onChange={handleDepositorChange}
+              onChange={(e) => handleInputChange(e, 'depositor')}
             />
-            <Input 
-              type="text" 
-              placeholder="입금한 은행을 입력하세요" 
+            <Input
+              type="text"
+              placeholder="입금한 은행을 입력하세요"
               value={depositBank}
-              onChange={handleDepositBankChange}
+              onChange={(e) => handleInputChange(e, 'depositBank')}
             />
-            <Input 
-              type="text" 
-              placeholder="입금한 계좌번호를 입력하세요" 
+            <Input
+              type="text"
+              placeholder="입금한 계좌번호를 입력하세요"
               value={depositBankAccount}
-              onChange={handleDepositBankAccountChange}
+              onChange={(e) => handleInputChange(e, 'depositBankAccount')}
             />
           </InputWrapper>
         </PaymentInfoWrapper>
