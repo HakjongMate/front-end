@@ -128,29 +128,36 @@ const PurchasePaymentSection: React.FC = () => {
   const { 
     paymentMethod, 
     setPaymentMethod,
-    depositTime,
-    setDepositTime,
     depositor,
-    setDepositor
+    setDepositor,
+    depositBank,
+    setDepositBank,
+    depositBankAccount,
+    setDepositBankAccount,
   } = usePurchase();
 
-  const handlePaymentMethodChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value === '무통장입금' ? 'BANK_TRANSFER' : 'REAL_TIME_ACCOUNT_TRANSFER';
-    setPaymentMethod(value);
-    setDepositTime('');
-    setDepositor('');
-  };
-
-  const handleDepositTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDepositTime(e.target.value);
-  };
+  // const handlePaymentMethodChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const value = e.target.value === '무통장입금' ? 'BANK_TRANSFER' : 'REAL_TIME_ACCOUNT_TRANSFER';
+  //   setPaymentMethod(value);
+  //   setDepositor('');
+  //   setDepositBank('');
+  //   setDepositBankAccount('');
+  // };
 
   const handleDepositorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDepositor(e.target.value);
   };
 
+  const handleDepositBankChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDepositBank(e.target.value);
+  };
+
+  const handleDepositBankAccountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDepositBankAccount(e.target.value);
+  }
+
   const getDisplayPaymentMethod = (method: string) => {
-    return method === 'BANK_TRANSFER' ? '무통장입금' : '실시간 계좌이체';
+    return method === 'BANK_TRANSFER' ? '계좌 이체' : '실시간 계좌이체';
   };
 
   return (
@@ -167,9 +174,9 @@ const PurchasePaymentSection: React.FC = () => {
         <RadioButtonLabel>
           <RadioButton
             type="radio"
-            value="무통장입금"
+            value="계좌 이체"
             checked={paymentMethod === 'BANK_TRANSFER'}
-            onChange={handlePaymentMethodChange}
+            // onChange={handlePaymentMethodChange}
           />
           {getDisplayPaymentMethod('BANK_TRANSFER')}
         </RadioButtonLabel>
@@ -178,9 +185,31 @@ const PurchasePaymentSection: React.FC = () => {
             신한투자증권 27078562827 이건우
           </BankTransferInfo>
         )}
+        <PaymentInfoWrapper>
+          <InputWrapper>
+            <Input 
+              type="text" 
+              placeholder="입금자명을 입력하세요" 
+              value={depositor}
+              onChange={handleDepositorChange}
+            />
+            <Input 
+              type="text" 
+              placeholder="입금한 은행을 입력하세요" 
+              value={depositBank}
+              onChange={handleDepositBankChange}
+            />
+            <Input 
+              type="text" 
+              placeholder="입금한 계좌번호를 입력하세요" 
+              value={depositBankAccount}
+              onChange={handleDepositBankAccountChange}
+            />
+          </InputWrapper>
+        </PaymentInfoWrapper>
       </RadioButtonWrapper>
 
-      <RadioButtonWrapper>
+      {/* <RadioButtonWrapper>
         <RadioButtonLabel>
           <RadioButton
             type="radio"
@@ -208,7 +237,7 @@ const PurchasePaymentSection: React.FC = () => {
             </InputWrapper>
           </PaymentInfoWrapper>
         )}
-      </RadioButtonWrapper>
+      </RadioButtonWrapper> */}
     </SectionWrapper>
   );
 };

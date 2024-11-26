@@ -12,10 +12,12 @@ interface PurchaseContextType {
   setEmail: React.Dispatch<React.SetStateAction<string>>;
   paymentMethod: string;
   setPaymentMethod: React.Dispatch<React.SetStateAction<string>>;
-  depositTime: string;
-  setDepositTime: React.Dispatch<React.SetStateAction<string>>;
   depositor: string;
   setDepositor: React.Dispatch<React.SetStateAction<string>>;
+  depositBank: string;
+  setDepositBank: React.Dispatch<React.SetStateAction<string>>;
+  depositBankAccount: string;
+  setDepositBankAccount: React.Dispatch<React.SetStateAction<string>>;
   availablePoints: number;
   setAvailablePoints: React.Dispatch<React.SetStateAction<number>>;
   fetchPoints: () => Promise<void>;
@@ -30,8 +32,9 @@ export const PurchaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [contactInfo, setContactInfo] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [paymentMethod, setPaymentMethod] = useState<string>("BANK_TRANSFER");
-  const [depositTime, setDepositTime] = useState<string>("");
   const [depositor, setDepositor] = useState<string>("");
+  const [depositBank, setDepositBank] = useState<string>("");
+  const [depositBankAccount, setDepositBankAccount] = useState<string>("");
   const [availablePoints, setAvailablePoints] = useState<number>(0);
 
   const fetchPoints = useCallback(async () => {
@@ -82,10 +85,12 @@ export const PurchaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setEmail,
         paymentMethod,
         setPaymentMethod,
-        depositTime,
-        setDepositTime,
         depositor,
         setDepositor,
+        depositBank,
+        setDepositBank,
+        depositBankAccount,
+        setDepositBankAccount,
         availablePoints,
         setAvailablePoints,
         fetchPoints,
