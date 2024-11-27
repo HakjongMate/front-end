@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import PurchaseModal from './PurchaseModal';
 import { PurchaseItemType } from '../../types';
+import { PurchaseCancelModal } from './PurchaseCancelModal';
 
 const ItemWrapper = styled.div`
   display: flex;
@@ -143,10 +144,10 @@ const PurchaseItem: React.FC<PurchaseItemProps> = ({ item }) => {
 
   const displayDate = item.purchaseDate
     ? new Date(item.purchaseDate).toLocaleDateString('ko-KR', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-      })
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    })
     : '날짜 없음';
 
   const statusInKorean: Record<PurchaseItemType['status'], string> = {
@@ -211,21 +212,11 @@ const PurchaseItem: React.FC<PurchaseItemProps> = ({ item }) => {
 
       <PurchaseModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} purchaseId={item.id} />
 
-      {isCancelModalOpen && (
-        <div style={{ padding: '20px', background: '#fff', borderRadius: '10px', maxWidth: '400px', margin: '0 auto' }}>
-          <h3>구매 취소 요청</h3>
-          <textarea
-            placeholder="취소 사유를 입력해주세요."
-            value={refundReason}
-            onChange={(e) => setRefundReason(e.target.value)}
-            style={{ width: '100%', minHeight: '100px', marginBottom: '10px' }}
-          />
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <button onClick={() => setCancelModalOpen(false)}>취소</button>
-            <button onClick={handleCancelConfirm}>확인</button>
-          </div>
-        </div>
-      )}
+      <PurchaseCancelModal
+        isOpen={isCancelModalOpen}
+        onClose={() => setCancelModalOpen(false)}
+        onConfirm={handleCancelConfirm}
+      />
     </>
   );
 };
