@@ -99,6 +99,12 @@ const ActionButton = styled.button`
   background-color: #fff;
   cursor: pointer;
 
+  &:disabled {
+    background-color: #f0f0f0;
+    color: #aaa;
+    cursor: not-allowed;
+  }
+
   @media (max-width: 768px) {
     padding: 6px 12px;
     font-size: 14px;
@@ -131,7 +137,9 @@ interface PurchaseItemProps {
 
 const PurchaseItem: React.FC<PurchaseItemProps> = ({ item }) => {
   const [isModalOpen, setModalOpen] = useState(false);
-  const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
+  const [isCancelModalOpen, setCancelModalOpen] = useState(false);
+  const [refundReason, setRefundReason] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   const displayDate = item.purchaseDate
     ? new Date(item.purchaseDate).toLocaleDateString('ko-KR', {
@@ -149,9 +157,36 @@ const PurchaseItem: React.FC<PurchaseItemProps> = ({ item }) => {
     WAITING_CONFIRMATION: '입금 확인 대기 중',
   };
 
-  const handleDetailClick = () => {
-    setSelectedItemId(item.id);
-    setModalOpen(true);
+  const handleCancelConfirm = async () => {
+    try {
+      const accessToken = localStorage.getItem('accessToken');
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/buy/cancel/${item.id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({
+            status: 'CANCEL_REQUESTED',
+            refundReason,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        alert('취소 요청이 접수되었습니다. 관리자의 확인 후 환불 절차가 진행됩니다.');
+        setCancelModalOpen(false);
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || '취소 요청에 실패했습니다.');
+        alert('취소 요청에 실패했습니다.');
+      }
+    } catch (err) {
+      setError('네트워크 오류가 발생했습니다.');
+      alert('취소 요청 중 오류가 발생했습니다.');
+    }
   };
 
   return (
@@ -162,7 +197,10 @@ const PurchaseItem: React.FC<PurchaseItemProps> = ({ item }) => {
           <ItemTitle>{item.service ? item.service.title : item.pass?.title}</ItemTitle>
           <ItemSubtitle>{item.service ? item.service.subtitle : item.pass?.description}</ItemSubtitle>
           <ButtonGroup>
-            <ActionButton onClick={handleDetailClick}>상세 내용 보기</ActionButton>
+            <ActionButton onClick={() => setModalOpen(true)}>상세 내용 보기</ActionButton>
+            {item.status === 'WAITING_CONFIRMATION' && (
+              <ActionButton onClick={() => setCancelModalOpen(true)}>구매 취소</ActionButton>
+            )}
           </ButtonGroup>
         </InfoSection>
         <StatusSection>
@@ -171,11 +209,23 @@ const PurchaseItem: React.FC<PurchaseItemProps> = ({ item }) => {
         </StatusSection>
       </ItemWrapper>
 
-      <PurchaseModal
-        isOpen={isModalOpen}
-        onClose={() => setModalOpen(false)}
-        purchaseId={selectedItemId}
-      />
+      <PurchaseModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} purchaseId={item.id} />
+
+      {isCancelModalOpen && (
+        <div style={{ padding: '20px', background: '#fff', borderRadius: '10px', maxWidth: '400px', margin: '0 auto' }}>
+          <h3>구매 취소 요청</h3>
+          <textarea
+            placeholder="취소 사유를 입력해주세요."
+            value={refundReason}
+            onChange={(e) => setRefundReason(e.target.value)}
+            style={{ width: '100%', minHeight: '100px', marginBottom: '10px' }}
+          />
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <button onClick={() => setCancelModalOpen(false)}>취소</button>
+            <button onClick={handleCancelConfirm}>확인</button>
+          </div>
+        </div>
+      )}
     </>
   );
 };
