@@ -75,6 +75,7 @@ const StyledTextArea = styled.textarea`
   margin-bottom: 24px;
   font-size: 15px;
   line-height: 1.5;
+  resize: none;
   
   &:focus {
     outline: none;
