@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import PurchaseModal from './PurchaseModal';
+import { PurchaseItemType } from '../../types';
 
 const ItemWrapper = styled.div`
   display: flex;
@@ -125,69 +126,57 @@ const StatusSection = styled.div`
 `;
 
 interface PurchaseItemProps {
-  item: {
-    service?: { title: string; subtitle: string; image: string };
-    pass?: { title: string; description: string };
-    purchaseDate: string;
-    status: 'PURCHASED' | 'REFUNDED' | 'CANCELED' | 'WAITING';
-  };
+  item: PurchaseItemType;
 }
 
 const PurchaseItem: React.FC<PurchaseItemProps> = ({ item }) => {
-  const { service, pass, purchaseDate, status } = item;
-  const navigate = useNavigate();
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
 
-  const displayDate = purchaseDate
-    ? new Date(purchaseDate).toLocaleDateString('ko-KR', {
+  const displayDate = item.purchaseDate
+    ? new Date(item.purchaseDate).toLocaleDateString('ko-KR', {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
       })
     : '날짜 없음';
 
-  const statusInKorean: { [key in PurchaseItemProps['item']['status']]: string } = {
-    PURCHASED: "구매 완료",
-    REFUNDED: "환불 완료",
-    CANCELED: "취소 완료",
-    WAITING: "전송 대기 중",
+  const statusInKorean: Record<PurchaseItemType['status'], string> = {
+    PURCHASED: '구매 완료',
+    CANCEL_REQUESTED: '구매 취소 요청',
+    REFUNDED: '환불 완료',
+    REJECTED: '취소 반려',
+    WAITING_CONFIRMATION: '입금 확인 대기 중',
   };
 
   const handleDetailClick = () => {
-    if (service?.title === "AI 주제 추천 서비스") {
-      navigate("/service/ai/detail");
-    } else if (service?.title === "한 권으로 끝내는 학종 가이드북") {
-      navigate("/service/book/detail");
-    } else if (service?.title === "학종메이트 생활기록부 분석 서비스") {
-      navigate("/service/analyze/detail");
-    } else {
-      navigate("/service/book");
-    }
-  };
-
-  const renderActionButton = () => {
-    if (service) {
-      return <ActionButton onClick={handleDetailClick}>상세 내용 보기</ActionButton>;
-    } else if (pass) {
-      return <ActionButton onClick={() => navigate("/service/book")}>패스 보기</ActionButton>;
-    }
-    return null;
+    setSelectedItemId(item.id);
+    setModalOpen(true);
   };
 
   return (
-    <ItemWrapper>
-      {service && <ItemImage src={service.image} alt={service.title} />}
-      <InfoSection>
-        <ItemTitle>{service ? service.title : pass?.title}</ItemTitle>
-        <ItemSubtitle>{service ? service.subtitle : pass?.description}</ItemSubtitle>
-        <ButtonGroup>
-          {renderActionButton()}
-        </ButtonGroup>
-      </InfoSection>
-      <StatusSection>
-        <span>{displayDate}</span>
-        <span>{statusInKorean[status]}</span>
-      </StatusSection>
-    </ItemWrapper>
+    <>
+      <ItemWrapper>
+        {item.service && <ItemImage src={item.service.image} alt={item.service.title} />}
+        <InfoSection>
+          <ItemTitle>{item.service ? item.service.title : item.pass?.title}</ItemTitle>
+          <ItemSubtitle>{item.service ? item.service.subtitle : item.pass?.description}</ItemSubtitle>
+          <ButtonGroup>
+            <ActionButton onClick={handleDetailClick}>상세 내용 보기</ActionButton>
+          </ButtonGroup>
+        </InfoSection>
+        <StatusSection>
+          <span>{displayDate}</span>
+          <span>{statusInKorean[item.status]}</span>
+        </StatusSection>
+      </ItemWrapper>
+
+      <PurchaseModal
+        isOpen={isModalOpen}
+        onClose={() => setModalOpen(false)}
+        purchaseId={selectedItemId}
+      />
+    </>
   );
 };
 
