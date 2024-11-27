@@ -179,6 +179,7 @@ const PurchaseItem: React.FC<PurchaseItemProps> = ({ item }) => {
       if (response.ok) {
         alert('취소 요청이 접수되었습니다. 관리자의 확인 후 환불 절차가 진행됩니다.');
         setCancelModalOpen(false);
+        window.location.reload();
       } else {
         const errorData = await response.json();
         setError(errorData.message || '취소 요청에 실패했습니다.');
