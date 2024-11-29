@@ -1,12 +1,11 @@
-import React, { useState, useContext } from 'react';
-import AIContext from '../../contexts/AIContext';
+import React from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import UniversityEditCard from '../../components/ai/UniversityEditCard';
-import UniversityEditModal from '../../components/ai/UniversityEditModal';
 import StepIndicator from '../../components/ai/StepIndicator';
+import UniversityEditCard from '../../components/ai/UniversityEditCard';
 import ButtonContainer from '../../components/ai/ButtonContainer';
-import departmentData from '../../assets/data/department.json';
+import UniversityEditModal from '../../components/ai/UniversityEditModal';
+import useUniversityChoices from '../../hooks/useUniversityChoices';
+import { useNavigate } from 'react-router-dom';
 
 const PageWrapper = styled.div`
   max-width: 1080px;
@@ -103,10 +102,9 @@ const CardContainer = styled.div`
 `;
 
 const AIUniversityPage: React.FC = () => {
-  const { targetUniversities, setTargetUniversities, setIsNaturalSciences } = useContext(AIContext);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-
+  const { choices, saveChoice, loading } = useUniversityChoices();
+  const [modalVisible, setModalVisible] = React.useState(false);
+  const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
   const navigate = useNavigate();
 
   const openModal = (index: number) => {
@@ -114,17 +112,14 @@ const AIUniversityPage: React.FC = () => {
     setModalVisible(true);
   };
 
-  const handleNext = () => {
-    // 1순위 대학과 학과 정보의 자연과학 여부를 확인하여 Context에 저장
-    const firstChoice = targetUniversities[0];
-    if (firstChoice.name && firstChoice.major) {
-      const selectedSchool = departmentData.find((school) => school.school === firstChoice.name);
-      const selectedDept = selectedSchool?.departments.find((dept) => dept.department === firstChoice.major);
-
-      // 자연과학 여부를 AIContext에 저장
-      setIsNaturalSciences(!!selectedDept?.is_natural_sciences);
+  const handleSave = (name: string, major: string) => {
+    if (selectedIndex !== null) {
+      saveChoice(selectedIndex + 1, name, major);
+      setModalVisible(false);
     }
-    
+  };
+
+  const handleNext = () => {
     navigate('/ai/pass');
   };
 
@@ -132,14 +127,9 @@ const AIUniversityPage: React.FC = () => {
     navigate('/ai/subject');
   };
 
-  const saveUniversity = (name: string, major: string) => {
-    if (selectedIndex !== null) {
-      const updatedUniversities = [...targetUniversities];
-      updatedUniversities[selectedIndex] = { name, major };
-      setTargetUniversities(updatedUniversities);
-    }
-    setModalVisible(false);
-  };
+  if (loading) {
+    return <div>로딩 중...</div>;
+  }
 
   return (
     <PageWrapper>
@@ -147,34 +137,31 @@ const AIUniversityPage: React.FC = () => {
       <Title>목표하는 대학과 학과를 {'\n'} 입력해주세요</Title>
       <Subtitle>희망하는 대학과 학과에 맞는 {'\n'} 맞춤형 세특 주제를 생성할 수 있습니다.</Subtitle>
       <Divider />
-      <Description>주제 추천시 1지망 대학과 학과가 반영됩니다.</Description>
+      <Description>주제 추천 시 1지망 대학과 학과가 반영됩니다.</Description>
 
       <CardContainer>
-        {targetUniversities.map((choice, index) => (
+        {choices.map((choice, index) => (
           <div key={index}>
             <UniversityEditCard
               choice={`${index + 1}`}
               universityName={choice.name || ''}
               major={choice.major || ''}
-              color={['#202594', '#0F4ABE', '#6E95DF'][index]}
+              color={choice.color}
               setModalVisible={() => openModal(index)}
             />
           </div>
         ))}
       </CardContainer>
 
-      <ButtonContainer
-        onPreviousClick={handleBack}
-        onNextClick={handleNext}
-      />
+      <ButtonContainer onPreviousClick={handleBack} onNextClick={handleNext} />
 
       {selectedIndex !== null && (
         <UniversityEditModal
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
-          university={targetUniversities[selectedIndex].name}
-          major={targetUniversities[selectedIndex].major}
-          onSave={saveUniversity}
+          university={choices[selectedIndex].name || ''}
+          major={choices[selectedIndex].major || ''}
+          onSave={handleSave}
         />
       )}
     </PageWrapper>
