@@ -71,6 +71,40 @@ export interface Service {
 export interface CartItem {
   id: number;
   service: Service;
-  pass?: Pass; 
+  pass?: Pass;
+  amount?: number;
   description?: string[];
+}
+
+export interface BankTransferInfo {
+  holderName: string;
+  bank: string;
+  account: string;
+}
+
+export interface PurchaseItemType {
+  id: number;
+  buyId: number;
+  serviceId: number | null;
+  passId: number | null;
+  service?: { 
+    title: string; 
+    subtitle: string; 
+    image: string;
+  };
+  pass?: { 
+    title: string; 
+    description: string;
+  };
+  status: 'PURCHASED' | 'CANCEL_REQUESTED' | 'REFUNDED' | 'REJECTED' | 'WAITING_CONFIRMATION';
+  amount: number;
+  totalPrice: number;
+  refundDate: string | null;
+  refundReason: string | null;
+  purchaseDate: string;
+  contactInfo: string;
+  email: string;
+  usedPoint: number;
+  paymentMethod: 'ACCOUNT_TRANSFER';
+  bankTransferInfo?: BankTransferInfo;
 }

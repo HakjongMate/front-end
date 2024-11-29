@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { CartItem as CartItemType } from '../../types';
 
 const ItemWrapper = styled.tr`
   border-bottom: 1px solid #e0e0e0;
@@ -229,28 +230,19 @@ const DeleteButton = styled.button`
   }
 `;
 
+
 interface CartItemProps {
-  item: {
-    id: number;
-    service: {
-      title: string;
-      subtitle: string;
-      image: string;
-      price: string;
-      discout: number;
-      deliveryInfo: string;
-    };
-    description?: string[];
-  };
+  item: CartItemType;
   isSelected: boolean;
   onSelect: () => void;
   onDelete: () => void; 
   onBuy: () => void;
 }
 
+
 const CartItem: React.FC<CartItemProps> = ({ item, isSelected, onSelect, onDelete, onBuy }) => {
-  const originalPrice = parseInt(item.service.price.replace(',', ''));
-  const discountPrice = Math.round(originalPrice * (1 - item.service.discout));
+  const originalPrice = item.service.price;
+  const discountPrice = Math.round(originalPrice * (1 - item.service.discount));
   const description = item.description ? item.description.join(' | ') : '';
 
   return (

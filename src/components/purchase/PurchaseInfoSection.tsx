@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { usePurchase } from "../../contexts/PurchaseContext";
 
 const SectionWrapper = styled.div`
   border: 1px solid #e0e0e0;
@@ -102,9 +103,8 @@ const GuideText = styled.p`
 `;
 
 function PurchaseInfoSection() {
-  const [userProfile, setUserProfile] = useState<{ username: string } | null>(null);
-  const [phoneNumber, setPhoneNumber] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
+  const { contactInfo, setContactInfo, email, setEmail } = usePurchase();
+  const [userProfile, setUserProfile] = useState<{ realName: string } | null>(null);
 
   // 유저 이름을 로컬스토리지에서 가져와서 userProfile 상태에 저장
   useEffect(() => {
@@ -115,26 +115,13 @@ function PurchaseInfoSection() {
     }
   }, []);
 
-  // 전화번호 입력 시 자동으로 하이픈(-)을 추가하는 함수
+  // 전화번호 입력 시 하이픈(-) 추가
   const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/\D+/g, "");
-    const numberLength = 11;
-
-    let result = "";
-    for (let i = 0; i < value.length && i < numberLength; i++) {
-      switch (i) {
-        case 3:
-          result += "-";
-          break;
-        case 7:
-          result += "-";
-          break;
-        default:
-          break;
-      }
-      result += value[i];
-    }
-    setPhoneNumber(result);
+    const value = e.target.value.replace(/\D+/g, ""); // 숫자만 남기기
+    const formattedValue = value
+      .replace(/(\d{3})(\d{3,4})(\d{4})/, "$1-$2-$3")
+      .substr(0, 13); // 하이픈 형식으로 포맷
+    setContactInfo(formattedValue);
   };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -146,13 +133,13 @@ function PurchaseInfoSection() {
       <SectionTitle>주문자 정보</SectionTitle>
       <InputGrid>
         <InputWrapper>
-          <Input type="text" value={userProfile?.username || ""} placeholder="김도현" readOnly />
+          <Input type="text" value={userProfile?.realName || ""} readOnly />
         </InputWrapper>
         <InputWrapper>
           <Input
             type="tel"
-            placeholder="연락처"
-            value={phoneNumber}
+            placeholder="연락처 (숫자만 입력)"
+            value={contactInfo}
             onChange={handlePhoneNumberChange}
             maxLength={13}
           />

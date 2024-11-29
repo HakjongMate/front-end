@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { usePurchase } from '../../contexts/PurchaseContext';
 
 const SectionWrapper = styled.div`
   border: 1px solid #e0e0e0;
@@ -124,10 +125,59 @@ const Input = styled.input`
 `;
 
 const PurchasePaymentSection: React.FC = () => {
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('무통장입금');
+  const {
+    paymentMethod,
+    setPaymentMethod,
+    depositor,
+    setDepositor,
+    depositBank,
+    setDepositBank,
+    depositBankAccount,
+    setDepositBankAccount,
+  } = usePurchase();
 
-  const handlePaymentMethodChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedPaymentMethod(e.target.value);
+  // const handlePaymentMethodChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const value = e.target.value === '계좌 이체' ? 'ACCOUNT_TRANSFER' : '';
+  //   setPaymentMethod(value);
+  //   setDepositor('');
+  //   setDepositBank('');
+  //   setDepositBankAccount('');
+  // };
+
+  const [errors, setErrors] = useState({
+    depositor: '',
+    depositBank: '',
+    depositBankAccount: '',
+  });
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: 'depositor' | 'depositBank' | 'depositBankAccount'
+  ) => {
+    const { value } = e.target;
+    if (field === 'depositor') setDepositor(value);
+    if (field === 'depositBank') setDepositBank(value);
+    if (field === 'depositBankAccount') setDepositBankAccount(value);
+
+    // 입력값 변경 시 에러 초기화
+    setErrors((prev) => ({ ...prev, [field]: '' }));
+  };
+
+  const validateInputs = () => {
+    const newErrors = {
+      depositor: depositor ? '' : '입금자명을 입력하세요.',
+      depositBank: depositBank ? '' : '입금한 은행을 입력하세요.',
+      depositBankAccount: depositBankAccount ? '' : '입금한 계좌번호를 입력하세요.',
+    };
+
+    setErrors(newErrors);
+
+    // 에러가 있으면 false 반환
+    return Object.values(newErrors).every((error) => !error);
+  };
+
+  const getDisplayPaymentMethod = (method: string) => {
+    return method === 'ACCOUNT_TRANSFER' ? '계좌 이체' : '';
   };
 
   return (
@@ -144,38 +194,71 @@ const PurchasePaymentSection: React.FC = () => {
         <RadioButtonLabel>
           <RadioButton
             type="radio"
-            value="무통장입금"
-            checked={selectedPaymentMethod === '무통장입금'}
-            onChange={handlePaymentMethodChange}
+            value="계좌 이체"
+            checked={true}
+          // disabled={true}
           />
-          무통장입금
+          {getDisplayPaymentMethod('ACCOUNT_TRANSFER')}
         </RadioButtonLabel>
-        {selectedPaymentMethod === '무통장입금' && (
-          <BankTransferInfo>
-            신한투자증권 27078562827 이건우
-          </BankTransferInfo>
-        )}
+        {/* {paymentMethod === 'ACCOUNT_TRANSFER' && ( */}
+        <BankTransferInfo>
+          신한투자증권 27078562827 이건우
+        </BankTransferInfo>
+        {/* )} */}
+        <PaymentInfoWrapper>
+
+          <InputWrapper>
+            <Input
+              type="text"
+              placeholder="입금자명을 입력하세요"
+              value={depositor}
+              onChange={(e) => handleInputChange(e, 'depositor')}
+            />
+            <Input
+              type="text"
+              placeholder="입금한 은행을 입력하세요"
+              value={depositBank}
+              onChange={(e) => handleInputChange(e, 'depositBank')}
+            />
+            <Input
+              type="text"
+              placeholder="입금한 계좌번호를 입력하세요"
+              value={depositBankAccount}
+              onChange={(e) => handleInputChange(e, 'depositBankAccount')}
+            />
+          </InputWrapper>
+        </PaymentInfoWrapper>
       </RadioButtonWrapper>
 
-      <RadioButtonWrapper>
+      {/* <RadioButtonWrapper>
         <RadioButtonLabel>
           <RadioButton
             type="radio"
             value="실시간 계좌이체"
-            checked={selectedPaymentMethod === '실시간 계좌이체'}
+            checked={paymentMethod === 'REAL_TIME_ACCOUNT_TRANSFER'}
             onChange={handlePaymentMethodChange}
           />
-          실시간 계좌이체
+          {getDisplayPaymentMethod('REAL_TIME_ACCOUNT_TRANSFER')}
         </RadioButtonLabel>
-        {selectedPaymentMethod === '실시간 계좌이체' && (
+        {paymentMethod === 'REAL_TIME_ACCOUNT_TRANSFER' && (
           <PaymentInfoWrapper>
             <InputWrapper>
-              <Input type="text" placeholder="입금 시간을 입력하세요" />
-              <Input type="text" placeholder="입금자명을 입력하세요" />
+              <Input 
+                type="text" 
+                placeholder="입금 시간을 입력하세요" 
+                value={depositTime}
+                onChange={handleDepositTimeChange}
+              />
+              <Input 
+                type="text" 
+                placeholder="입금자명을 입력하세요" 
+                value={depositor}
+                onChange={handleDepositorChange}
+              />
             </InputWrapper>
           </PaymentInfoWrapper>
         )}
-      </RadioButtonWrapper>
+      </RadioButtonWrapper> */}
     </SectionWrapper>
   );
 };

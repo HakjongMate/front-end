@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import CartItem from "./CartItem";
 import { Service, CartItem as CartItemType } from "../../types";
-import serviceData from "../../assets/data/service.json";
 
 const SectionWrapper = styled.div`
   padding: 20px;
@@ -188,7 +187,7 @@ const CancelButton = styled(Button)`
 `;
 
 const MyCartSection: React.FC = () => {
-  const [cartItems, setCartItems] = useState<any[]>([]);
+  const [cartItems, setCartItems] = useState<CartItemType[]>([]);
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const navigate = useNavigate();
 
@@ -197,17 +196,7 @@ const MyCartSection: React.FC = () => {
     // LocalStorage에서 cartItems 가져오기
     const cart = JSON.parse(localStorage.getItem("cartItems") || "[]");
 
-    // cartItems와 serviceData를 매칭하여 아이템 상세 정보 포함
-    const itemsWithDetails = cart.map((cartItem: { serviceId: number; description: string[] }) => {
-      const service = serviceData.find((service: Service) => service.id === cartItem.serviceId);
-      return {
-        id: cartItem.serviceId,
-        service,
-        description: cartItem.description,
-      };
-    });
-
-    setCartItems(itemsWithDetails);
+    setCartItems(cart);
   }, []);
 
   // 아이템 선택/해제
@@ -226,14 +215,7 @@ const MyCartSection: React.FC = () => {
 
     // 상태 업데이트
     setCartItems(updatedCartItems);
-
-    // LocalStorage에서 아이템을 삭제한 새로운 배열 생성
-    const updatedCart = JSON.parse(
-      localStorage.getItem("cartItems") || "[]"
-    ).filter((cartItem: any) => cartItem.id !== id);
-
-    // LocalStorage에 다시 저장
-    localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+    localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
   };
 
   // 선택된 아이템의 총 금액 계산
@@ -253,22 +235,40 @@ const MyCartSection: React.FC = () => {
       }, 0);
   };
 
-  // 전체 결제 버튼 클릭 시 모든 상품을 결제 페이지로 이동
+  // 전체 결제 버튼 클릭
   const handleCheckout = () => {
-    navigate("/purchase", { state: { selectedCartItems: cartItems } });
+    navigate("/purchase", { 
+      state: { 
+        selectedCartItems: cartItems.map(item => ({
+          ...item,
+          amount: 1
+        }))
+      } 
+    });
   };
 
-  // 선택 결제 버튼 클릭 시 선택된 상품만 결제 페이지로 이동
+  // 선택 결제 버튼 클릭
   const handleSelectCheckout = () => {
-    const selectedCartItems = cartItems.filter((item) =>
-      selectedItems.includes(item.id)
-    );
+    const selectedCartItems = cartItems
+      .filter((item) => selectedItems.includes(item.id))
+      .map(item => ({
+        ...item,
+        amount: 1
+      }));
+
     navigate("/purchase", { state: { selectedCartItems } });
   };
 
-  // 개별 구매 버튼 클릭 시 해당 상품만 결제 페이지로 이동
-  const handleBuyItem = (item: any) => {
-    navigate("/purchase", { state: { selectedCartItems: [item] } });
+  // 개별 구매 버튼 클릭
+  const handleBuyItem = (item: CartItemType) => {
+    navigate("/purchase", { 
+      state: { 
+        selectedCartItems: [{
+          ...item,
+          amount: 1
+        }]
+      } 
+    });
   };
 
   return (
@@ -312,10 +312,12 @@ const MyCartSection: React.FC = () => {
       <Divider />
 
       <ButtonContainer>
-        <CancelButton onClick={handleSelectCheckout}>
+        <CancelButton onClick={handleSelectCheckout} disabled={selectedItems.length === 0}>
           선택 결제하기
         </CancelButton>
-        <CheckoutButton onClick={handleCheckout}>전체 결제하기</CheckoutButton>
+        <CheckoutButton onClick={handleCheckout} disabled={cartItems.length === 0}>
+          전체 결제하기
+        </CheckoutButton>
       </ButtonContainer>
     </SectionWrapper>
   );

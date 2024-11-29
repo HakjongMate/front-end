@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import PurchaseModal from './PurchaseModal';
+import { PurchaseItemType } from '../../types';
+import { PurchaseCancelModal } from './PurchaseCancelModal';
 
 const ItemWrapper = styled.div`
   display: flex;
@@ -98,6 +100,12 @@ const ActionButton = styled.button`
   background-color: #fff;
   cursor: pointer;
 
+  &:disabled {
+    background-color: #f0f0f0;
+    color: #aaa;
+    cursor: not-allowed;
+  }
+
   @media (max-width: 768px) {
     padding: 6px 12px;
     font-size: 14px;
@@ -125,69 +133,92 @@ const StatusSection = styled.div`
 `;
 
 interface PurchaseItemProps {
-  item: {
-    service?: { title: string; subtitle: string; image: string };
-    pass?: { title: string; description: string };
-    purchaseDate: string;
-    status: 'PURCHASED' | 'REFUNDED' | 'CANCELED' | 'WAITING';
-  };
+  item: PurchaseItemType;
 }
 
 const PurchaseItem: React.FC<PurchaseItemProps> = ({ item }) => {
-  const { service, pass, purchaseDate, status } = item;
-  const navigate = useNavigate();
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [isCancelModalOpen, setCancelModalOpen] = useState(false);
+  const [refundReason, setRefundReason] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
-  const displayDate = purchaseDate
-    ? new Date(purchaseDate).toLocaleDateString('ko-KR', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-      })
+  const displayDate = item.purchaseDate
+    ? new Date(item.purchaseDate).toLocaleDateString('ko-KR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    })
     : '날짜 없음';
 
-  const statusInKorean: { [key in PurchaseItemProps['item']['status']]: string } = {
-    PURCHASED: "구매 완료",
-    REFUNDED: "환불 완료",
-    CANCELED: "취소 완료",
-    WAITING: "전송 대기 중",
+  const statusInKorean: Record<PurchaseItemType['status'], string> = {
+    PURCHASED: '구매 완료',
+    CANCEL_REQUESTED: '구매 취소 요청',
+    REFUNDED: '환불 완료',
+    REJECTED: '취소 반려',
+    WAITING_CONFIRMATION: '입금 확인 대기 중',
   };
 
-  const handleDetailClick = () => {
-    if (service?.title === "AI 주제 추천 서비스") {
-      navigate("/service/ai/detail");
-    } else if (service?.title === "한 권으로 끝내는 학종 가이드북") {
-      navigate("/service/book/detail");
-    } else if (service?.title === "학종메이트 생활기록부 분석 서비스") {
-      navigate("/service/analyze/detail");
-    } else {
-      navigate("/service/book");
-    }
-  };
+  const handleCancelConfirm = async () => {
+    try {
+      const accessToken = localStorage.getItem('accessToken');
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/buy/cancel/${item.id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({
+            status: 'CANCEL_REQUESTED',
+            refundReason,
+          }),
+        }
+      );
 
-  const renderActionButton = () => {
-    if (service) {
-      return <ActionButton onClick={handleDetailClick}>상세 내용 보기</ActionButton>;
-    } else if (pass) {
-      return <ActionButton onClick={() => navigate("/service/book")}>패스 보기</ActionButton>;
+      if (response.ok) {
+        alert('취소 요청이 접수되었습니다. 관리자의 확인 후 환불 절차가 진행됩니다.');
+        setCancelModalOpen(false);
+        window.location.reload();
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || '취소 요청에 실패했습니다.');
+        alert('취소 요청에 실패했습니다.');
+      }
+    } catch (err) {
+      setError('네트워크 오류가 발생했습니다.');
+      alert('취소 요청 중 오류가 발생했습니다.');
     }
-    return null;
   };
 
   return (
-    <ItemWrapper>
-      {service && <ItemImage src={service.image} alt={service.title} />}
-      <InfoSection>
-        <ItemTitle>{service ? service.title : pass?.title}</ItemTitle>
-        <ItemSubtitle>{service ? service.subtitle : pass?.description}</ItemSubtitle>
-        <ButtonGroup>
-          {renderActionButton()}
-        </ButtonGroup>
-      </InfoSection>
-      <StatusSection>
-        <span>{displayDate}</span>
-        <span>{statusInKorean[status]}</span>
-      </StatusSection>
-    </ItemWrapper>
+    <>
+      <ItemWrapper>
+        {item.service && <ItemImage src={item.service.image} alt={item.service.title} />}
+        <InfoSection>
+          <ItemTitle>{item.service ? item.service.title : item.pass?.title}</ItemTitle>
+          <ItemSubtitle>{item.service ? item.service.subtitle : item.pass?.description}</ItemSubtitle>
+          <ButtonGroup>
+            <ActionButton onClick={() => setModalOpen(true)}>상세 내용 보기</ActionButton>
+            {item.status === 'WAITING_CONFIRMATION' && (
+              <ActionButton onClick={() => setCancelModalOpen(true)}>구매 취소</ActionButton>
+            )}
+          </ButtonGroup>
+        </InfoSection>
+        <StatusSection>
+          <span>{displayDate}</span>
+          <span>{statusInKorean[item.status]}</span>
+        </StatusSection>
+      </ItemWrapper>
+
+      <PurchaseModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} purchaseId={item.id} />
+
+      <PurchaseCancelModal
+        isOpen={isCancelModalOpen}
+        onClose={() => setCancelModalOpen(false)}
+        onConfirm={handleCancelConfirm}
+      />
+    </>
   );
 };
 

@@ -1,10 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-
-interface PurchasePointSectionProps {
-  pointUsed: number;
-  setPointUsed: (points: number) => void;
-}
+import { usePurchase } from "../../contexts/PurchaseContext";
 
 const SectionWrapper = styled.div`
   border: 1px solid #e0e0e0;
@@ -68,7 +64,7 @@ const PointInput = styled.input`
 
   @media (max-width: 480px) {
     width: 100%;
-    box-sizing: border-box; 
+    box-sizing: border-box;
     padding: 8px;
     margin-bottom: 10px;
     font-size: 12px;
@@ -140,32 +136,73 @@ const ErrorMessage = styled.p`
   }
 `;
 
-const PurchasePointSection: React.FC<PurchasePointSectionProps> = ({
-  pointUsed,
-  setPointUsed,
-}) => {
-  const totalAvailablePoints = 1000;
-  const [error, setError] = useState<string>("");
 
-  // 포인트 입력 핸들러
+const PurchasePointSection: React.FC = () => {
+  const {
+    availablePoints,
+    pointUsed,
+    setPointUsed,
+    fetchPoints,
+    applyPoints
+  } = usePurchase();
+  const [error, setError] = useState<string>("");
+  const [inputValue, setInputValue] = useState<string>("");
+
+
+  // 최대 포인트 설정
+  useEffect(() => {
+    const loadPoints = async () => {
+      try {
+        await fetchPoints();
+      } catch (error) {
+        setError("포인트 정보를 불러오는데 실패했습니다.");
+      }
+    };
+
+    loadPoints();
+  }, [fetchPoints]);
+
+  useEffect(() => {
+    // pointUsed가 변경될 때 inputValue도 동기화
+    setInputValue(pointUsed.toString());
+  }, [pointUsed]);
+
   const handlePointChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.replace(/[^0-9]/g, "");
-    const numericValue = parseInt(value, 10);
+    const value = e.target.value.replace(/[^0-9]/g, "");
+    let numericValue = parseInt(value, 10);
+    
+    if (isNaN(numericValue)) {
+      numericValue = 0;
+    }
 
     // 보유 포인트를 초과하면 에러 메시지와 최대 포인트로 변경
-    if (numericValue > totalAvailablePoints) {
+    if (numericValue > availablePoints) {
       setError("보유 포인트를 초과하여 사용할 수 없습니다.");
-      setPointUsed(totalAvailablePoints);
-    } else {
-      setError("");
-      setPointUsed(numericValue || 0);
+      setInputValue(availablePoints.toString());
+      setPointUsed(availablePoints);
+      return;
+    }
+
+    setError("");
+    setInputValue(value);
+    setPointUsed(numericValue);
+  };
+
+  const handleInputBlur = () => {
+    if (inputValue === "") {
+      setInputValue("0");
+      setPointUsed(0);
     }
   };
 
-  // 전액 사용 버튼 핸들러
   const handleApplyPoints = () => {
-    setPointUsed(totalAvailablePoints);
-    setError("");
+    try {
+      applyPoints(availablePoints);
+      setInputValue(availablePoints.toString());
+      setError("");
+    } catch (error) {
+      setError("포인트 전액 사용에 실패했습니다.");
+    }
   };
 
   return (
@@ -174,8 +211,9 @@ const PurchasePointSection: React.FC<PurchasePointSectionProps> = ({
       <PointInputWrapper>
         <PointInput
           type="text"
-          value={pointUsed.toString()}
+          value={inputValue}
           onChange={handlePointChange}
+          onBlur={handleInputBlur}
           placeholder="0"
         />
         <ApplyButton onClick={handleApplyPoints}>전액사용</ApplyButton>
@@ -185,7 +223,7 @@ const PurchasePointSection: React.FC<PurchasePointSectionProps> = ({
 
       <TotalPointWrapper>
         <span>보유 포인트</span>
-        <TotalPoint>{totalAvailablePoints.toLocaleString()}원</TotalPoint>
+        <TotalPoint>{availablePoints.toLocaleString()}원</TotalPoint>
       </TotalPointWrapper>
     </SectionWrapper>
   );
