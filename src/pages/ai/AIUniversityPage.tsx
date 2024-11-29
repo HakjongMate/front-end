@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import StepIndicator from '../../components/ai/StepIndicator';
 import UniversityEditCard from '../../components/ai/UniversityEditCard';
@@ -105,9 +105,9 @@ const CardContainer = styled.div`
 
 const AIUniversityPage: React.FC = () => {
   const { choices, saveChoice, loading } = useUniversityChoices();
-  const { setIsNaturalSciences } = useContext(AIContext);
-  const [modalVisible, setModalVisible] = React.useState(false);
-  const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
+  const { setIsNaturalSciences, setTargetUniversities } = useContext(AIContext);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const navigate = useNavigate();
 
   const openModal = (index: number) => {
@@ -145,6 +145,15 @@ const AIUniversityPage: React.FC = () => {
   const handleBack = () => {
     navigate('/ai/subject');
   };
+
+  // choices가 변경될 때 AIContext에 저장
+  useEffect(() => {
+    const formattedChoices = choices.map((choice) => ({
+      name: choice.name || '',
+      major: choice.major || '',
+    }));
+    setTargetUniversities(formattedChoices);
+  }, [choices, setTargetUniversities]);
 
   if (loading) {
     return <div>로딩 중...</div>;

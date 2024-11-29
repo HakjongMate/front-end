@@ -84,7 +84,6 @@ const CardsContainer = styled.div`
   }
 `;
 
-// Icon을 선택하는 함수
 const getIcon = (iconName: string) => {
   switch (iconName) {
     case "blueIcon":
@@ -100,15 +99,22 @@ const getIcon = (iconName: string) => {
 
 const AIPassPage: React.FC = () => {
   const navigate = useNavigate();
-  const { selectedSubject, targetUniversities, isNaturalSciences, setSelectedPass } = useContext(AIContext);
+  const { 
+    selectedSubject, 
+    targetUniversities, 
+    isNaturalSciences, 
+    setSelectedPass, 
+    setDream 
+  } = useContext(AIContext);
   const [selectedPassLocal, setSelectedPassLocal] = useState<number | null>(null);
-  const [dream, setDream] = useState<string>("");
 
-  // LocalStorage에서 dream 값을 가져옴
+  // LocalStorage에서 dream 값을 가져오고 AIContext에 저장
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
-    setDream(storedUser.dream || "");
-  }, []);
+    if (storedUser.dream) {
+      setDream(storedUser.dream);
+    }
+  }, [setDream]);
 
   // 패스 정보와 연결된 서비스 정보 조회
   const getServiceWithPass = (passId: number) => {
@@ -125,7 +131,6 @@ const AIPassPage: React.FC = () => {
       if (selectedService) {
         const descriptionArray = [
           `${selectedSubject || "선택된 과목 없음"}`,
-          `${dream || "선택된 꿈 없음"}`,
           `${targetUniversities
             .map((uni) => (uni.name && uni.major ? `${uni.name} - ${uni.major}` : ""))
             .filter(Boolean)
