@@ -7,27 +7,35 @@ interface AIContextProps {
   targetUniversities: { name: string; major: string }[];
   selectedPass: number | null;
   isNaturalSciences: boolean;
+  selectedTitles: string[];
   setSelectedSubjectId: (subjectId: number | null) => void;
   setSelectedSubject: (subject: string) => void;
   setDream: (dream: string) => void;
   setTargetUniversities: (universities: { name: string; major: string }[]) => void;
   setSelectedPass: (passId: number) => void;
   setIsNaturalSciences: (isNatural: boolean) => void;
+  setSelectedTitles: (titles: string[]) => void;
 }
 
 const AIContext = createContext<AIContextProps>({
   selectedSubjectId: null,
   selectedSubject: "",
   dream: "",
-  targetUniversities: [{ name: "", major: "" }, { name: "", major: "" }, { name: "", major: "" }],
+  targetUniversities: [
+    { name: "", major: "" },
+    { name: "", major: "" },
+    { name: "", major: "" },
+  ],
   selectedPass: null,
   isNaturalSciences: false,
+  selectedTitles: [],
   setSelectedSubjectId: () => {},
   setSelectedSubject: () => {},
   setDream: () => {},
   setTargetUniversities: () => {},
   setSelectedPass: () => {},
   setIsNaturalSciences: () => {},
+  setSelectedTitles: () => {},
 });
 
 export const AIProvider = ({ children }: { children: ReactNode }) => {
@@ -41,6 +49,7 @@ export const AIProvider = ({ children }: { children: ReactNode }) => {
   ]);
   const [selectedPass, setSelectedPass] = useState<number | null>(null);
   const [isNaturalSciences, setIsNaturalSciences] = useState<boolean>(false);
+  const [selectedTitles, setSelectedTitles] = useState<string[]>([]);
 
   return (
     <AIContext.Provider
@@ -51,12 +60,14 @@ export const AIProvider = ({ children }: { children: ReactNode }) => {
         targetUniversities,
         selectedPass,
         isNaturalSciences,
+        selectedTitles,
         setSelectedSubjectId,
         setSelectedSubject,
         setDream,
         setTargetUniversities,
         setSelectedPass,
         setIsNaturalSciences,
+        setSelectedTitles,
       }}
     >
       {children}

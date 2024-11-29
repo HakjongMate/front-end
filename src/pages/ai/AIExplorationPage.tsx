@@ -1,13 +1,12 @@
-import React, { useEffect, useState, useContext } from 'react';
-import styled from 'styled-components';
-import ExplorationSelectCard from '../../components/common/ExplorationSelectCard';
-import InterestSelectCard from '../../components/common/InterestSelectCard';
-import InterAddCard from '../../components/common/InterAddCard';
-import { UserProfile, Archiving, CartItem } from '../../types';
-import { useNavigate } from 'react-router-dom';
-import StepIndicator from '../../components/ai/StepIndicator';
-import ButtonContainer from '../../components/ai/ButtonContainer';
-import AIContext from '../../contexts/AIContext';
+import React, { useEffect, useState, useContext } from "react";
+import styled from "styled-components";
+import ExplorationSelectCard from "../../components/common/ExplorationSelectCard";
+import InterestSelectCard from "../../components/common/InterestSelectCard";
+import InterAddCard from "../../components/common/InterAddCard";
+import { useNavigate } from "react-router-dom";
+import StepIndicator from "../../components/ai/StepIndicator";
+import ButtonContainer from "../../components/ai/ButtonContainer";
+import AIContext from "../../contexts/AIContext";
 import serviceData from "../../assets/data/service.json";
 
 const PageWrapper = styled.div`
@@ -108,66 +107,56 @@ const CardsGrid = styled.div`
 `;
 
 const AIExplorationPage: React.FC = () => {
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [archivingData, setArchivingData] = useState<Archiving[]>([]);
+  const [archivingData, setArchivingData] = useState<any[]>([]);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const { selectedSubject, dream, targetUniversities, selectedPass } = useContext(AIContext);
+  const {
+    selectedSubject,
+    dream,
+    targetUniversities,
+    selectedPass,
+    setSelectedTitles,
+  } = useContext(AIContext);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-      setUserProfile(parsedUser);
-    }
-  }, []);
 
   useEffect(() => {
     const fetchArchivingData = async () => {
       try {
         const accessToken = localStorage.getItem("accessToken");
         const response = await fetch(`${process.env.REACT_APP_API_URL}/api/archiving/all`, {
-          method: 'GET',
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
           },
-          credentials: 'include',
+          credentials: "include",
         });
 
         if (response.ok) {
           const data = await response.json();
           setArchivingData(data.data);
         } else {
-          console.error('데이터를 가져오는 데 실패했습니다.');
+          console.error("데이터를 가져오는 데 실패했습니다.");
         }
       } catch (error) {
-        console.error('API 호출 중 오류 발생:', error);
+        console.error("API 호출 중 오류 발생:", error);
       }
     };
 
-    if (userProfile) {
-      fetchArchivingData();
-    }
-  }, [userProfile]);
+    fetchArchivingData();
+  }, []);
 
-  // 관심사 및 탐구 선택하기  
   const handleSelect = (id: string) => {
     if (selectedIds.includes(id)) {
-      // 이미 선택된 항목인 경우 선택 해제
       setSelectedIds((prevSelected) => prevSelected.filter((selectedId) => selectedId !== id));
     } else {
       if (selectedIds.length >= 2) {
-        // 최대 2개 선택 제한 안내
-        alert('최대 2개만 선택할 수 있습니다.');
+        alert("최대 2개만 선택할 수 있습니다.");
       } else {
-        // 선택 항목 추가
         setSelectedIds((prevSelected) => [...prevSelected, id]);
       }
     }
   };
 
-  // 선택한 패스 정보와 연결된 서비스 정보 가져오기
   const getServiceWithPass = (passId: number) => {
     const service = serviceData.find((service) => service.id === 3);
     if (!service) return null;
@@ -180,7 +169,6 @@ const AIExplorationPage: React.FC = () => {
     if (selectedPass !== null) {
       const selectedService = getServiceWithPass(selectedPass);
       if (selectedService) {
-        // 선택된 정보를 기반으로 description 배열 생성
         const descriptionArray = [
           `${selectedSubject || "선택된 과목 없음"}`,
           `${dream || "선택된 꿈 없음"}`,
@@ -190,8 +178,7 @@ const AIExplorationPage: React.FC = () => {
             .join(", ") || "선택된 대학 없음"}`,
         ];
 
-        // 선택된 서비스와 패스 정보를 포함한 CartItem 생성
-        const selectedCartItems: CartItem[] = [
+        const selectedCartItems = [
           {
             id: selectedService.service.id,
             service: selectedService.service,
@@ -200,12 +187,12 @@ const AIExplorationPage: React.FC = () => {
           },
         ];
 
-        // 선택된 아이템의 제목만 추출
         const selectedTitles = archivingData
           .filter((item) => selectedIds.includes(item.uniqueId))
           .map((item) => item.title);
 
-        // 선택된 CartItem을 구매 페이지로 이동
+        setSelectedTitles(selectedTitles);
+
         navigate("/purchase", { state: { selectedCartItems, selectedTitles } });
       } else {
         alert("해당 패스에 맞는 서비스를 찾을 수 없습니다.");
@@ -223,7 +210,7 @@ const AIExplorationPage: React.FC = () => {
     const cards = archivingData.map((item) => {
       const isSelected = selectedIds.includes(item.uniqueId);
 
-      if (item.type === 'explore') {
+      if (item.type === "explore") {
         return (
           <ExplorationSelectCard
             key={item.uniqueId}
@@ -272,14 +259,9 @@ const AIExplorationPage: React.FC = () => {
         * 최대 2개까지 선택 가능하며, 관심사가 없을 경우 선택하지 않으셔도 됩니다.
       </Description>
 
-      <CardsGrid>
-        {renderCards()}
-      </CardsGrid>
+      <CardsGrid>{renderCards()}</CardsGrid>
 
-      <ButtonContainer
-        onPreviousClick={handleBack}
-        onNextClick={handleNext}
-      />
+      <ButtonContainer onPreviousClick={handleBack} onNextClick={handleNext} />
     </PageWrapper>
   );
 };
