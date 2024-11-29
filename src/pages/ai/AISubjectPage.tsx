@@ -136,6 +136,7 @@ const SubjectButton = styled.button<{ isSelected: boolean }>`
     padding: 4px 6px;
   }
 `;
+
 const AISubjectPage: React.FC = () => {
   const { selectedSubjectId, selectedSubject, setSelectedSubjectId, setSelectedSubject } = useContext(AIContext);
   const navigate = useNavigate();
