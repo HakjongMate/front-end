@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import StepIndicator from '../../components/ai/StepIndicator';
 import UniversityEditCard from '../../components/ai/UniversityEditCard';
 import ButtonContainer from '../../components/ai/ButtonContainer';
 import UniversityEditModal from '../../components/ai/UniversityEditModal';
 import useUniversityChoices from '../../hooks/useUniversityChoices';
+import AIContext from '../../contexts/AIContext';
+import departmentData from '../../assets/data/department.json';
 import { useNavigate } from 'react-router-dom';
 
 const PageWrapper = styled.div`
@@ -103,6 +105,7 @@ const CardContainer = styled.div`
 
 const AIUniversityPage: React.FC = () => {
   const { choices, saveChoice, loading } = useUniversityChoices();
+  const { setIsNaturalSciences } = useContext(AIContext);
   const [modalVisible, setModalVisible] = React.useState(false);
   const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
   const navigate = useNavigate();
@@ -120,6 +123,22 @@ const AIUniversityPage: React.FC = () => {
   };
 
   const handleNext = () => {
+    const firstChoice = choices[0];
+
+    // 1지망 대학 및 학과 정보로 자연계열 여부 확인
+    if (firstChoice.name && firstChoice.major) {
+      const selectedSchool = departmentData.find(
+        (school) => school.school === firstChoice.name
+      );
+
+      const selectedDept = selectedSchool?.departments.find(
+        (dept) => dept.department === firstChoice.major
+      );
+
+      // 자연계열 여부를 AIContext에 저장
+      setIsNaturalSciences(!!selectedDept?.is_natural_sciences);
+    }
+
     navigate('/ai/pass');
   };
 
