@@ -194,7 +194,7 @@ function PurchasePage() {
           !selectedCartItems.some((selectedItem) => selectedItem.id === cartItem.id)
       );
       localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
-
+  
       // AI 컨텍스트 초기화
       setSelectedSubject("");
       setDream("");
@@ -203,15 +203,22 @@ function PurchasePage() {
         { name: "", major: "" },
         { name: "", major: "" },
       ]);
-
+  
+      // AI 서비스 포함 여부 확인 및 이동
       const containsAIService = selectedCartItems.some((item) =>
-        item.service.title.includes("패스")
+        item.service.title.includes("AI") || item.service.title.includes("패스")
       );
-      navigate(containsAIService ? "/ai/waiting" : "/my/purchase");
+  
+      // AI 서비스가 포함된 경우 "/ai/waiting"으로 이동
+      if (containsAIService) {
+        navigate("/ai/waiting");
+      } else {
+        navigate("/my/purchase");
+      }
     } catch (error) {
       console.error("구매 성공 후 처리 중 오류:", error);
     }
-  };
+  };  
 
   const handlePurchase = async () => {
     setIsSubmitting(true);
