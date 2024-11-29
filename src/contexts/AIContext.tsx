@@ -1,11 +1,13 @@
 import React, { createContext, useState, ReactNode } from "react";
 
 interface AIContextProps {
+  selectedSubjectId: number | null;
   selectedSubject: string;
   dream: string;
   targetUniversities: { name: string; major: string }[];
   selectedPass: number | null;
   isNaturalSciences: boolean;
+  setSelectedSubjectId: (subjectId: number | null) => void;
   setSelectedSubject: (subject: string) => void;
   setDream: (dream: string) => void;
   setTargetUniversities: (universities: { name: string; major: string }[]) => void;
@@ -14,11 +16,13 @@ interface AIContextProps {
 }
 
 const AIContext = createContext<AIContextProps>({
+  selectedSubjectId: null,
   selectedSubject: "",
   dream: "",
   targetUniversities: [{ name: "", major: "" }, { name: "", major: "" }, { name: "", major: "" }],
   selectedPass: null,
   isNaturalSciences: false,
+  setSelectedSubjectId: () => {},
   setSelectedSubject: () => {},
   setDream: () => {},
   setTargetUniversities: () => {},
@@ -27,6 +31,7 @@ const AIContext = createContext<AIContextProps>({
 });
 
 export const AIProvider = ({ children }: { children: ReactNode }) => {
+  const [selectedSubjectId, setSelectedSubjectId] = useState<number | null>(null);
   const [selectedSubject, setSelectedSubject] = useState<string>("");
   const [dream, setDream] = useState<string>("");
   const [targetUniversities, setTargetUniversities] = useState([
@@ -40,11 +45,13 @@ export const AIProvider = ({ children }: { children: ReactNode }) => {
   return (
     <AIContext.Provider
       value={{
+        selectedSubjectId,
         selectedSubject,
         dream,
         targetUniversities,
         selectedPass,
         isNaturalSciences,
+        setSelectedSubjectId,
         setSelectedSubject,
         setDream,
         setTargetUniversities,
