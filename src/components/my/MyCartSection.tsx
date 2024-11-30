@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import CartItem from "./CartItem";
 import { Service, CartItem as CartItemType } from "../../types";
+import toast, { Toaster } from "react-hot-toast";
 
 const SectionWrapper = styled.div`
   padding: 20px;
@@ -235,8 +236,30 @@ const MyCartSection: React.FC = () => {
       }, 0);
   };
 
+  // 로그인 상태 확인
+  const isLoggedIn = () => {
+    const token = localStorage.getItem("accessToken");
+    return !!token;
+  };
+
   // 전체 결제 버튼 클릭
   const handleCheckout = () => {
+    if (!isLoggedIn()) {
+      // 로그인되지 않은 경우 에러 메시지 표시 및 로그인 페이지로 이동
+      toast.error("로그인이 필요합니다. 로그인 후 이용해 주세요.", {
+        style: {
+          maxWidth: "1000px",
+          width: "400px",
+          fontSize: "20px",
+        },
+      });
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500); // 1.5초 지연
+      return;
+    }
+
+    // 모든 장바구니 아이템을 구매 페이지로 전달
     navigate("/purchase", { 
       state: { 
         selectedCartItems: cartItems.map(item => ({
@@ -249,6 +272,22 @@ const MyCartSection: React.FC = () => {
 
   // 선택 결제 버튼 클릭
   const handleSelectCheckout = () => {
+    if (!isLoggedIn()) {
+      // 로그인되지 않은 경우 에러 메시지 표시 및 로그인 페이지로 이동
+      toast.error("로그인이 필요합니다. 로그인 후 이용해 주세요.", {
+        style: {
+          maxWidth: "1000px",
+          width: "400px",
+          fontSize: "20px",
+        },
+      });
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500); // 1.5초 지연
+      return;
+    }
+
+    // 선택된 아이템만 구매 페이지로 전달
     const selectedCartItems = cartItems
       .filter((item) => selectedItems.includes(item.id))
       .map(item => ({
@@ -261,6 +300,22 @@ const MyCartSection: React.FC = () => {
 
   // 개별 구매 버튼 클릭
   const handleBuyItem = (item: CartItemType) => {
+    if (!isLoggedIn()) {
+      // 로그인되지 않은 경우 에러 메시지 표시 및 로그인 페이지로 이동
+      toast.error("로그인이 필요합니다. 로그인 후 이용해 주세요.", {
+        style: {
+          maxWidth: "1000px",
+          width: "400px",
+          fontSize: "20px",
+        },
+      });
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500); // 1.5초 지연
+      return;
+    }
+
+    // 단일 아이템을 구매 페이지로 전달
     navigate("/purchase", { 
       state: { 
         selectedCartItems: [{
@@ -319,6 +374,7 @@ const MyCartSection: React.FC = () => {
           전체 결제하기
         </CheckoutButton>
       </ButtonContainer>
+      <Toaster position="top-center" reverseOrder={false} />
     </SectionWrapper>
   );
 };

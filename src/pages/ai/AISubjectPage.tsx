@@ -138,16 +138,17 @@ const SubjectButton = styled.button<{ isSelected: boolean }>`
 `;
 
 const AISubjectPage: React.FC = () => {
-  const { selectedSubject, setSelectedSubject } = useContext(AIContext);
+  const { selectedSubjectId, selectedSubject, setSelectedSubjectId, setSelectedSubject } = useContext(AIContext);
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(true);
 
-  const handleSubjectClick = (subject: string) => {
-    setSelectedSubject(subject);
+  const handleSubjectClick = (subjectId: number, subjectDetail: string) => {
+    setSelectedSubjectId(subjectId);
+    setSelectedSubject(subjectDetail);
   };
 
   const handleNextClick = () => {
-    if (selectedSubject) {
+    if (selectedSubjectId && selectedSubject) {
       navigate("/ai/university");
     } else {
       alert("과목을 선택해주세요.");
@@ -178,8 +179,8 @@ const AISubjectPage: React.FC = () => {
                   {category.details.map((subject) => (
                     <SubjectButton
                       key={subject.id}
-                      isSelected={selectedSubject === subject.detail}
-                      onClick={() => handleSubjectClick(subject.detail)}
+                      isSelected={selectedSubjectId === subject.id}
+                      onClick={() => handleSubjectClick(subject.id, subject.detail)}
                     >
                       {subject.detail}
                     </SubjectButton>
@@ -193,7 +194,7 @@ const AISubjectPage: React.FC = () => {
 
       <ButtonContainer
         onNextClick={handleNextClick}
-        isNextDisabled={!selectedSubject}
+        isNextDisabled={!selectedSubjectId}
       />
     </PageWrapper>
   );

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 import departmentData from "../../assets/data/department.json";
 import { filterKoreanItems } from "../../utils/koreanSearch";
 
@@ -87,9 +87,32 @@ const SearchContainer = styled.div`
   width: 100%;
 `;
 
+const ClearButton = styled.button`
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6B7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: none;
+  
+  &:hover {
+    color: #111827;
+  }
+  
+  &:disabled {
+    display: none;
+  }
+`;
+
 const SearchInput = styled.input`
   width: 100%;
   padding: 12px 40px;
+  padding-right: ${props => props.value ? '40px' : '12px'};
   border-radius: 10px;
   border: 1.5px solid #E5E7EB;
   font-size: 15px;
@@ -275,6 +298,20 @@ const UniversityEditModal: React.FC<UniversityEditModalProps> = ({
     setShowMajorDropdown(false);
   };
 
+  const handleClearUniversity = () => {
+    setUniversitySearch('');
+    setUniversityName('');
+    setMajorName('');
+    setMajorSearch('');
+    setShowUniversityDropdown(true);
+  };
+
+  const handleClearMajor = () => {
+    setMajorSearch('');
+    setMajorName('');
+    setShowMajorDropdown(true);
+  };
+
   const handleSave = () => {
     if (!universityName || !majorName) {
       alert('대학교와 학과를 모두 선택해주세요.');
@@ -284,7 +321,6 @@ const UniversityEditModal: React.FC<UniversityEditModalProps> = ({
     setModalVisible(false);
   };
 
-  // filterKoreanItems 유틸리티를 사용하여 검색
   const filteredUniversities = filterKoreanItems(
     universities,
     universitySearch,
@@ -315,6 +351,14 @@ const UniversityEditModal: React.FC<UniversityEditModalProps> = ({
                 placeholder="대학교를 검색하세요 (초성 검색 가능)"
                 onFocus={() => setShowUniversityDropdown(true)}
               />
+              <ClearButton
+                onClick={handleClearUniversity}
+                disabled={!universitySearch}
+                type="button"
+                aria-label="Clear university search"
+              >
+                <X size={16} />
+              </ClearButton>
               <DropdownList show={showUniversityDropdown}>
                 {filteredUniversities.map((uni) => (
                   <DropdownItem
@@ -350,6 +394,14 @@ const UniversityEditModal: React.FC<UniversityEditModalProps> = ({
                 onFocus={() => setShowMajorDropdown(true)}
                 disabled={!universityName}
               />
+              <ClearButton
+                onClick={handleClearMajor}
+                disabled={!majorSearch}
+                type="button"
+                aria-label="Clear major search"
+              >
+                <X size={16} />
+              </ClearButton>
               <DropdownList show={showMajorDropdown && !!universityName}>
                 {filteredMajors.map((major) => (
                   <DropdownItem

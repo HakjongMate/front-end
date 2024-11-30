@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { CartItem as CartItemType } from '../../types';
+import toast, { Toaster } from "react-hot-toast";
 
 const ItemWrapper = styled.tr`
   border-bottom: 1px solid #e0e0e0;
@@ -239,11 +240,29 @@ interface CartItemProps {
   onBuy: () => void;
 }
 
-
 const CartItem: React.FC<CartItemProps> = ({ item, isSelected, onSelect, onDelete, onBuy }) => {
   const originalPrice = item.service.price;
   const discountPrice = Math.round(originalPrice * (1 - item.service.discount));
   const description = item.description ? item.description.join(' | ') : '';
+
+  const isLoggedIn = () => !!localStorage.getItem("accessToken");
+
+  const handleBuyClick = () => {
+    if (!isLoggedIn()) {
+      toast.error("로그인이 필요합니다. 로그인 후 이용해 주세요.", {
+        style: {
+          maxWidth: "1000px",
+          width: "400px",
+          fontSize: "20px",
+        },
+      });
+      setTimeout(() => {
+        window.location.href = "/login"; // 로그인 페이지로 이동
+      }, 1500);
+      return;
+    }
+    onBuy();
+  };
 
   return (
     <ItemWrapper>
@@ -262,9 +281,10 @@ const CartItem: React.FC<CartItemProps> = ({ item, isSelected, onSelect, onDelet
       <PriceCell>
         <OriginalPrice>{originalPrice.toLocaleString()}원</OriginalPrice>
         <DiscountPrice>{discountPrice.toLocaleString()}원</DiscountPrice>
-        <BuyButton onClick={onBuy}>개별구매</BuyButton> 
+        <BuyButton onClick={handleBuyClick}>개별구매</BuyButton>
       </PriceCell>
       <DeliveryCell>{item.service.deliveryInfo}</DeliveryCell>
+      <Toaster position="top-center" reverseOrder={false} />
     </ItemWrapper>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
-import toast, {Toaster} from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { Exploration } from "../../types";
 import subjectData from "../../assets/data/subject.json";
 
@@ -118,6 +118,7 @@ const Content = styled.p`
   border: 1px solid #ccc;
   border-radius: 10px;
   background-color: #fff;
+  white-space: pre-line; 
 
   @media (max-width: 768px) {
     font-size: 14px;
@@ -125,6 +126,10 @@ const Content = styled.p`
 
   @media (max-width: 480px) {
     font-size: 13px;
+  }
+
+  b {
+    font-weight: bold;
   }
 `;
 
@@ -235,6 +240,15 @@ const MyExplorationDetailPage: React.FC = () => {
     }
   };
 
+  const parseHighlightedText = (text: string) => {
+    return text.split(/(\*\*.*?\*\*)/g).map((chunk, index) => {
+      if (chunk.startsWith("**") && chunk.endsWith("**")) {
+        return <b key={index}>{chunk.slice(2, -2)}</b>;
+      }
+      return chunk;
+    });
+  };
+
   const handleSave = async () => {
     try {
       const accessToken = localStorage.getItem("accessToken");
@@ -245,14 +259,8 @@ const MyExplorationDetailPage: React.FC = () => {
           Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
-          subjectId: exploration.subjectId,
-          title: exploration.title,
-          state: exploration.state,
-          motive: exploration.motive,
-          contents: exploration.contents,
-          result: exploration.result,
-          actions: exploration.actions,
-          insight: insight,
+          ...exploration,
+          insight,
         }),
       });
 
@@ -305,22 +313,22 @@ const MyExplorationDetailPage: React.FC = () => {
 
       <ContentSection>
         <SectionTitle>탐구 동기</SectionTitle>
-        <Content>{exploration.motive}</Content>
+        <Content>{parseHighlightedText(exploration.motive)}</Content>
       </ContentSection>
 
       <ContentSection>
         <SectionTitle>탐구 내용</SectionTitle>
-        <Content>{exploration.contents}</Content>
+        <Content>{parseHighlightedText(exploration.contents)}</Content>
       </ContentSection>
 
       <ContentSection>
         <SectionTitle>탐구 결과</SectionTitle>
-        <Content>{exploration.result}</Content>
+        <Content>{parseHighlightedText(exploration.result)}</Content>
       </ContentSection>
 
       <ContentSection>
         <SectionTitle>향후 행동</SectionTitle>
-        <Content>{exploration.actions}</Content>
+        <Content>{parseHighlightedText(exploration.actions)}</Content>
       </ContentSection>
 
       <Divider />
@@ -330,7 +338,7 @@ const MyExplorationDetailPage: React.FC = () => {
         <InsightInput
           value={insight}
           onChange={(e) => setInsight(e.target.value)}
-          placeholder="추가적인 인사이트들을 정리해서 기록하세요."
+          placeholder="추가적인 인사이트들을 정리하세요."
         />
         <ButtonContainer>
           <SaveButton onClick={handleSave}>저장하기</SaveButton>

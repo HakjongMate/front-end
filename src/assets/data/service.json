@@ -44,7 +44,15 @@
     "price": 80000,
     "discount": 0.0,
     "rating": 5,
-    "detailImage": [],
+    "detailImage": [
+      "/images/ai/detail01.webp",
+      "/images/ai/detail02.webp",
+      "/images/ai/detail03.webp",
+      "/images/ai/detail04.webp",
+      "/images/ai/detail05.webp",
+      "/images/ai/detail06.webp",
+      "/images/ai/detail07.webp"
+    ],
     "deliveryInfo": "결제 후\n즉시 확인",
     "passes": [
         {

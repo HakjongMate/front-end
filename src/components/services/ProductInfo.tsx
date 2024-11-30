@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { Share } from "@mui/icons-material";
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from "react-hot-toast";
 import { Service, CartItem } from "../../types";
 
 const ProductInfoWrapper = styled.div`
@@ -199,7 +199,6 @@ const CartButton = styled(Button)`
   }
 `;
 
-
 interface ProductInfoProps {
   product: Service & {
     discountedPrice: string;
@@ -209,7 +208,25 @@ interface ProductInfoProps {
 const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const navigate = useNavigate();
 
+  const isLoggedIn = () => {
+    const token = localStorage.getItem("accessToken");
+    return !!token;
+  };
+
   const handleBuyClick = () => {
+    if (!isLoggedIn()) {
+      toast.error("로그인이 필요합니다. 로그인 후 이용해 주세요.", {
+        style: {
+          maxWidth: "1000px",
+          width: "400px",
+          fontSize: "20px",
+        },
+      });
+      setTimeout(() => {
+        navigate("/login");
+      }, 500); // 0.5초 지연
+      return;
+    }
     if (product.title.includes("AI")) {
       navigate('/ai/subject', { state: { product } });
     } else {
@@ -225,8 +242,8 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
           rating: product.rating,
           detailImage: product.detailImage,
           deliveryInfo: product.deliveryInfo,
-          passes: product.passes
-        }
+          passes: product.passes,
+        },
       };
 
       navigate('/purchase', { 
@@ -250,13 +267,12 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
         rating: product.rating,
         detailImage: product.detailImage,
         deliveryInfo: product.deliveryInfo,
-        passes: product.passes
-      }
+        passes: product.passes,
+      },
     };
 
     const cart: CartItem[] = JSON.parse(localStorage.getItem("cartItems") || "[]");
     
-    // 이미 장바구니에 있는 상품인지 확인
     const existingItemIndex = cart.findIndex(
       item => item.service.id === product.id
     );
