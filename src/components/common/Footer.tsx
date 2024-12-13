@@ -76,7 +76,7 @@ function Footer() {
           <Information>
             러닝메이트 | 대표: 이건우 | 사업등록자 번호: 817-45-01107
           </Information>
-          <Information>hakjongmate@gmail.com | 번호: 010-2827-8618</Information>
+          <Information>hakjongmate@gmail.com | 번호: 010-2710-2827</Information>
           <Information>
             주소: 서울특별시 성북구 개운사길 75-6, 3층 306호(안암동5가,
             백산빌딩)
